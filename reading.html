@@ -1,6 +1,4 @@
-import os
-
-reading_html_content = """<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -842,8 +840,4 @@ reading_html_content = """<!DOCTYPE html>
         loadSavedData('task1');
     </script>
 </body>
-</html>"""
-
-os.makedirs('/mnt/data', exist_ok=True)
-with open('/mnt/data/reading.html', 'w', encoding='utf-8') as f:
-    f.write(reading_html_content)
+</html>
