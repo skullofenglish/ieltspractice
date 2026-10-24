@@ -1,0 +1,849 @@
+import os
+
+reading_html_content = """<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS Reading Practice - Clássica Gótica</title>
+    <style>
+        :root {
+            --bg-color: #F8F7FA;
+            --card-bg: #FFFFFF;
+            --text-main: #1A1A1A;
+            --text-muted: #6B3A7E;
+            --primary-purple: #502064;
+            --accent-wine: #6B0F1A;
+            --accent-pink: #F48FB1;
+            --light-lavender: #D8B4D9;
+            --border-color: #E2D8E5;
+            --success-color: #2e7d32;
+            --error-color: #6B0F1A;
+        }
+
+        body {
+            font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .main-wrapper {
+            width: 100%;
+            max-width: 950px;
+        }
+
+        .top-nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .top-nav a {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            background-color: var(--card-bg);
+            color: var(--primary-purple);
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 6px rgba(80, 32, 100, 0.04);
+            transition: all 0.2s;
+        }
+
+        .top-nav a.active, .top-nav a:hover {
+            background-color: var(--primary-purple);
+            color: white;
+            border-color: var(--primary-purple);
+        }
+
+        .reading-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .sub-tab-btn {
+            background-color: #FFFFFF;
+            color: var(--primary-purple);
+            border: 1px solid var(--light-lavender);
+            padding: 8px 12px;
+            font-size: 12px;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Century Gothic', CenturyGothic, sans-serif;
+        }
+
+        .sub-tab-btn.active, .sub-tab-btn:hover {
+            background-color: var(--light-lavender);
+            color: var(--primary-purple);
+            border-color: var(--primary-purple);
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(80, 32, 100, 0.08);
+            padding: 30px;
+            box-sizing: border-box;
+            border: 1px solid var(--border-color);
+            display: none;
+        }
+
+        .container.active-section {
+            display: block;
+        }
+
+        h1 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--primary-purple);
+        }
+
+        .subtitle {
+            font-size: 13px;
+            font-style: italic;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .reading-layout {
+            display: flex;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .reading-layout {
+                flex-direction: column;
+            }
+        }
+
+        .reading-text {
+            flex: 1;
+            background: #FAFAFC;
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            max-height: 500px;
+            overflow-y: auto;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .reading-questions {
+            flex: 1;
+        }
+
+        .instruction {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--primary-purple);
+        }
+
+        .question-block {
+            margin-bottom: 18px;
+            background: #FAFAFC;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .question-title {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            padding: 6px 8px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background-color: #FFFFFF;
+        }
+
+        .option-label:hover {
+            background-color: #F3ECF5;
+        }
+
+        input[type="text"], select {
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: 'Century Gothic', CenturyGothic, sans-serif;
+            font-size: 12px;
+            margin-left: 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            font-size: 12px;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 6px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #F3ECF5;
+            color: var(--primary-purple);
+        }
+
+        .feedback-box {
+            margin-top: 8px;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            display: none;
+        }
+
+        .feedback-box.correct {
+            background-color: #edf7ed;
+            color: var(--success-color);
+            border: 1px solid #c8e6c9;
+            display: block;
+            font-weight: bold;
+        }
+
+        .feedback-box.incorrect {
+            background-color: #fdf2f2;
+            color: var(--error-color);
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 16px;
+        }
+
+        button.action-btn {
+            flex: 1;
+            padding: 10px 16px;
+            font-size: 13px;
+            font-weight: 700;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Century Gothic', CenturyGothic, sans-serif;
+        }
+
+        .submit-btn { background-color: var(--primary-purple); color: white; }
+        .submit-btn:hover { background-color: #3b164a; }
+        .clear-btn { background-color: var(--border-color); color: var(--primary-purple); }
+        .clear-btn:hover { background-color: #d1c2d4; }
+
+        .status-msg { text-align: center; font-size: 11px; font-style: italic; color: var(--text-muted); margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="main-wrapper">
+        <nav class="top-nav">
+            <a href="index.html">Listening</a>
+            <a href="reading.html" class="active">Reading</a>
+            <a href="writing.html">Writing</a>
+        </nav>
+
+        <div class="reading-selector">
+            <button class="sub-tab-btn active" onclick="switchTask('task1')">1. Multiple Choice (1)</button>
+            <button class="sub-tab-btn" onclick="switchTask('task2')">2. Sentence Endings</button>
+            <button class="sub-tab-btn" onclick="switchTask('task3')">3. Sentence Completion</button>
+            <button class="sub-tab-btn" onclick="switchTask('task4')">4. Summary (List)</button>
+            <button class="sub-tab-btn" onclick="switchTask('task5')">5. Summary (Text)</button>
+            <button class="sub-tab-btn" onclick="switchTask('task6')">6. Matching Features</button>
+            <button class="sub-tab-btn" onclick="switchTask('task7')">7. Table Completion</button>
+            <button class="sub-tab-btn" onclick="switchTask('task8')">8. Note Completion</button>
+            <button class="sub-tab-btn" onclick="switchTask('task9')">9. True/False/NG</button>
+            <button class="sub-tab-btn" onclick="switchTask('task10')">10. Multiple Choice (Multi)</button>
+        </div>
+
+        <!-- TASK 1 -->
+        <div id="task1" class="container active-section" data-task-id="task1">
+            <h1>IELTS Reading Practice</h1>
+            <div class="subtitle">Academic Reading Multiple Choice (one answer)</div>
+            <div class="reading-layout">
+                <div class="reading-text">
+                    <p>The general assumption is that older workers are paid more in spite of, rather than because of, their productivity...</p>
+                    <p>One innovation was devised by IBM Belgium. Faced with the need to cut staff costs, IBM set up a separate company called Skill Team...</p>
+                    <p>The best way to tempt the old to go on working may be to build on such 'bridge' jobs: part-time or temporary employment...</p>
+                    <p>If the job market grows more flexible, the old may find more jobs that suit them. David Storey’s study found that in Britain 70% of businesses started by people over 55 survived...</p>
+                </div>
+                <div class="reading-questions">
+                    <form class="quiz-form">
+                        <div class="instruction">Questions 1–4</div>
+                        <div class="question-block" data-q="q1">
+                            <div class="question-title">1. In paragraph one, the writer suggests that companies could consider</div>
+                            <div class="options-list">
+                                <label class="option-label"><input type="radio" name="q1" value="abolishing pay schemes that are based on age"> abolishing pay schemes that are based on age</label>
+                                <label class="option-label"><input type="radio" name="q1" value="avoiding pay that is based on piece-rates."> avoiding pay that is based on piece-rates.</label>
+                                <label class="option-label"><input type="radio" name="q1" value="increasing pay for older workers."> increasing pay for older workers.</label>
+                                <label class="option-label"><input type="radio" name="q1" value="equipping older workers with new skills."> equipping older workers with new skills.</label>
+                            </div>
+                            <div class="feedback-box"></div>
+                        </div>
+                        <div class="question-block" data-q="q2">
+                            <div class="question-title">2. Skill Team is an example of a company which</div>
+                            <div class="options-list">
+                                <label class="option-label"><input type="radio" name="q2" value="offers older workers increases in salary."> offers older workers increases in salary.</label>
+                                <label class="option-label"><input type="radio" name="q2" value="allows people to continue working for as long as they want."> allows people to continue working for as long as they want.</label>
+                                <label class="option-label"><input type="radio" name="q2" value="allows the expertise of older workers to be put to use"> allows the expertise of older workers to be put to use</label>
+                                <label class="option-label"><input type="radio" name="q2" value="treats older and younger workers equally."> treats older and younger workers equally.</label>
+                            </div>
+                            <div class="feedback-box"></div>
+                        </div>
+                        <div class="question-block" data-q="q3">
+                            <div class="question-title">3. According to the writer, ‘bridge’ jobs</div>
+                            <div class="options-list">
+                                <label class="option-label"><input type="radio" name="q3" value="tend to attract people in middle-salary ranges."> tend to attract people in middle-salary ranges.</label>
+                                <label class="option-label"><input type="radio" name="q3" value="are better paid than some full-time jobs."> are better paid than some full-time jobs.</label>
+                                <label class="option-label"><input type="radio" name="q3" value="originated in the United States."> originated in the United States.</label>
+                                <label class="option-label"><input type="radio" name="q3" value="appeal to distinct groups of older workers"> appeal to distinct groups of older workers</label>
+                            </div>
+                            <div class="feedback-box"></div>
+                        </div>
+                        <div class="question-block" data-q="q4">
+                            <div class="question-title">4. David Storey’s study found that</div>
+                            <div class="options-list">
+                                <label class="option-label"><input type="radio" name="q4" value="people demand more from their work as they get older."> people demand more from their work as they get older.</label>
+                                <label class="option-label"><input type="radio" name="q4" value="older people are good at running their own business"> older people are good at running their own business</label>
+                                <label class="option-label"><input type="radio" name="q4" value="an increasing number of old people are self-employed."> an increasing number of old people are self-employed.</label>
+                                <label class="option-label"><input type="radio" name="q4" value="few young people have their own businesses."> few young people have their own businesses.</label>
+                            </div>
+                            <div class="feedback-box"></div>
+                        </div>
+                        <div class="actions">
+                            <button type="button" class="action-btn submit-btn">Enviar respostas</button>
+                            <button type="button" class="action-btn clear-btn">Limpar</button>
+                        </div>
+                    </form>
+                    <div class="status-msg">Sincronizado com a nuvem</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TASK 2 -->
+        <div id="task2" class="container" data-task-id="task2">
+            <h1>IELTS Reading Practice</h1>
+            <div class="subtitle">Academic Reading Matching Sentence Endings</div>
+            <div class="reading-layout">
+                <div class="reading-text">
+                    <p><strong>Science in 16th-century London:</strong> The Jewel House, a new book by Deborah Harkness...</p>
+                </div>
+                <div class="reading-questions">
+                    <form class="quiz-form">
+                        <div class="instruction">Questions 1–3</div>
+                        <div class="question-block" data-q="q1">
+                            <div class="question-title">1. Harkness’s research method was different to that of other writers because</div>
+                            <select name="q1">
+                                <option value="">Selecione...</option>
+                                <option value="she has the greatest knowledge of Elizabethan London.">she has the greatest knowledge of Elizabethan London.</option>
+                                <option value="she started by seeking to understand how basic terms were used in the past">she started by seeking to understand how basic terms were used in the past</option>
+                                <option value="they worked as individuals rather than as a group.">they worked as individuals rather than as a group.</option>
+                                <option value="she examined how their methods evolved and changed">she examined how their methods evolved and changed</option>
+                                <option value="they used old ways of analysing written information for new purposes">they used old ways of analysing written information for new purposes</option>
+                            </select>
+                            <div class="feedback-box"></div>
+                        </div>
+                        <div class="question-block" data-q="q2">
+                            <div class="question-title">2. Harkness’s reconstruction of the 16th-century London scientific groups was new because</div>
+                            <select name="q2">
+                                <option value="">Selecione...</option>
+                                <option value="she started by seeking to understand how basic terms were used in the past">she started by seeking to understand how basic terms were used in the past</option>
+                                <option value="she examined how their methods evolved and changed">she examined how their methods evolved and changed</option>
+                                <option value="they used old ways of analysing written information for new purposes">they used old ways of analysing written information for new purposes</option>
+                            </select>
+                            <div class="feedback-box"></div>
+                        </div>
+                        <div class="question-block" data-q="q3">
+                            <div class="question-title">3. Harkness shows that the 16th-century London scientists were innovative because</div>
+                            <select name="q3">
+                                <option value="">Selecione...</option>
+                                <option value="she started by seeking to understand how basic terms were used in the past">she started by seeking to understand how basic terms were used in the past</option>
+                                <option value="she examined how their methods evolved and changed">she examined how their methods evolved and changed</option>
+                                <option value="they used old ways of analysing written information for new purposes">they used old ways of analysing written information for new purposes</option>
+                            </select>
+                            <div class="feedback-box"></div>
+                        </div>
+                        <div class="actions">
+                            <button type="button" class="action-btn submit-btn">Enviar respostas</button>
+                            <button type="button" class="action-btn clear-btn">Limpar</button>
+                        </div>
+                    </form>
+                    <div class="status-msg">Sincronizado com a nuvem</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TASK 3 -->
+        <div id="task3" class="container" data-task-id="task3">
+            <h1>IELTS Reading Practice</h1>
+            <div class="subtitle">Academic Reading Sentence Completion</div>
+            <div class="reading-layout">
+                <div class="reading-text">
+                    <p><strong>The origins of birds:</strong> The science of evolutionary relationships has undergone a major change in recent decades...</p>
+                </div>
+                <div class="reading-questions">
+                    <form class="quiz-form">
+                        <div class="instruction">Questions 1–5</div>
+                        <div class="question-block" data-q="q1"><div class="question-title">1. Huxley formulated his theory while studying a dinosaur belonging to a group called <input type="text" name="q1">.</div><div class="feedback-box"></div></div>
+                        <div class="question-block" data-q="q2"><div class="question-title">2. Heilmann rejected Huxley’s theory because of the apparent absence of <input type="text" name="q2"> in dinosaurs.</div><div class="feedback-box"></div></div>
+                        <div class="question-block" data-q="q3"><div class="question-title">3. Feduccia and Martin believe that the ancestor of today’s birds was a kind of early <input type="text" name="q3">.</div><div class="feedback-box"></div></div>
+                        <div class="question-block" data-q="q4"><div class="question-title">4. In cladistics, the <input type="text" name="q4"> between organisms’ characteristics are of major importance.</div><div class="feedback-box"></div></div>
+                        <div class="question-block" data-q="q5"><div class="question-title">5. The dangerous <input type="text" name="q5"> on a primitive bird from Madagascar adds weight to the ‘dino-bird’ argument.</div><div class="feedback-box"></div></div>
+                        <div class="actions">
+                            <button type="button" class="action-btn submit-btn">Enviar respostas</button>
+                            <button type="button" class="action-btn clear-btn">Limpar</button>
+                        </div>
+                    </form>
+                    <div class="status-msg">Sincronizado com a nuvem</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TASK 4 -->
+        <div id="task4" class="container" data-task-id="task4">
+            <h1>IELTS Reading Practice</h1>
+            <div class="subtitle">Summary Completion (selecting from a list)</div>
+            <div class="reading-layout">
+                <div class="reading-text">
+                    <p><strong>This Marvellous Invention:</strong> Of all mankind’s manifold creations, language must take pride of place...</p>
+                </div>
+                <div class="reading-questions">
+                    <form class="quiz-form">
+                        <div class="instruction">Questions 1–4</div>
+                        <div class="question-block" data-q="q1">
+                            <div class="question-title">The wheel is one invention that has had a major impact on <select name="q1"><option value="">--</option><option value="material">material</option><option value="fundamental">fundamental</option><option value="complex">complex</option><option value="easy">easy</option></select> aspects of life...</div>
+                            <div class="feedback-box"></div>
+                        </div>
+                        <div class="question-block" data-q="q2">
+                            <div class="question-title">...but no impact has been as <select name="q2"><option value="">--</option><option value="material">material</option><option value="fundamental">fundamental</option><option value="complex">complex</option><option value="easy">easy</option></select> as that of language.</div>
+                            <div class="feedback-box"></div>
+                        </div>
+                        <div class="question-block" data-q="q3">
+                            <div class="question-title">Language is very <select name="q3"><option value="">--</option><option value="material">material</option><option value="fundamental">fundamental</option><option value="complex">complex</option><option value="easy">easy</option></select>, yet composed of just a small number of sounds.</div>
+                            <div class="feedback-box"></div>
+                        </div>
+                        <div class="question-block" data-q="q4">
+                            <div class="question-title">Language appears to be <select name="q4"><option value="">--</option><option value="material">material</option><option value="fundamental">fundamental</option><option value="complex">complex</option><option value="easy">easy</option></select> to use.</div>
+                            <div class="feedback-box"></div>
+                        </div>
+                        <div class="actions">
+                            <button type="button" class="action-btn submit-btn">Enviar respostas</button>
+                            <button type="button" class="action-btn clear-btn">Limpar</button>
+                        </div>
+                    </form>
+                    <div class="status-msg">Sincronizado com a nuvem</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TASK 5 -->
+        <div id="task5" class="container" data-task-id="task5">
+            <h1>IELTS Reading Practice</h1>
+            <div class="subtitle">Summary Completion (selecting words from text)</div>
+            <div class="reading-layout">
+                <div class="reading-text">
+                    <p>The instructions accompanying do-it-yourself products are regularly cited as a source of unnecessary expense or frustration...</p>
+                </div>
+                <div class="reading-questions">
+                    <form class="quiz-form">
+                        <div class="instruction">Questions 1–5</div>
+                        <div class="question-block" data-q="q1"><div class="question-title">1. Consumers often complain that they experience a feeling of <input type="text" name="q1"> when trying to put together products...</div><div class="feedback-box"></div></div>
+                        <div class="question-block" data-q="q2"><div class="question-title">2. ...which have not been tested by companies on a <input type="text" name="q2">.</div><div class="feedback-box"></div></div>
+                        <div class="question-block" data-q="q3"><div class="question-title">3. ...it is especially important that <input type="text" name="q3"> information is not left out.</div><div class="feedback-box"></div></div>
+                        <div class="question-block" data-q="q4"><div class="question-title">4. ...or the consumer having a certain amount of <input type="text" name="q4">.</div><div class="feedback-box"></div></div>
+                        <div class="question-block" data-q="q5"><div class="question-title">5. ...cause people to lose faith in <input type="text" name="q5">.</div><div class="feedback-box"></div></div>
+                        <div class="actions">
+                            <button type="button" class="action-btn submit-btn">Enviar respostas</button>
+                            <button type="button" class="action-btn clear-btn">Limpar</button>
+                        </div>
+                    </form>
+                    <div class="status-msg">Sincronizado com a nuvem</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TASK 6 -->
+        <div id="task6" class="container" data-task-id="task6">
+            <h1>IELTS Reading Practice</h1>
+            <div class="subtitle">Matching Features</div>
+            <div class="reading-layout">
+                <div class="reading-text">
+                    <p>The invention of rockets is linked inextricably with the invention of 'black powder'...</p>
+                </div>
+                <div class="reading-questions">
+                    <form class="quiz-form">
+                        <div class="instruction">Questions 1–4</div>
+                        <table>
+                            <thead><tr><th>Item</th><th>A (Chinese)</th><th>B (Indians)</th><th>C (British)</th><th>D (Arabs)</th><th>E (Americans)</th></tr></thead>
+                            <tbody>
+                                <tr><td>1. black powder</td><td><input type="radio" name="q1" value="A"></td><td><input type="radio" name="q1" value="B"></td><td><input type="radio" name="q1" value="C"></td><td><input type="radio" name="q1" value="D"></td><td><input type="radio" name="q1" value="E"></td></tr>
+                                <tr><td>2. rocket-propelled arrows</td><td><input type="radio" name="q2" value="A"></td><td><input type="radio" name="q2" value="B"></td><td><input type="radio" name="q2" value="C"></td><td><input type="radio" name="q2" value="D"></td><td><input type="radio" name="q2" value="E"></td></tr>
+                                <tr><td>3. rockets as war weapons</td><td><input type="radio" name="q3" value="A"></td><td><input type="radio" name="q3" value="B"></td><td><input type="radio" name="q3" value="C"></td><td><input type="radio" name="q3" value="D"></td><td><input type="radio" name="q3" value="E"></td></tr>
+                                <tr><td>4. the rocket launcher</td><td><input type="radio" name="q4" value="A"></td><td><input type="radio" name="q4" value="B"></td><td><input type="radio" name="q4" value="C"></td><td><input type="radio" name="q4" value="D"></td><td><input type="radio" name="q4" value="E"></td></tr>
+                            </tbody>
+                        </table>
+                        <div class="question-block" data-q="q1"><div class="feedback-box"></div></div>
+                        <div class="question-block" data-q="q2"><div class="feedback-box"></div></div>
+                        <div class="question-block" data-q="q3"><div class="feedback-box"></div></div>
+                        <div class="question-block" data-q="q4"><div class="feedback-box"></div></div>
+                        <div class="actions">
+                            <button type="button" class="action-btn submit-btn">Enviar respostas</button>
+                            <button type="button" class="action-btn clear-btn">Limpar</button>
+                        </div>
+                    </form>
+                    <div class="status-msg">Sincronizado com a nuvem</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TASK 7 -->
+        <div id="task7" class="container" data-task-id="task7">
+            <h1>IELTS Reading Practice</h1>
+            <div class="subtitle">Table Completion</div>
+            <div class="reading-layout">
+                <div class="reading-text">
+                    <p>Introducing dung beetles into a pasture is a simple process...</p>
+                </div>
+                <div class="reading-questions">
+                    <form class="quiz-form">
+                        <div class="instruction">Questions 1–5</div>
+                        <table>
+                            <thead><tr><th>Species</th><th>French</th><th>Spanish</th><th>South African ball roller</th></tr></thead>
+                            <tbody>
+                                <tr><td>Preferred climate</td><td>cool</td><td><input type="text" name="q1" placeholder="1"></td><td><input type="text" name="q2" placeholder="2"></td></tr>
+                                <tr><td>Complementary species</td><td>Spanish</td><td>--</td><td><input type="text" name="q3" placeholder="3"></td></tr>
+                                <tr><td>Start of active period</td><td>late spring</td><td><input type="text" name="q4" placeholder="4"></td><td>--</td></tr>
+                                <tr><td>Generations / year</td><td>1 - 2</td><td><input type="text" name="q5" placeholder="5"></td><td>--</td></tr>
+                            </tbody>
+                        </table>
+                        <div class="question-block" data-q="q1"><div class="feedback-box"></div></div>
+                        <div class="question-block" data-q="q2"><div class="feedback-box"></div></div>
+                        <div class="question-block" data-q="q3"><div class="feedback-box"></div></div>
+                        <div class="question-block" data-q="q4"><div class="feedback-box"></div></div>
+                        <div class="question-block" data-q="q5"><div class="feedback-box"></div></div>
+                        <div class="actions">
+                            <button type="button" class="action-btn submit-btn">Enviar respostas</button>
+                            <button type="button" class="action-btn clear-btn">Limpar</button>
+                        </div>
+                    </form>
+                    <div class="status-msg">Sincronizado com a nuvem</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TASK 8 -->
+        <div id="task8" class="container" data-task-id="task8">
+            <h1>IELTS Reading Practice</h1>
+            <div class="subtitle">Note Completion</div>
+            <div class="reading-layout">
+                <div class="reading-text">
+                    <p>The marriage of Pierre and Marie Curie in 1895 marked the start of a partnership...</p>
+                </div>
+                <div class="reading-questions">
+                    <form class="quiz-form">
+                        <div class="instruction">Questions 1–6</div>
+                        <div class="question-block" data-q="q1"><div class="question-title">1. When uranium was discovered to be radioactive, Marie Curie found that the element called <input type="text" name="q1"> had the same property.</div><div class="feedback-box"></div></div>
+                        <div class="question-block" data-q="q2"><div class="question-title">2. Marie and Pierre Curie’s research into the radioactivity of the mineral known as <input type="text" name="q2"> led to the discovery of two new elements.</div><div class="feedback-box"></div></div>
+                        <div class="question-block" data-q="q3"><div class="question-title">3. In 1911, Marie Curie received recognition for her work on the element <input type="text" name="q3">.</div><div class="feedback-box"></div></div>
+                        <div class="question-block" data-q="q4"><div class="question-title">4. Marie and Irène Curie developed X-radiography which was used as a medical technique for <input type="text" name="q4">.</div><div class="feedback-box"></div></div>
+                        <div class="question-block" data-q="q5"><div class="question-title">5. Marie Curie saw the importance of collecting radioactive material both for research and for cases of <input type="text" name="q5">.</div><div class="feedback-box"></div></div>
+                        <div class="question-block" data-q="q6"><div class="question-title">6. The radioactive material stocked in Paris contributed to the discoveries in the 1930s of the <input type="text" name="q6">.</div><div class="feedback-box"></div></div>
+                        <div class="actions">
+                            <button type="button" class="action-btn submit-btn">Enviar respostas</button>
+                            <button type="button" class="action-btn clear-btn">Limpar</button>
+                        </div>
+                    </form>
+                    <div class="status-msg">Sincronizado com a nuvem</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TASK 9 -->
+        <div id="task9" class="container" data-task-id="task9">
+            <h1>IELTS Reading Practice</h1>
+            <div class="subtitle">Identifying Information (True/False/Not Given)</div>
+            <div class="reading-layout">
+                <div class="reading-text">
+                    <p><strong>The life and work of Marie Curie:</strong> Marie Curie is probably the most famous woman scientist who has ever lived...</p>
+                </div>
+                <div class="reading-questions">
+                    <form class="quiz-form">
+                        <div class="instruction">Questions 1–3</div>
+                        <div class="question-block" data-q="q1">
+                            <div class="question-title">1. Marie Curie’s husband was a joint winner of both Marie’s Nobel Prizes.</div>
+                            <select name="q1"><option value="">--</option><option value="TRUE">TRUE</option><option value="FALSE">FALSE</option><option value="NOT GIVEN">NOT GIVEN</option></select>
+                            <div class="feedback-box"></div>
+                        </div>
+                        <div class="question-block" data-q="q2">
+                            <div class="question-title">2. Marie became interested in science when she was a child.</div>
+                            <select name="q2"><option value="">--</option><option value="TRUE">TRUE</option><option value="FALSE">FALSE</option><option value="NOT GIVEN">NOT GIVEN</option></select>
+                            <div class="feedback-box"></div>
+                        </div>
+                        <div class="question-block" data-q="q3">
+                            <div class="question-title">3. Marie was able to attend the Sorbonne because of her sister’s financial contribution.</div>
+                            <select name="q3"><option value="">--</option><option value="TRUE">TRUE</option><option value="FALSE">FALSE</option><option value="NOT GIVEN">NOT GIVEN</option></select>
+                            <div class="feedback-box"></div>
+                        </div>
+                        <div class="actions">
+                            <button type="button" class="action-btn submit-btn">Enviar respostas</button>
+                            <button type="button" class="action-btn clear-btn">Limpar</button>
+                        </div>
+                    </form>
+                    <div class="status-msg">Sincronizado com a nuvem</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TASK 10 -->
+        <div id="task10" class="container" data-task-id="task10">
+            <h1>IELTS Reading Practice</h1>
+            <div class="subtitle">Multiple Choice (more than one answer)</div>
+            <div class="reading-layout">
+                <div class="reading-text">
+                    <p>Clearly, when older people do heavy physical work, their age may affect their productivity...</p>
+                </div>
+                <div class="reading-questions">
+                    <form class="quiz-form">
+                        <div class="instruction">Questions 1–4</div>
+                        <div class="question-block" data-q="q1_2">
+                            <div class="question-title">Questions 1–2: Choose TWO advantages of employing older workers:</div>
+                            <div class="options-list">
+                                <label class="option-label"><input type="checkbox" name="opt1_2" value="They are less likely to be involved in careless accidents."> They are less likely to be involved in careless accidents.</label>
+                                <label class="option-label"><input type="checkbox" name="opt1_2" value="They can predict areas that may cause trouble in the future."> They can predict areas that may cause trouble in the future.</label>
+                                <label class="option-label"><input type="checkbox" name="opt1_2" value="They are able to train younger workers."> They are able to train younger workers.</label>
+                                <label class="option-label"><input type="checkbox" name="opt1_2" value="They can deal with unexpected problems."> They can deal with unexpected problems.</label>
+                                <label class="option-label"><input type="checkbox" name="opt1_2" value="They are more skilled in personal relationships."> They are more skilled in personal relationships.</label>
+                            </div>
+                            <div class="feedback-box"></div>
+                        </div>
+                        <div class="question-block" data-q="q3_4">
+                            <div class="question-title">Questions 3–4: Choose TWO disadvantages of employing younger workers:</div>
+                            <div class="options-list">
+                                <label class="option-label"><input type="checkbox" name="opt3_4" value="They are too confident of their own skills."> They are too confident of their own skills.</label>
+                                <label class="option-label"><input type="checkbox" name="opt3_4" value="They do not stay with the same company for very long."> They do not stay with the same company for very long.</label>
+                                <label class="option-label"><input type="checkbox" name="opt3_4" value="They are not as well educated as older workers."> They are not as well educated as older workers.</label>
+                                <label class="option-label"><input type="checkbox" name="opt3_4" value="They demand higher salaries."> They demand higher salaries.</label>
+                            </div>
+                            <div class="feedback-box"></div>
+                        </div>
+                        <div class="actions">
+                            <button type="button" class="action-btn submit-btn">Enviar respostas</button>
+                            <button type="button" class="action-btn clear-btn">Limpar</button>
+                        </div>
+                    </form>
+                    <div class="status-msg">Sincronizado com a nuvem</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, setDoc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC2pSWdBIREaPmpOvaiNzZWGUuCEupxp1c",
+            authDomain: "studendtrackerpanel.firebaseapp.com",
+            projectId: "studendtrackerpanel",
+            storageBucket: "studendtrackerpanel.firebasestorage.app",
+            messagingSenderId: "1004678184015",
+            appId: "1:1004678184015:web:be965625c08d8ee73ffe3a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const answerKeys = {
+            task1: { q1: "abolishing pay schemes that are based on age", q2: "allows the expertise of older workers to be put to use", q3: "appeal to distinct groups of older workers", q4: "older people are good at running their own business" },
+            task2: { q1: "she started by seeking to understand how basic terms were used in the past", q2: "she examined how their methods evolved and changed", q3: "they used old ways of analysing written information for new purposes" },
+            task3: { q1: "theropods", q2: "collarbones", q3: "reptile", q4: "similarities", q5: "claw" },
+            task4: { q1: "material", q2: "fundamental", q3: "complex", q4: "easy" },
+            task5: { q1: "frustration", q2: "first-time user", q3: "essential", q4: "special knowledge", q5: "legal formulations" },
+            task6: { q1: "A", q2: "A", q3: "B", q4: "E" },
+            task7: { q1: "temperate", q2: "sub-tropical", q3: "South African tunneling", q4: "early spring", q5: "two" },
+            task8: { q1: "thorium", q2: "pitchblende", q3: "radium", q4: "soldiers", q5: "illness", q6: "neutron" },
+            task9: { q1: "FALSE", q2: "NOT GIVEN", q3: "TRUE" },
+            task10: {
+                q1_2: ["They can predict areas that may cause trouble in the future.", "They are more skilled in personal relationships."],
+                q3_4: ["They do not stay with the same company for very long.", "They are not as well educated as older workers."]
+            }
+        };
+
+        window.switchTask = function(taskId) {
+            document.querySelectorAll('.container').forEach(el => el.classList.remove('active-section'));
+            document.querySelectorAll('.sub-tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(taskId).classList.add('active-section');
+            event.currentTarget.classList.add('active');
+            loadSavedData(taskId);
+        };
+
+        function normalizeText(txt) {
+            return (txt || "").trim().toLowerCase().replace(/[\\s\\-_]+/g, '');
+        }
+
+        function showResults(taskId, userAnswers) {
+            const keys = answerKeys[taskId];
+            const container = document.getElementById(taskId);
+
+            if (taskId === 'task10') {
+                for (const qKey of ['q1_2', 'q3_4']) {
+                    const qBlock = container.querySelector(`[data-q="${qKey}"]`);
+                    const fb = qBlock.querySelector('.feedback-box');
+                    const selected = userAnswers[qKey] || [];
+                    const correctSet = keys[qKey];
+                    const matches = selected.filter(item => correctSet.includes(item)).length;
+                    if (matches === 2 && selected.length === 2) {
+                        fb.className = "feedback-box correct";
+                        fb.innerHTML = `<strong>Correto!</strong>`;
+                    } else {
+                        fb.className = "feedback-box incorrect";
+                        fb.innerHTML = `Incorreto. <em>correct answer:</em> <strong>${correctSet.join(', ')}</strong>`;
+                    }
+                }
+                return;
+            }
+
+            for (const [qKey, correctVal] of Object.entries(keys)) {
+                const qBlock = container.querySelector(`[data-q="${qKey}"]`);
+                if (!qBlock) continue;
+                const fbBox = qBlock.querySelector('.feedback-box');
+                if (!fbBox) continue;
+
+                const userVal = userAnswers[qKey] || "";
+                if (normalizeText(userVal) === normalizeText(correctVal) || normalizeText(userVal).includes(normalizeText(correctVal))) {
+                    fbBox.className = "feedback-box correct";
+                    fbBox.innerHTML = `<strong>Correto!</strong>`;
+                } else {
+                    fbBox.className = "feedback-box incorrect";
+                    fbBox.innerHTML = `Incorreto. <em>correct answer:</em> <strong>${correctVal}</strong>`;
+                }
+            }
+        }
+
+        async function loadSavedData(taskId) {
+            try {
+                const docRef = doc(db, "ielts_practice", `reading_${taskId}`);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    const container = document.getElementById(taskId);
+                    if (data.answers) {
+                        if (taskId === 'task10') {
+                            for (const qKey of ['q1_2', 'q3_4']) {
+                                const inputName = qKey === 'q1_2' ? 'opt1_2' : 'opt3_4';
+                                const boxes = container.querySelectorAll(`input[name="${inputName}"]`);
+                                boxes.forEach(b => {
+                                    if ((data.answers[qKey] || []).includes(b.value)) b.checked = true;
+                                });
+                            }
+                        } else {
+                            for (const [q, val] of Object.entries(data.answers)) {
+                                const input = container.querySelector(`[name="${q}"][value="${val}"]`) || container.querySelector(`input[name="${q}"], select[name="${q}"]`);
+                                if (input) {
+                                    if (input.type === 'radio') {
+                                        if (input.value === val) input.checked = true;
+                                    } else {
+                                        input.value = val;
+                                    }
+                                }
+                            }
+                        }
+                        if (data.submitted) {
+                            showResults(taskId, data.answers);
+                        }
+                    }
+                }
+            } catch (e) {
+                console.error("Erro ao carregar dados", e);
+            }
+        }
+
+        document.querySelectorAll('.quiz-form').forEach(form => {
+            const container = form.closest('.container');
+            const taskId = container.getAttribute('data-task-id');
+            const submitBtn = form.querySelector('.submit-btn');
+            const clearBtn = form.querySelector('.clear-btn');
+            const statusMsg = container.querySelector('.status-msg');
+
+            submitBtn.addEventListener('click', async () => {
+                let answers = {};
+                if (taskId === 'task10') {
+                    answers.q1_2 = Array.from(container.querySelectorAll('input[name="opt1_2"]:checked')).map(cb => cb.value);
+                    answers.q3_4 = Array.from(container.querySelectorAll('input[name="opt3_4"]:checked')).map(cb => cb.value);
+                } else if (taskId === 'task1' || taskId === 'task6') {
+                    const radios = container.querySelectorAll('input[type="radio"]:checked');
+                    radios.forEach(r => answers[r.name] = r.value);
+                } else {
+                    const fields = container.querySelectorAll('input[type="text"], select');
+                    fields.forEach(f => answers[f.name] = f.value);
+                }
+
+                statusMsg.textContent = "Salvando na nuvem...";
+                try {
+                    const docRef = doc(db, "ielts_practice", `reading_${taskId}`);
+                    await setDoc(docRef, { answers: answers, submitted: true, updatedAt: new Date().toISOString() });
+                    showResults(taskId, answers);
+                    statusMsg.textContent = "Respostas salvas com sucesso!";
+                } catch (error) {
+                    console.error("Erro ao salvar:", error);
+                    statusMsg.textContent = "Erro ao salvar na nuvem.";
+                }
+            });
+
+            clearBtn.addEventListener('click', async () => {
+                form.reset();
+                container.querySelectorAll('.feedback-box').forEach(fb => {
+                    fb.className = "feedback-box";
+                    fb.innerHTML = "";
+                });
+                statusMsg.textContent = "Limpando dados...";
+                try {
+                    const docRef = doc(db, "ielts_practice", `reading_${taskId}`);
+                    await deleteDoc(docRef);
+                    statusMsg.textContent = "Dados limpos com sucesso!";
+                } catch (error) {
+                    statusMsg.textContent = "Erro ao resetar.";
+                }
+            });
+        });
+
+        loadSavedData('task1');
+    </script>
+</body>
+</html>"""
+
+os.makedirs('/mnt/data', exist_ok=True)
+with open('/mnt/data/reading.html', 'w', encoding='utf-8') as f:
+    f.write(reading_html_content)
