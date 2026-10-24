@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS Writing Practice - Clássica Gótica</title>
+    <style>
+        :root {
+            --bg-color: #F8F7FA;
+            --card-bg: #FFFFFF;
+            --text-main: #1A1A1A;
+            --text-muted: #6B3A7E;
+            --primary-purple: #502064;
+            --accent-wine: #6B0F1A;
+            --light-lavender: #D8B4D9;
+            --border-color: #E2D8E5;
+            --success-color: #2e7d32;
+        }
+
+        body {
+            font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .main-wrapper {
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .top-nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .top-nav a {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            background-color: var(--card-bg);
+            color: var(--primary-purple);
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 6px rgba(80, 32, 100, 0.04);
+            transition: all 0.2s;
+        }
+
+        .top-nav a.active, .top-nav a:hover {
+            background-color: var(--primary-purple);
+            color: white;
+            border-color: var(--primary-purple);
+        }
+
+        .writing-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .sub-tab-btn {
+            background-color: #FFFFFF;
+            color: var(--primary-purple);
+            border: 1px solid var(--light-lavender);
+            padding: 8px 12px;
+            font-size: 12px;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Century Gothic', CenturyGothic, sans-serif;
+        }
+
+        .sub-tab-btn.active, .sub-tab-btn:hover {
+            background-color: var(--light-lavender);
+            color: var(--primary-purple);
+            border-color: var(--primary-purple);
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(80, 32, 100, 0.08);
+            padding: 30px;
+            box-sizing: border-box;
+            border: 1px solid var(--border-color);
+            display: none;
+        }
+
+        .container.active-section {
+            display: block;
+        }
+
+        h1 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--primary-purple);
+        }
+
+        .subtitle {
+            font-size: 13px;
+            font-style: italic;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .writing-layout {
+            display: flex;
+            gap: 24px;
+        }
+
+        @media (max-width: 850px) {
+            .writing-layout {
+                flex-direction: column;
+            }
+        }
+
+        .task-prompt {
+            flex: 1;
+            background: #FAFAFC;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .task-prompt img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            margin-top: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .writing-input-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .essay-textarea {
+            width: 100%;
+            height: 280px;
+            padding: 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: 'Century Gothic', CenturyGothic, sans-serif;
+            font-size: 13px;
+            line-height: 1.5;
+            resize: vertical;
+            box-sizing: border-box;
+            background-color: #FFFFFF;
+        }
+
+        .essay-textarea:focus {
+            outline: none;
+            border-color: var(--primary-purple);
+            box-shadow: 0 0 0 2px rgba(80, 32, 100, 0.1);
+        }
+
+        .word-counter {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 6px;
+            text-align: right;
+            font-weight: bold;
+        }
+
+        .comments-section {
+            margin-top: 20px;
+            background-color: #F3ECF5;
+            border-left: 4px solid var(--primary-purple);
+            padding: 16px;
+            border-radius: 0 8px 8px 0;
+            display: none;
+        }
+
+        .comments-section.visible {
+            display: block;
+        }
+
+        .comments-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary-purple);
+            margin-bottom: 8px;
+        }
+
+        .sample-response-box {
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            margin-top: 10px;
+            white-space: pre-wrap;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        button.action-btn {
+            flex: 1;
+            padding: 10px 16px;
+            font-size: 13px;
+            font-weight: 700;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Century Gothic', CenturyGothic, sans-serif;
+        }
+
+        .submit-btn { background-color: var(--primary-purple); color: white; }
+        .submit-btn:hover { background-color: #3b164a; }
+        .clear-btn { background-color: var(--border-color); color: var(--primary-purple); }
+        .clear-btn:hover { background-color: #d1c2d4; }
+
+        .status-msg { text-align: center; font-size: 11px; font-style: italic; color: var(--text-muted); margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="main-wrapper">
+        <nav class="top-nav">
+            <a href="index.html">Listening</a>
+            <a href="reading.html">Reading</a>
+            <a href="writing.html" class="active">Writing</a>
+        </nav>
+
+        <div class="writing-selector">
+            <button class="sub-tab-btn active" onclick="switchTask('w_doc1')">Doc: Part 1 (Transport)</button>
+            <button class="sub-tab-btn" onclick="switchTask('w_doc2')">Doc: Part 2 (Health)</button>
+            <button class="sub-tab-btn" onclick="switchTask('w_pdf1a')">PDF: Task 1A (Further Ed)</button>
+            <button class="sub-tab-btn" onclick="switchTask('w_pdf1b')">PDF: Task 1B (TV & Radio)</button>
+            <button class="sub-tab-btn" onclick="switchTask('w_pdf1c')">PDF: Task 1C (Bricks)</button>
+            <button class="sub-tab-btn" onclick="switchTask('w_pdf2a')">PDF: Task 2A (Wealth)</button>
+            <button class="sub-tab-btn" onclick="switchTask('w_pdf2b')">PDF: Task 2B (Tourism)</button>
+        </div>
+
+        <!-- DOC PART 1 -->
+        <div id="w_doc1" class="container active-section" data-task-id="w_doc1">
+            <h1>IELTS Academic Writing Practice</h1>
+            <div class="subtitle">Part 1 - Spend about 20 minutes. Write at least 150 words.</div>
+            <div class="writing-layout">
+                <div class="task-prompt">
+                    <p><strong>The chart below shows the number of trips made by children in one country in 1990 and 2010 to travel to and from school using different modes of transport.</strong></p>
+                    <p>Summarise the information by selecting and reporting the main features, and make comparisons where relevant.</p>
+                    <div style="background:#e9e3ed; padding: 20px; text-align:center; border-radius:6px; margin-top:10px;">
+                        <em>[Gráfico: Travel to and from school: children aged 5-12 (1990 vs 2010)]</em>
+                    </div>
+                </div>
+                <div class="writing-input-area">
+                    <textarea class="essay-textarea" placeholder="Digite seu texto livre aqui..."></textarea>
+                    <div class="word-counter">Palavras: <span class="count">0</span></div>
+                    <div class="actions">
+                        <button type="button" class="action-btn submit-btn">Enviar / Ver Comentários</button>
+                        <button type="button" class="action-btn clear-btn">Limpar</button>
+                    </div>
+                    <div class="status-msg">Sincronizado com a nuvem</div>
+                    
+                    <div class="comments-section">
+                        <div class="comments-title">Critérios de Avaliação e Amostras de Respostas:</div>
+                        <p><strong>Critérios:</strong> Task Achievement, Coherence & Cohesion, Lexical Resource, Grammatical Range & Accuracy.</p>
+                        <div class="sample-response-box">
+<strong>Candidate Response 1 (Band 6):</strong>
+"The chart gives you information on how children travelled to and from school in the years 1990 and 2010..."
+<br><em>Examiner Comment:</em> Key features are selected and clearly highlighted, but reporting is somewhat mechanical.
+
+<br><br><strong>Candidate Response 2 (Band 4):</strong>
+"The statistice show the number of tripe mad by children in one country over the past to years..."
+<br><em>Examiner Comment:</em> Does generally try to address requirements but key features are not adequately covered. Limited range of vocabulary.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DOC PART 2 -->
+        <div id="w_doc2" class="container" data-task-id="w_doc2">
+            <h1>IELTS Academic Writing Practice</h1>
+            <div class="subtitle">Part 2 - Spend about 40 minutes. Write at least 250 words.</div>
+            <div class="writing-layout">
+                <div class="task-prompt">
+                    <p><strong>Write about the following topic:</strong></p>
+                    <p><em>The average standard of people's health is likely to be lower in the future than it is now.</em></p>
+                    <p>To what extent do you agree or disagree with this statement?</p>
+                    <p>Give reasons for your answer and include any relevant examples from your own knowledge or experience.</p>
+                </div>
+                <div class="writing-input-area">
+                    <textarea class="essay-textarea" placeholder="Digite seu texto livre aqui..."></textarea>
+                    <div class="word-counter">Palavras: <span class="count">0</span></div>
+                    <div class="actions">
+                        <button type="button" class="action-btn submit-btn">Enviar / Ver Comentários</button>
+                        <button type="button" class="action-btn clear-btn">Limpar</button>
+                    </div>
+                    <div class="status-msg">Sincronizado com a nuvem</div>
+                    
+                    <div class="comments-section">
+                        <div class="comments-title">Critérios de Avaliação e Amostras de Respostas:</div>
+                        <p><strong>Critérios:</strong> Task Response, Coherence & Cohesion, Lexical Resource, Grammatical Range & Accuracy.</p>
+                        <div class="sample-response-box">
+<strong>Candidate Response 1 (Band 5.5):</strong>
+"I completly disagree with the written statment. I believe that most of the people in the world have more information about their health..."
+<br><em>Examiner Comment:</em> Clear position presented, but response does not meet the minimum word count of 250 words. Lack of precision in word choice.
+
+<br><br><strong>Candidate Response 2 (Band 7.5):</strong>
+"Recently, there have been a lot of discussions about health and whether it is going to improve or not..."
+<br><em>Examiner Comment:</em> Strong response. Ideas are logically organised, wide range of vocabulary and variety of complex structures.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- PDF TASK 1A -->
+        <div id="w_pdf1a" class="container" data-task-id="w_pdf1a">
+            <h1>IELTS Academic Writing Practice</h1>
+            <div class="subtitle">Task 1A (PDF) - Spend about 20 minutes. Write at least 150 words[cite: 8].</div>
+            <div class="writing-layout">
+                <div class="task-prompt">
+                    <p><strong>The chart below shows the number of men and women in further education in Britain in three periods and whether they were studying full-time or part-time[cite: 8].</strong></p>
+                    <p>Summarise the information by selecting and reporting the main features, and make comparisons where relevant[cite: 8].</p>
+                    <div style="background:#e9e3ed; padding: 15px; text-align:center; border-radius:6px; margin-top:10px;">
+                        <em>[Gráfico Oficial: Men and women in further education in Britain - 1970/71, 1980/81, 1990/91][cite: 8]</em>
+                    </div>
+                </div>
+                <div class="writing-input-area">
+                    <textarea class="essay-textarea" placeholder="Digite seu texto livre aqui..."></textarea>
+                    <div class="word-counter">Palavras: <span class="count">0</span></div>
+                    <div class="actions">
+                        <button type="button" class="action-btn submit-btn">Enviar / Ver Comentários</button>
+                        <button type="button" class="action-btn clear-btn">Limpar</button>
+                    </div>
+                    <div class="status-msg">Sincronizado com a nuvem</div>
+                    
+                    <div class="comments-section">
+                        <div class="comments-title">Critérios de Avaliação e Amostras de Respostas:</div>
+                        <p><strong>Critérios:</strong> Task Achievement, Coherence & Cohesion, Lexical Resource, Grammatical Range & Accuracy[cite: 13].</p>
+                        <div class="sample-response-box">
+<strong>Sample Script A (Band 5):</strong>
+"This is a bar chart of the number of men and women in further education In Britain in three periods..."[cite: 14]
+<br><em>Examiner Comment:</em> Good attempt to describe overall trends, but lacking figures and some punctuation errors[cite: 14].
+
+<br><br><strong>Sample Script B (Band 6):</strong>
+"According to the graph, the number of mon and women in further educatión in Britain shows the following pattern..."[cite: 15]
+<br><em>Examiner Comment:</em> Good attempt looking at global trends and detailed figures. Minor missing information[cite: 15].
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PDF TASK 1B -->
+        <div id="w_pdf1b" class="container" data-task-id="w_pdf1b">
+            <h1>IELTS Academic Writing Practice</h1>
+            <div class="subtitle">Task 1B (PDF) - Spend about 20 minutes. Write at least 150 words[cite: 9].</div>
+            <div class="writing-layout">
+                <div class="task-prompt">
+                    <p><strong>The graph below shows radio and television audiences throughout the day in 1992[cite: 9].</strong></p>
+                    <p>Summarise the information by selecting and reporting the main features, and make comparisons where relevant[cite: 9].</p>
+                    <div style="background:#e9e3ed; padding: 15px; text-align:center; border-radius:6px; margin-top:10px;">
+                        <em>[Gráfico Oficial: Radio and television audiences in UK, October - December 1992][cite: 9]</em>
+                    </div>
+                </div>
+                <div class="writing-input-area">
+                    <textarea class="essay-textarea" placeholder="Digite seu texto livre aqui..."></textarea>
+                    <div class="word-counter">Palavras: <span class="count">0</span></div>
+                    <div class="actions">
+                        <button type="button" class="action-btn submit-btn">Enviar / Ver Comentários</button>
+                        <button type="button" class="action-btn clear-btn">Limpar</button>
+                    </div>
+                    <div class="status-msg">Sincronizado com a nuvem</div>
+                    
+                    <div class="comments-section">
+                        <div class="comments-title">Critérios de Avaliação e Amostras de Respostas:</div>
+                        <p><strong>Critérios:</strong> Task Achievement, Coherence & Cohesion, Lexical Resource, Grammatical Range & Accuracy[cite: 13].</p>
+                        <div class="sample-response-box">
+<strong>Sample Script A (Band 6):</strong>
+"The graph shows the percentage of audiences over 4ys old of UK follows the radio and television thoughout the day..."[cite: 16]
+<br><em>Examiner Comment:</em> Appropriate introduction, good coverage of data. Needs an overview to gain higher marks[cite: 16].
+
+<br><br><strong>Sample Script B (Band 7):</strong>
+"The bold graph shows the percentage of television audiences throughout the day..."[cite: 17]
+<br><em>Examiner Comment:</em> Deals well with individual media trends and overall comparisons. Complex structures used[cite: 17].
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PDF TASK 1C -->
+        <div id="w_pdf1c" class="container" data-task-id="w_pdf1c">
+            <h1>IELTS Academic Writing Practice</h1>
+            <div class="subtitle">Task 1C (PDF) - Spend about 20 minutes. Write at least 150 words[cite: 10].</div>
+            <div class="writing-layout">
+                <div class="task-prompt">
+                    <p><strong>The diagram below shows the process by which bricks are manufactured for the building industry[cite: 10].</strong></p>
+                    <p>Summarise the information by selecting and reporting the main features, and make comparisons where relevant[cite: 10].</p>
+                    <div style="background:#e9e3ed; padding: 15px; text-align:center; border-radius:6px; margin-top:10px;">
+                        <em>[Diagrama Oficial: Brick Manufacturing Process - Digger, Kiln, Drying Oven, Packaging][cite: 10]</em>
+                    </div>
+                </div>
+                <div class="writing-input-area">
+                    <textarea class="essay-textarea" placeholder="Digite seu texto livre aqui..."></textarea>
+                    <div class="word-counter">Palavras: <span class="count">0</span></div>
+                    <div class="actions">
+                        <button type="button" class="action-btn submit-btn">Enviar / Ver Comentários</button>
+                        <button type="button" class="action-btn clear-btn">Limpar</button>
+                    </div>
+                    <div class="status-msg">Sincronizado com a nuvem</div>
+                    
+                    <div class="comments-section">
+                        <div class="comments-title">Critérios de Avaliação e Amostras de Respostas:</div>
+                        <p><strong>Critérios:</strong> Task Achievement, Coherence & Cohesion, Lexical Resource, Grammatical Range & Accuracy[cite: 13].</p>
+                        <div class="sample-response-box">
+<strong>Sample Script C (Band 8.5):</strong>
+"The process by which bricks are manufactured for the building industry can be outlined in seven consecutive steps..."[cite: 21]
+<br><em>Examiner Comment:</em> Fully satisfies requirements. Seamless cohesion, fluent and sophisticated language[cite: 22].
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PDF TASK 2A -->
+        <div id="w_pdf2a" class="container" data-task-id="w_pdf2a">
+            <h1>IELTS Academic Writing Practice</h1>
+            <div class="subtitle">Task 2A (PDF) - Spend about 40 minutes. Write at least 250 words[cite: 11].</div>
+            <div class="writing-layout">
+                <div class="task-prompt">
+                    <p><strong>Write about the following topic[cite: 11]:</strong></p>
+                    <p><em>Children who are brought up in families that do not have large amounts of money are better prepared to deal with the problems of adult life than children brought up by wealthy parents[cite: 11].</em></p>
+                    <p>To what extent do you agree or disagree with this opinion[cite: 11]?</p>
+                </div>
+                <div class="writing-input-area">
+                    <textarea class="essay-textarea" placeholder="Digite seu texto livre aqui..."></textarea>
+                    <div class="word-counter">Palavras: <span class="count">0</span></div>
+                    <div class="actions">
+                        <button type="button" class="action-btn submit-btn">Enviar / Ver Comentários</button>
+                        <button type="button" class="action-btn clear-btn">Limpar</button>
+                    </div>
+                    <div class="status-msg">Sincronizado com a nuvem</div>
+                    
+                    <div class="comments-section">
+                        <div class="comments-title">Critérios de Avaliação e Amostras de Respostas:</div>
+                        <p><strong>Critérios:</strong> Task Response, Coherence & Cohesion, Lexical Resource, Grammatical Range & Accuracy[cite: 13].</p>
+                        <div class="sample-response-box">
+<strong>Sample Script C (Band 8.5):</strong>
+"I do agree agree to the statement that children brought up in poor families are better prepared to deal with the problems..."[cite: 26]
+<br><em>Examiner Comment:</em> Topic very well addressed and explored in depth. Natural range of vocabulary with full flexibility[cite: 27].
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PDF TASK 2B -->
+        <div id="w_pdf2b" class="container" data-task-id="w_pdf2b">
+            <h1>IELTS Academic Writing Practice</h1>
+            <div class="subtitle">Task 2B (PDF) - Spend about 40 minutes. Write at least 250 words[cite: 12].</div>
+            <div class="writing-layout">
+                <div class="task-prompt">
+                    <p><strong>Write about the following topic[cite: 12]:</strong></p>
+                    <p><em>International tourism has brought enormous benefit to many places. At the same time, there is concern about its impact on local inhabitants and the environment[cite: 12].</em></p>
+                    <p>Do the disadvantages of international tourism outweigh the advantages[cite: 12]?</p>
+                </div>
+                <div class="writing-input-area">
+                    <textarea class="essay-textarea" placeholder="Digite seu texto livre aqui..."></textarea>
+                    <div class="word-counter">Palavras: <span class="count">0</span></div>
+                    <div class="actions">
+                        <button type="button" class="action-btn submit-btn">Enviar / Ver Comentários</button>
+                        <button type="button" class="action-btn clear-btn">Limpar</button>
+                    </div>
+                    <div class="status-msg">Sincronizado com a nuvem</div>
+                    
+                    <div class="comments-section">
+                        <div class="comments-title">Critérios de Avaliação e Amostras de Respostas:</div>
+                        <p><strong>Critérios:</strong> Task Response, Coherence & Cohesion, Lexical Resource, Grammatical Range & Accuracy[cite: 13].</p>
+                        <div class="sample-response-box">
+<strong>Sample Script B (Band 7.5):</strong>
+"Tourism is a very big industry in the modern time and is growing quite rapidly..."[cite: 30]
+<br><em>Examiner Comment:</em> Addresses both aspects, clear position, ideas relevant and well extended[cite: 31].
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, setDoc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC2pSWdBIREaPmpOvaiNzZWGUuCEupxp1c",
+            authDomain: "studendtrackerpanel.firebaseapp.com",
+            projectId: "studendtrackerpanel",
+            storageBucket: "studendtrackerpanel.firebasestorage.app",
+            messagingSenderId: "1004678184015",
+            appId: "1:1004678184015:web:be965625c08d8ee73ffe3a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.switchTask = function(taskId) {
+            document.querySelectorAll('.container').forEach(el => el.classList.remove('active-section'));
+            document.querySelectorAll('.sub-tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(taskId).classList.add('active-section');
+            event.currentTarget.classList.add('active');
+            loadSavedData(taskId);
+        };
+
+        function countWords(str) {
+            const trimmed = str.trim();
+            if (!trimmed) return 0;
+            return trimmed.split(/\s+/).length;
+        }
+
+        document.querySelectorAll('.container').forEach(container => {
+            const taskId = container.getAttribute('data-task-id');
+            const textarea = container.querySelector('.essay-textarea');
+            const counterSpan = container.querySelector('.word-counter .count');
+            const submitBtn = container.querySelector('.submit-btn');
+            const clearBtn = container.querySelector('.clear-btn');
+            const commentsSection = container.querySelector('.comments-section');
+            const statusMsg = container.querySelector('.status-msg');
+
+            textarea.addEventListener('input', () => {
+                counterSpan.textContent = countWords(textarea.value);
+            });
+
+            submitBtn.addEventListener('click', async () => {
+                const text = textarea.value;
+                statusMsg.textContent = "Salvando redação na nuvem...";
+                try {
+                    const docRef = doc(db, "ielts_practice", `writing_${taskId}`);
+                    await setDoc(docRef, { essay: text, submitted: true, updatedAt: new Date().toISOString() });
+                    commentsSection.classList.add('visible');
+                    statusMsg.textContent = "Redação salva com sucesso!";
+                } catch (error) {
+                    console.error("Erro ao salvar:", error);
+                    statusMsg.textContent = "Erro ao salvar na nuvem.";
+                }
+            });
+
+            clearBtn.addEventListener('click', async () => {
+                textarea.value = "";
+                counterSpan.textContent = "0";
+                commentsSection.classList.remove('visible');
+                statusMsg.textContent = "Limpando dados...";
+                try {
+                    const docRef = doc(db, "ielts_practice", `writing_${taskId}`);
+                    await deleteDoc(docRef);
+                    statusMsg.textContent = "Dados limpos com sucesso!";
+                } catch (error) {
+                    statusMsg.textContent = "Erro ao resetar.";
+                }
+            });
+        });
+
+        async function loadSavedData(taskId) {
+            try {
+                const docRef = doc(db, "ielts_practice", `writing_${taskId}`);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    const container = document.getElementById(taskId);
+                    const textarea = container.querySelector('.essay-textarea');
+                    const counterSpan = container.querySelector('.word-counter .count');
+                    const commentsSection = container.querySelector('.comments-section');
+                    
+                    if (data.essay) {
+                        textarea.value = data.essay;
+                        counterSpan.textContent = countWords(data.essay);
+                    }
+                    if (data.submitted) {
+                        commentsSection.classList.add('visible');
+                    }
+                }
+            } catch (e) {
+                console.error("Erro ao carregar dados", e);
+            }
+        }
+
+        loadSavedData('w_doc1');
+    </script>
+</body>
+</html>
