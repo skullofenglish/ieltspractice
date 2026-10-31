@@ -37,10 +37,12 @@
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
         .top-nav a {
             flex: 1;
+            min-width: 110px;
             text-align: center;
             padding: 12px;
             background-color: var(--card-bg);
@@ -51,6 +53,7 @@
             border: 1px solid var(--border-color);
             box-shadow: 0 2px 6px rgba(80, 32, 100, 0.04);
             transition: all 0.2s;
+            font-size: 14px;
         }
 
         .top-nav a.active, .top-nav a:hover {
@@ -248,10 +251,13 @@
 </head>
 <body>
     <div class="main-wrapper">
+        <!-- Navegação Principal Atualizada -->
         <nav class="top-nav">
-            <a href="index.html">Listening</a>
+            <a href="index.html">Overview</a>
+            <a href="listening.html">Listening</a>
             <a href="reading.html">Reading</a>
             <a href="writing.html" class="active">Writing</a>
+            <a href="scores.html">Scores</a>
         </nav>
 
         <div class="writing-selector">
@@ -267,16 +273,16 @@
         <!-- DOC PART 1 -->
         <div id="w_doc1" class="container active-section" data-task-id="w_doc1">
             <h1>IELTS Academic Writing Practice</h1>
-            <div class="subtitle">Part 1 - Spend about 20 minutes. Write at least 150 words[cite: 33].</div>
+            <div class="subtitle">Part 1 - Spend about 20 minutes. Write at least 150 words.</div>
             <div class="writing-layout">
                 <div class="task-prompt">
-                    <p><strong>The chart below shows the number of trips made by children in one country in 1990 and 2010 to travel to and from school using different modes of transport[cite: 33].</strong></p>
-                    <p>Summarise the information by selecting and reporting the main features, and make comparisons where relevant[cite: 33].</p>
+                    <p><strong>The chart below shows the number of trips made by children in one country in 1990 and 2010 to travel to and from school using different modes of transport.</strong></p>
+                    <p>Summarise the information by selecting and reporting the main features, and make comparisons where relevant.</p>
                     <div class="visual-box">
                         <h4>Gráfico: Travel to and from school: children aged 5-12</h4>
                         <p><strong>Eixo Y:</strong> Total number of trips per year (in millions) [0 to 14]</p>
                         <p><strong>Categorias:</strong> Car passenger, Walking, Cycling, Walking and bus, Bus</p>
-                        <p><strong>Legenda:</strong> Barras escuras (1990) | Barras listradas (2010)[cite: 33]</p>
+                        <p><strong>Legenda:</strong> Barras escuras (1990) | Barras listradas (2010)</p>
                     </div>
                 </div>
                 <div class="writing-input-area">
@@ -290,15 +296,15 @@
                     
                     <div class="comments-section">
                         <div class="comments-title">Critérios de Avaliação e Amostras de Respostas:</div>
-                        <p><strong>Critérios:</strong> Task Achievement, Coherence & Cohesion, Lexical Resource, Grammatical Range & Accuracy[cite: 13].</p>
+                        <p><strong>Critérios:</strong> Task Achievement, Coherence & Cohesion, Lexical Resource, Grammatical Range & Accuracy.</p>
                         <div class="sample-response-box">
 <strong>Candidate Response 1 (Band 6):</strong>
-"The chart gives you information on how children travelled to and from school in the years 1990 and 2010..."[cite: 33]
-<br><em>Examiner Comment:</em> Key features are selected and clearly highlighted, but reporting is somewhat mechanical[cite: 33].
+"The chart gives you information on how children travelled to and from school in the years 1990 and 2010..."
+<br><em>Examiner Comment:</em> Key features are selected and clearly highlighted, but reporting is somewhat mechanical.
 
 <br><br><strong>Candidate Response 2 (Band 4):</strong>
-"The statistice show the number of tripe mad by children in one country over the past to years..."[cite: 33]
-<br><em>Examiner Comment:</em> Does generally try to address requirements but key features are not adequately covered[cite: 33].
+"The statistice show the number of tripe mad by children in one country over the past to years..."
+<br><em>Examiner Comment:</em> Does generally try to address requirements but key features are not adequately covered.
                         </div>
                     </div>
                 </div>
@@ -308,13 +314,13 @@
         <!-- DOC PART 2 -->
         <div id="w_doc2" class="container" data-task-id="w_doc2">
             <h1>IELTS Academic Writing Practice</h1>
-            <div class="subtitle">Part 2 - Spend about 40 minutes. Write at least 250 words[cite: 32].</div>
+            <div class="subtitle">Part 2 - Spend about 40 minutes. Write at least 250 words.</div>
             <div class="writing-layout">
                 <div class="task-prompt">
-                    <p><strong>Write about the following topic[cite: 32]:</strong></p>
-                    <p><em>The average standard of people's health is likely to be lower in the future than it is now[cite: 32].</em></p>
-                    <p>To what extent do you agree or disagree with this statement[cite: 32]?</p>
-                    <p>Give reasons for your answer and include any relevant examples from your own knowledge or experience[cite: 32].</p>
+                    <p><strong>Write about the following topic:</strong></p>
+                    <p><em>The average standard of people's health is likely to be lower in the future than it is now.</em></p>
+                    <p>To what extent do you agree or disagree with this statement?</p>
+                    <p>Give reasons for your answer and include any relevant examples from your own knowledge or experience.</p>
                 </div>
                 <div class="writing-input-area">
                     <textarea class="essay-textarea" placeholder="Digite seu texto livre aqui..."></textarea>
@@ -327,15 +333,15 @@
                     
                     <div class="comments-section">
                         <div class="comments-title">Critérios de Avaliação e Amostras de Respostas:</div>
-                        <p><strong>Critérios:</strong> Task Response, Coherence & Cohesion, Lexical Resource, Grammatical Range & Accuracy[cite: 13].</p>
+                        <p><strong>Critérios:</strong> Task Response, Coherence & Cohesion, Lexical Resource, Grammatical Range & Accuracy.</p>
                         <div class="sample-response-box">
 <strong>Candidate Response 1 (Band 5.5):</strong>
-"I completly disagree with the written statment. I believe that most of the people in the world have more information about their health..."[cite: 32]
-<br><em>Examiner Comment:</em> Clear position presented, but response does not meet the minimum word count of 250 words[cite: 32].
+"I completly disagree with the written statment. I believe that most of the people in the world have more information about their health..."
+<br><em>Examiner Comment:</em> Clear position presented, but response does not meet the minimum word count of 250 words.
 
 <br><br><strong>Candidate Response 2 (Band 7.5):</strong>
-"Recently, there have been a lot of discussions about health and whether it is going to improve or not..."[cite: 32]
-<br><em>Examiner Comment:</em> Strong response. Ideas are logically organised, wide range of vocabulary and variety of complex structures[cite: 32].
+"Recently, there have been a lot of discussions about health and whether it is going to improve or not..."
+<br><em>Examiner Comment:</em> Strong response. Ideas are logically organised, wide range of vocabulary and variety of complex structures.
                         </div>
                     </div>
                 </div>
@@ -367,15 +373,15 @@
                     
                     <div class="comments-section">
                         <div class="comments-title">Critérios de Avaliação e Amostras de Respostas:</div>
-                        <p><strong>Critérios:</strong> Task Achievement, Coherence & Cohesion, Lexical Resource, Grammatical Range & Accuracy[cite: 13].</p>
+                        <p><strong>Critérios:</strong> Task Achievement, Coherence & Cohesion, Lexical Resource, Grammatical Range & Accuracy.</p>
                         <div class="sample-response-box">
 <strong>Sample Script A (Band 5):</strong>
-"This is a bar chart of the number of men and women in further education In Britain in three periods..."[cite: 14]
-<br><em>Examiner Comment:</em> Good attempt to describe overall trends, but lacking figures and some punctuation errors[cite: 14].
+"This is a bar chart of the number of men and women in further education In Britain in three periods..."
+<br><em>Examiner Comment:</em> Good attempt to describe overall trends, but lacking figures and some punctuation errors.
 
 <br><br><strong>Sample Script B (Band 6):</strong>
-"According to the graph, the number of mon and women in further educatión in Britain shows the following pattern..."[cite: 15]
-<br><em>Examiner Comment:</em> Good attempt looking at global trends and detailed figures[cite: 15].
+"According to the graph, the number of mon and women in further educatión in Britain shows the following pattern..."
+<br><em>Examiner Comment:</em> Good attempt looking at global trends and detailed figures.
                         </div>
                     </div>
                 </div>
@@ -385,16 +391,16 @@
         <!-- PDF TASK 1B -->
         <div id="w_pdf1b" class="container" data-task-id="w_pdf1b">
             <h1>IELTS Academic Writing Practice</h1>
-            <div class="subtitle">Task 1B (PDF) - Spend about 20 minutes. Write at least 150 words[cite: 9].</div>
+            <div class="subtitle">Task 1B (PDF) - Spend about 20 minutes. Write at least 150 words.</div>
             <div class="writing-layout">
                 <div class="task-prompt">
-                    <p><strong>The graph below shows radio and television audiences throughout the day in 1992[cite: 9].</strong></p>
-                    <p>Summarise the information by selecting and reporting the main features, and make comparisons where relevant[cite: 9].</p>
+                    <p><strong>The graph below shows radio and television audiences throughout the day in 1992.</strong></p>
+                    <p>Summarise the information by selecting and reporting the main features, and make comparisons where relevant.</p>
                     <div class="visual-box">
-                        <h4>Gráfico: Radio and television audiences in UK, October - December 1992[cite: 9]</h4>
-                        <p><strong>Eixo X:</strong> Time of day or night (6:00 to 6:00 - 24 hours)[cite: 9]</p>
-                        <p><strong>Eixo Y:</strong> Percentage of UK population (over 4 years old) [0% to 50%][cite: 9]</p>
-                        <p><strong>Legenda:</strong> Linha tracejada longa (Television) | Linha pontilhada curta (Radio)[cite: 9]</p>
+                        <h4>Gráfico: Radio and television audiences in UK, October - December 1992</h4>
+                        <p><strong>Eixo X:</strong> Time of day or night (6:00 to 6:00 - 24 hours)</p>
+                        <p><strong>Eixo Y:</strong> Percentage of UK population (over 4 years old) [0% to 50%]</p>
+                        <p><strong>Legenda:</strong> Linha tracejada longa (Television) | Linha pontilhada curta (Radio)</p>
                     </div>
                 </div>
                 <div class="writing-input-area">
@@ -408,15 +414,15 @@
                     
                     <div class="comments-section">
                         <div class="comments-title">Critérios de Avaliação e Amostras de Respostas:</div>
-                        <p><strong>Critérios:</strong> Task Achievement, Coherence & Cohesion, Lexical Resource, Grammatical Range & Accuracy[cite: 13].</p>
+                        <p><strong>Critérios:</strong> Task Achievement, Coherence & Cohesion, Lexical Resource, Grammatical Range & Accuracy.</p>
                         <div class="sample-response-box">
 <strong>Sample Script A (Band 6):</strong>
-"The graph shows the percentage of audiences over 4ys old of UK follows the radio and television thoughout the day..."[cite: 16]
-<br><em>Examiner Comment:</em> Good coverage of data and brief reference to contrasting trends[cite: 16].
+"The graph shows the percentage of audiences over 4ys old of UK follows the radio and television thoughout the day..."
+<br><em>Examiner Comment:</em> Good coverage of data and brief reference to contrasting trends.
 
 <br><br><strong>Sample Script B (Band 7):</strong>
-"The bold graph shows the percentage of television audiences throughout the day..."[cite: 17]
-<br><em>Examiner Comment:</em> Deals well with both individual media trends and overall comparison[cite: 17].
+"The bold graph shows the percentage of television audiences throughout the day..."
+<br><em>Examiner Comment:</em> Deals well with both individual media trends and overall comparison.
                         </div>
                     </div>
                 </div>
@@ -426,16 +432,16 @@
         <!-- PDF TASK 1C -->
         <div id="w_pdf1c" class="container" data-task-id="w_pdf1c">
             <h1>IELTS Academic Writing Practice</h1>
-            <div class="subtitle">Task 1C (PDF) - Spend about 20 minutes. Write at least 150 words[cite: 10].</div>
+            <div class="subtitle">Task 1C (PDF) - Spend about 20 minutes. Write at least 150 words.</div>
             <div class="writing-layout">
                 <div class="task-prompt">
-                    <p><strong>The diagram below shows the process by which bricks are manufactured for the building industry[cite: 10].</strong></p>
-                    <p>Summarise the information by selecting and reporting the main features, and make comparisons where relevant[cite: 10].</p>
+                    <p><strong>The diagram below shows the process by which bricks are manufactured for the building industry.</strong></p>
+                    <p>Summarise the information by selecting and reporting the main features, and make comparisons where relevant.</p>
                     <div class="visual-box">
-                        <h4>Diagrama: Brick Manufacturing Process[cite: 10]</h4>
-                        <p>1. Digger (Clay) &rarr; 2. Metal Grid / Roller &rarr; 3. Add Sand + Water[cite: 10]</p>
-                        <p>4. Wire Cutter OR Mould &rarr; 5. Drying Oven (24-48 hrs)[cite: 10]</p>
-                        <p>6. Kiln (Moderate 200-980°C &rarr; High 870-1300°C) &rarr; 7. Cooling Chamber (48-72 hrs) &rarr; 8. Packaging & Delivery[cite: 10]</p>
+                        <h4>Diagrama: Brick Manufacturing Process</h4>
+                        <p>1. Digger (Clay) &rarr; 2. Metal Grid / Roller &rarr; 3. Add Sand + Water</p>
+                        <p>4. Wire Cutter OR Mould &rarr; 5. Drying Oven (24-48 hrs)</p>
+                        <p>6. Kiln (Moderate 200-980°C &rarr; High 870-1300°C) &rarr; 7. Cooling Chamber (48-72 hrs) &rarr; 8. Packaging & Delivery</p>
                     </div>
                 </div>
                 <div class="writing-input-area">
@@ -449,11 +455,11 @@
                     
                     <div class="comments-section">
                         <div class="comments-title">Critérios de Avaliação e Amostras de Respostas:</div>
-                        <p><strong>Critérios:</strong> Task Achievement, Coherence & Cohesion, Lexical Resource, Grammatical Range & Accuracy[cite: 13].</p>
+                        <p><strong>Critérios:</strong> Task Achievement, Coherence & Cohesion, Lexical Resource, Grammatical Range & Accuracy.</p>
                         <div class="sample-response-box">
 <strong>Sample Script C (Band 8.5):</strong>
-"The process by which bricks are manufactured for the building industry can be outlined in seven consecutive steps..."[cite: 21]
-<br><em>Examiner Comment:</em> Fully satisfies the requirements of the task. Language is fluent and sophisticated[cite: 22].
+"The process by which bricks are manufactured for the building industry can be outlined in seven consecutive steps..."
+<br><em>Examiner Comment:</em> Fully satisfies the requirements of the task. Language is fluent and sophisticated.
                         </div>
                     </div>
                 </div>
@@ -463,12 +469,12 @@
         <!-- PDF TASK 2A -->
         <div id="w_pdf2a" class="container" data-task-id="w_pdf2a">
             <h1>IELTS Academic Writing Practice</h1>
-            <div class="subtitle">Task 2A (PDF) - Spend about 40 minutes. Write at least 250 words[cite: 11].</div>
+            <div class="subtitle">Task 2A (PDF) - Spend about 40 minutes. Write at least 250 words.</div>
             <div class="writing-layout">
                 <div class="task-prompt">
-                    <p><strong>Write about the following topic[cite: 11]:</strong></p>
-                    <p><em>Children who are brought up in families that do not have large amounts of money are better prepared to deal with the problems of adult life than children brought up by wealthy parents[cite: 11].</em></p>
-                    <p>To what extent do you agree or disagree with this opinion[cite: 11]?</p>
+                    <p><strong>Write about the following topic:</strong></p>
+                    <p><em>Children who are brought up in families that do not have large amounts of money are better prepared to deal with the problems of adult life than children brought up by wealthy parents.</em></p>
+                    <p>To what extent do you agree or disagree with this opinion?</p>
                 </div>
                 <div class="writing-input-area">
                     <textarea class="essay-textarea" placeholder="Digite seu texto livre aqui..."></textarea>
@@ -481,11 +487,11 @@
                     
                     <div class="comments-section">
                         <div class="comments-title">Critérios de Avaliação e Amostras de Respostas:</div>
-                        <p><strong>Critérios:</strong> Task Response, Coherence & Cohesion, Lexical Resource, Grammatical Range & Accuracy[cite: 13].</p>
+                        <p><strong>Critérios:</strong> Task Response, Coherence & Cohesion, Lexical Resource, Grammatical Range & Accuracy.</p>
                         <div class="sample-response-box">
 <strong>Sample Script C (Band 8.5):</strong>
-"I do agree agree to the statement that children brought up in poor families are better prepared to deal with the problems..."[cite: 26]
-<br><em>Examiner Comment:</em> Topic is very well addressed and explored in depth. Writer uses a wide and natural range of vocabulary[cite: 27].
+"I do agree agree to the statement that children brought up in poor families are better prepared to deal with the problems..."
+<br><em>Examiner Comment:</em> Topic is very well addressed and explored in depth. Writer uses a wide and natural range of vocabulary.
                         </div>
                     </div>
                 </div>
@@ -495,12 +501,12 @@
         <!-- PDF TASK 2B -->
         <div id="w_pdf2b" class="container" data-task-id="w_pdf2b">
             <h1>IELTS Academic Writing Practice</h1>
-            <div class="subtitle">Task 2B (PDF) - Spend about 40 minutes. Write at least 250 words[cite: 12].</div>
+            <div class="subtitle">Task 2B (PDF) - Spend about 40 minutes. Write at least 250 words.</div>
             <div class="writing-layout">
                 <div class="task-prompt">
-                    <p><strong>Write about the following topic[cite: 12]:</strong></p>
-                    <p><em>International tourism has brought enormous benefit to many places. At the same time, there is concern about its impact on local inhabitants and the environment[cite: 12].</em></p>
-                    <p>Do the disadvantages of international tourism outweigh the advantages[cite: 12]?</p>
+                    <p><strong>Write about the following topic:</strong></p>
+                    <p><em>International tourism has brought enormous benefit to many places. At the same time, there is concern about its impact on local inhabitants and the environment.</em></p>
+                    <p>Do the disadvantages of international tourism outweigh the advantages?</p>
                 </div>
                 <div class="writing-input-area">
                     <textarea class="essay-textarea" placeholder="Digite seu texto livre aqui..."></textarea>
@@ -513,11 +519,11 @@
                     
                     <div class="comments-section">
                         <div class="comments-title">Critérios de Avaliação e Amostras de Respostas:</div>
-                        <p><strong>Critérios:</strong> Task Response, Coherence & Cohesion, Lexical Resource, Grammatical Range & Accuracy[cite: 13].</p>
+                        <p><strong>Critérios:</strong> Task Response, Coherence & Cohesion, Lexical Resource, Grammatical Range & Accuracy.</p>
                         <div class="sample-response-box">
 <strong>Sample Script B (Band 7.5):</strong>
-"Tourism is a very big industry in the modern time and is growing quite rapidly..."[cite: 30]
-<br><em>Examiner Comment:</em> Addresses both aspects of the task and presents a clear position throughout[cite: 31].
+"Tourism is a very big industry in the modern time and is growing quite rapidly..."
+<br><em>Examiner Comment:</em> Addresses both aspects of the task and presents a clear position throughout.
                         </div>
                     </div>
                 </div>
