@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS Listening Practice - Clássica Gótica</title>
+    <style>
+        :root {
+            --bg-color: #F8F7FA;
+            --card-bg: #FFFFFF;
+            --text-main: #1A1A1A;
+            --text-muted: #6B3A7E;
+            --primary-purple: #502064;
+            --accent-wine: #6B0F1A;
+            --accent-pink: #F48FB1;
+            --light-lavender: #D8B4D9;
+            --border-color: #E2D8E5;
+            --success-color: #2e7d32;
+            --error-color: #6B0F1A;
+        }
+
+        body {
+            font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .main-wrapper {
+            width: 100%;
+            max-width: 850px;
+        }
+
+        /* Menu de Navegação Superior (Abas Principais) */
+        .top-nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .top-nav a {
+            flex: 1;
+            min-width: 110px;
+            text-align: center;
+            padding: 12px;
+            background-color: var(--card-bg);
+            color: var(--primary-purple);
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 6px rgba(80, 32, 100, 0.04);
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .top-nav a.active, .top-nav a:hover {
+            background-color: var(--primary-purple);
+            color: white;
+            border-color: var(--primary-purple);
+        }
+
+        /* Seletor de Práticas de Listening */
+        .listening-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .sub-tab-btn {
+            background-color: #FFFFFF;
+            color: var(--primary-purple);
+            border: 1px solid var(--light-lavender);
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Century Gothic', CenturyGothic, sans-serif;
+        }
+
+        .sub-tab-btn.active, .sub-tab-btn:hover {
+            background-color: var(--light-lavender);
+            color: var(--primary-purple);
+            border-color: var(--primary-purple);
+        }
+
+        /* Container do Exercício */
+        .container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(80, 32, 100, 0.08);
+            padding: 36px;
+            box-sizing: border-box;
+            border: 1px solid var(--border-color);
+            display: none;
+        }
+
+        .container.active-section {
+            display: block;
+        }
+
+        h1 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--primary-purple);
+        }
+
+        .subtitle {
+            font-size: 13px;
+            font-style: italic;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .audio-box {
+            margin-bottom: 20px;
+            background: #F3ECF5;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--light-lavender);
+        }
+
+        audio {
+            width: 100%;
+        }
+
+        .instruction {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--primary-purple);
+        }
+
+        .question-block {
+            margin-bottom: 20px;
+            background: #FAFAFC;
+            padding: 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .question-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background-color: #FFFFFF;
+        }
+
+        .option-label:hover {
+            background-color: #F3ECF5;
+            border-color: var(--light-lavender);
+        }
+
+        input[type="radio"], input[type="checkbox"] {
+            cursor: pointer;
+            accent-color: var(--primary-purple);
+        }
+
+        input[type="text"] {
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: 'Century Gothic', CenturyGothic, sans-serif;
+            font-size: 13px;
+            width: 200px;
+            margin-left: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #F3ECF5;
+            color: var(--primary-purple);
+        }
+
+        td:first-child {
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .feedback-box {
+            margin-top: 10px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            display: none;
+        }
+
+        .feedback-box.correct {
+            background-color: #edf7ed;
+            color: var(--success-color);
+            border: 1px solid #c8e6c9;
+            display: block;
+            font-weight: bold;
+        }
+
+        .feedback-box.incorrect {
+            background-color: #fdf2f2;
+            color: var(--error-color);
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 16px;
+        }
+
+        button.action-btn {
+            flex: 1;
+            padding: 10px 16px;
+            font-size: 13px;
+            font-weight: 700;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Century Gothic', CenturyGothic, sans-serif;
+        }
+
+        .submit-btn {
+            background-color: var(--primary-purple);
+            color: white;
+        }
+
+        .submit-btn:hover {
+            background-color: #3b164a;
+        }
+
+        .clear-btn {
+            background-color: var(--border-color);
+            color: var(--primary-purple);
+        }
+
+        .clear-btn:hover {
+            background-color: #d1c2d4;
+        }
+
+        .status-msg {
+            text-align: center;
+            font-size: 11px;
+            font-style: italic;
+            color: var(--text-muted);
+            margin-top: 12px;
+        }
+
+        .task-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-wrapper">
+        <!-- Navegação Principal entre Abas -->
+        <nav class="top-nav">
+            <a href="index.html">Overview</a>
+            <a href="listening.html" class="active">Listening</a>
+            <a href="reading.html">Reading</a>
+            <a href="writing.html">Writing</a>
+            <a href="scores.html">Scores</a>
+        </nav>
+
+        <!-- Seletor das Práticas de Listening -->
+        <div class="listening-selector">
+            <button class="sub-tab-btn active" onclick="switchTask('task1')">1. Multiple Choice (1)</button>
+            <button class="sub-tab-btn" onclick="switchTask('task2')">2. Short Answer</button>
+            <button class="sub-tab-btn" onclick="switchTask('task3')">3. Sentence Completion</button>
+            <button class="sub-tab-btn" onclick="switchTask('task4')">4. Table Completion</button>
+            <button class="sub-tab-btn" onclick="switchTask('task5')">5. Note Completion</button>
+            <button class="sub-tab-btn" onclick="switchTask('task6')">6. Plan/Map/Diagram</button>
+            <button class="sub-tab-btn" onclick="switchTask('task7')">7. Multiple Choice (Multi)</button>
+        </div>
+
+        <!-- ================= TASK 1 ================= -->
+        <div id="task1" class="container active-section" data-task-id="task1">
+            <h1>IELTS Listening Practice</h1>
+            <div class="subtitle">Listening Sample task Multiple Choice (one answer)</div>
+            <div class="audio-box">
+                <audio controls>
+                    <source src="audio/Listening%20Sample%20task%20Multiple%20Choice%20(one%20answer).mp3" type="audio/mpeg">
+                    Seu navegador não suporta o elemento de áudio.
+                </audio>
+            </div>
+            <form class="quiz-form">
+                <div class="instruction">Questions 1–3</div>
+                <div style="font-size: 13px; font-style: italic; margin-bottom: 12px;">Choose the correct answer.[cite: 7]</div>
+
+                <div class="question-block" data-q="q1">
+                    <div class="question-title">1. Why did Judy choose to study the East End of London?[cite: 7]</div>
+                    <div class="options-list">
+                        <label class="option-label"><input type="radio" name="q1" value="She wanted to understand her own background."> She wanted to understand her own background.[cite: 7]</label>
+                        <label class="option-label"><input type="radio" name="q1" value="She was interested in place names."> She was interested in place names.[cite: 7]</label>
+                        <label class="option-label"><input type="radio" name="q1" value="She had read several books about it."> She had read several books about it.[cite: 7]</label>
+                    </div>
+                    <div class="feedback-box"></div>
+                </div>
+
+                <div class="question-block" data-q="q2">
+                    <div class="question-title">2. What was Judy’s main source of materials?[cite: 7]</div>
+                    <div class="options-list">
+                        <label class="option-label"><input type="radio" name="q2" value="books"> books[cite: 7]</label>
+                        <label class="option-label"><input type="radio" name="q2" value="newspapers"> newspapers[cite: 7]</label>
+                        <label class="option-label"><input type="radio" name="q2" value="interviews"> interviews[cite: 7]</label>
+                    </div>
+                    <div class="feedback-box"></div>
+                </div>
+
+                <div class="question-block" data-q="q3">
+                    <div class="question-title">3. What difficulty did Judy have with her dissertation?[cite: 7]</div>
+                    <div class="options-list">
+                        <label class="option-label"><input type="radio" name="q3" value="writing the first draft"> writing the first draft[cite: 7]</label>
+                        <label class="option-label"><input type="radio" name="q3" value="organising what she had collected"> organising what she had collected[cite: 7]</label>
+                        <label class="option-label"><input type="radio" name="q3" value="finding enough relevant sources"> finding enough relevant sources[cite: 7]</label>
+                    </div>
+                    <div class="feedback-box"></div>
+                </div>
+
+                <div class="actions">
+                    <button type="button" class="action-btn submit-btn">Enviar respostas</button>
+                    <button type="button" class="action-btn clear-btn">Limpar</button>
+                </div>
+            </form>
+            <div class="status-msg">Sincronizado com a nuvem</div>
+        </div>
+
+        <!-- ================= TASK 2 ================= -->
+        <div id="task2" class="container" data-task-id="task2">
+            <h1>IELTS Listening Practice</h1>
+            <div class="subtitle">Listening Sample task Short Answer Questions</div>
+            <div class="audio-box">
+                <audio controls>
+                    <source src="audio/Listening%20Sample%20task%20Short%20Answer%20Questions.mp3" type="audio/mpeg">
+                    Seu navegador não suporta o elemento de áudio.
+                </audio>
+            </div>
+            <form class="quiz-form">
+                <div class="instruction">Questions 1–3</div>
+                <div style="font-size: 13px; font-style: italic; margin-bottom: 12px;">Answer the questions. Write ONE WORD ONLY for each answer.[cite: 7]</div>
+                <div style="font-size: 13px; font-weight: bold; margin-bottom: 12px;">List THREE types of staff that Pacific Clothing want to recruit at present[cite: 7]</div>
+
+                <div class="question-block" data-q="q1">
+                    <div class="question-title">1. <input type="text" name="q1" placeholder="Digite a resposta"></div>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-block" data-q="q2">
+                    <div class="question-title">2. <input type="text" name="q2" placeholder="Digite a resposta"></div>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-block" data-q="q3">
+                    <div class="question-title">3. <input type="text" name="q3" placeholder="Digite a resposta"></div>
+                    <div class="feedback-box"></div>
+                </div>
+
+                <div class="actions">
+                    <button type="button" class="action-btn submit-btn">Enviar respostas</button>
+                    <button type="button" class="action-btn clear-btn">Limpar</button>
+                </div>
+            </form>
+            <div class="status-msg">Sincronizado com a nuvem</div>
+        </div>
+
+        <!-- ================= TASK 3 ================= -->
+        <div id="task3" class="container" data-task-id="task3">
+            <h1>IELTS Listening Practice</h1>
+            <div class="subtitle">Listening Sample task Sentence Completion</div>
+            <div class="audio-box">
+                <audio controls>
+                    <source src="audio/Listening%20Sample%20task%20Sentence%20Completion.mp3" type="audio/mpeg">
+                    Seu navegador não suporta o elemento de áudio.
+                </audio>
+            </div>
+            <form class="quiz-form">
+                <div class="instruction">Questions 1–4</div>
+                <div style="font-size: 13px; font-style: italic; margin-bottom: 12px;">Complete the sentences. Write NO MORE THAN TWO WORDS for each answer.</div>
+
+                <div class="question-block" data-q="q1">
+                    <div class="question-title">1. Studying with the Open University demanded a great deal of <input type="text" name="q1" placeholder="Resposta">.</div>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-block" data-q="q2">
+                    <div class="question-title">2. Studying and working at the same time improved Rachel’s <input type="text" name="q2" placeholder="Resposta"> skills.</div>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-block" data-q="q3">
+                    <div class="question-title">3. It is helpful that the course was structured in <input type="text" name="q3" placeholder="Resposta">.</div>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-block" data-q="q4">
+                    <div class="question-title">4. She enjoyed meeting other students at <input type="text" name="q4" placeholder="Resposta">.</div>
+                    <div class="feedback-box"></div>
+                </div>
+
+                <div class="actions">
+                    <button type="button" class="action-btn submit-btn">Enviar respostas</button>
+                    <button type="button" class="action-btn clear-btn">Limpar</button>
+                </div>
+            </form>
+            <div class="status-msg">Sincronizado com a nuvem</div>
+        </div>
+
+        <!-- ================= TASK 4 ================= -->
+        <div id="task4" class="container" data-task-id="task4">
+            <h1>IELTS Listening Practice</h1>
+            <div class="subtitle">Listening Sample task Table Completion</div>
+            <div class="audio-box">
+                <audio controls>
+                    <source src="audio/Listening%20Sample%20task%20Table%20Completion.mp3" type="audio/mpeg">
+                    Seu navegador não suporta o elemento de áudio.
+                </audio>
+            </div>
+            <form class="quiz-form">
+                <div class="instruction">Questions 1–5</div>
+                <div style="font-size: 13px; font-style: italic; margin-bottom: 12px;">Complete the table. Write ONE WORD ONLY for each answer.</div>
+                <div style="font-weight: bold; margin-bottom: 8px;">Research Findings</div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Social and Environmental Factors</th>
+                            <th>Other Factors</th>
+                            <th>Personal Characteristics</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>First level of importance</td>
+                            <td>Effective support</td>
+                            <td>Perceived success in study</td>
+                            <td>Enjoyment of a <input type="text" name="q1" style="width:100px;" placeholder="1"></td>
+                        </tr>
+                        <tr>
+                            <td>Second level of importance</td>
+                            <td>Positive experiences at <input type="text" name="q2" style="width:100px;" placeholder="2"></td>
+                            <td>Good <input type="text" name="q3" style="width:100px;" placeholder="3"></td>
+                            <td>Many <input type="text" name="q4" style="width:100px;" placeholder="4"> in daily life</td>
+                        </tr>
+                        <tr>
+                            <td>Third level of importance</td>
+                            <td>Good interaction with the <input type="text" name="q5" style="width:100px;" placeholder="5"></td>
+                            <td>No family problems</td>
+                            <td>Capacity for multi-tasking</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="question-block" data-q="q1"><div class="feedback-box" id="fb-q1"></div></div>
+                <div class="question-block" data-q="q2"><div class="feedback-box" id="fb-q2"></div></div>
+                <div class="question-block" data-q="q3"><div class="feedback-box" id="fb-q3"></div></div>
+                <div class="question-block" data-q="q4"><div class="feedback-box" id="fb-q4"></div></div>
+                <div class="question-block" data-q="q5"><div class="feedback-box" id="fb-q5"></div></div>
+
+                <div class="actions">
+                    <button type="button" class="action-btn submit-btn">Enviar respostas</button>
+                    <button type="button" class="action-btn clear-btn">Limpar</button>
+                </div>
+            </form>
+            <div class="status-msg">Sincronizado com a nuvem</div>
+        </div>
+
+        <!-- ================= TASK 5 ================= -->
+        <div id="task5" class="container" data-task-id="task5">
+            <h1>IELTS Listening Practice</h1>
+            <div class="subtitle">Listening Sample task Note Completion</div>
+            <div class="audio-box">
+                <audio controls>
+                    <source src="audio/Listening%20Sample%20task%20Note%20Completion.mp3" type="audio/mpeg">
+                    Seu navegador não suporta o elemento de áudio.
+                </audio>
+            </div>
+            <form class="quiz-form">
+                <div class="instruction">Questions 1–7</div>
+                <div style="font-size: 13px; font-style: italic; margin-bottom: 12px;">Complete the notes. Write ONE WORD AND/OR A NUMBER for each answer.</div>
+                
+                <div style="font-weight: bold; margin-bottom: 8px;">Phone call about second-hand furniture</div>
+                <div style="font-weight: bold; margin-bottom: 6px;">Items</div>
+                
+                <div class="question-block">
+                    <div class="question-title">Dining table</div>
+                    <ul style="list-style-type: disc; padding-left: 20px; font-size: 13px;">
+                        <li style="margin-bottom: 6px;" data-q="q1"><span>1. <input type="text" name="q1" placeholder="Resposta"> shape</span><div class="feedback-box"></div></li>
+                        <li style="margin-bottom: 6px;">medium size</li>
+                        <li style="margin-bottom: 6px;" data-q="q2"><span>2. <input type="text" name="q2" placeholder="Resposta"> old</span><div class="feedback-box"></div></li>
+                        <li>£25.00</li>
+                    </ul>
+                </div>
+
+                <div class="question-block">
+                    <div class="question-title">Dining chairs</div>
+                    <ul style="list-style-type: disc; padding-left: 20px; font-size: 13px;">
+                        <li style="margin-bottom: 6px;" data-q="q3"><span>set of <input type="text" name="q3" placeholder="Resposta" style="width:80px;"> chairs</span><div class="feedback-box"></div></li>
+                        <li style="margin-bottom: 6px;" data-q="q4"><span>seats covered in <input type="text" name="q4" placeholder="Resposta"> material</span><div class="feedback-box"></div></li>
+                        <li style="margin-bottom: 6px;" data-q="q5"><span>in <input type="text" name="q5" placeholder="Resposta"> condition</span><div class="feedback-box"></div></li>
+                        <li>£20.00</li>
+                    </ul>
+                </div>
+
+                <div class="question-block">
+                    <div class="question-title">Desk</div>
+                    <ul style="list-style-type: disc; padding-left: 20px; font-size: 13px;">
+                        <li style="margin-bottom: 6px;" data-q="q6"><span>length: <input type="text" name="q6" placeholder="Resposta"></span><div class="feedback-box"></div></li>
+                        <li style="margin-bottom: 6px;" data-q="q7"><span>3 drawers. Top drawer has a <input type="text" name="q7" placeholder="Resposta"></span><div class="feedback-box"></div></li>
+                        <li>£50.00</li>
+                    </ul>
+                </div>
+
+                <div class="actions">
+                    <button type="button" class="action-btn submit-btn">Enviar respostas</button>
+                    <button type="button" class="action-btn clear-btn">Limpar</button>
+                </div>
+            </form>
+            <div class="status-msg">Sincronizado com a nuvem</div>
+        </div>
+
+        <!-- ================= TASK 6 ================= -->
+        <div id="task6" class="container" data-task-id="task6">
+            <h1>IELTS Listening Practice</h1>
+            <div class="subtitle">Listening Sample task Plan-Map-Diagram Labelling (Type A)</div>
+            <div class="audio-box">
+                <audio controls>
+                    <source src="audio/Listening%20Sample%20task%20Plan-Map-Diagram%20Labelling%20(Type%20A).mp3" type="audio/mpeg">
+                    Seu navegador não suporta o elemento de áudio.
+                </audio>
+            </div>
+            <form class="quiz-form">
+                <div class="instruction">Questions 1–3</div>
+                <div style="font-size: 13px; font-style: italic; margin-bottom: 12px;">Label the map. Choose the correct letter, A–H, for each label.</div>
+                
+                <!-- Imagem do Mapa embutida -->
+                <img src="images/Plan-Map-Diagram Labelling (Type A).png" alt="Plan-Map-Diagram Labelling (Type A)" class="task-image" onerror="this.style.display='none'">
+                <div style="font-size: 11px; font-style: italic; color: #666; margin-bottom: 15px;">(Mapa de referência da atividade de rotulagem)</div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th><th>H</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1. Quilt Shop</td>
+                            <td><input type="radio" name="q1" value="A"></td><td><input type="radio" name="q1" value="B"></td><td><input type="radio" name="q1" value="C"></td><td><input type="radio" name="q1" value="D"></td><td><input type="radio" name="q1" value="E"></td><td><input type="radio" name="q1" value="F"></td><td><input type="radio" name="q1" value="G"></td><td><input type="radio" name="q1" value="H"></td>
+                        </tr>
+                        <tr>
+                            <td>2. Handicrafts Museum</td>
+                            <td><input type="radio" name="q2" value="A"></td><td><input type="radio" name="q2" value="B"></td><td><input type="radio" name="q2" value="C"></td><td><input type="radio" name="q2" value="D"></td><td><input type="radio" name="q2" value="E"></td><td><input type="radio" name="q2" value="F"></td><td><input type="radio" name="q2" value="G"></td><td><input type="radio" name="q2" value="H"></td>
+                        </tr>
+                        <tr>
+                            <td>3. School House</td>
+                            <td><input type="radio" name="q3" value="A"></td><td><input type="radio" name="q3" value="B"></td><td><input type="radio" name="q3" value="C"></td><td><input type="radio" name="q3" value="D"></td><td><input type="radio" name="q3" value="E"></td><td><input type="radio" name="q3" value="F"></td><td><input type="radio" name="q3" value="G"></td><td><input type="radio" name="q3" value="H"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="question-block" data-q="q1"><div class="feedback-box"></div></div>
+                <div class="question-block" data-q="q2"><div class="feedback-box"></div></div>
+                <div class="question-block" data-q="q3"><div class="feedback-box"></div></div>
+
+                <div class="actions">
+                    <button type="button" class="action-btn submit-btn">Enviar respostas</button>
+                    <button type="button" class="action-btn clear-btn">Limpar</button>
+                </div>
+            </form>
+            <div class="status-msg">Sincronizado com a nuvem</div>
+        </div>
+
+        <!-- ================= TASK 7 ================= -->
+        <div id="task7" class="container" data-task-id="task7">
+            <h1>IELTS Listening Practice</h1>
+            <div class="subtitle">Listening Sample task Multiple choice (more than one answer)</div>
+            <div class="audio-box">
+                <audio controls>
+                    <source src="audio/Listening%20Sample%20task%20Multiple%20choice%20(more%20than%20one%20answer).mp3" type="audio/mpeg">
+                    Seu navegador não suporta o elemento de áudio.
+                </audio>
+            </div>
+            <form class="quiz-form">
+                <div class="instruction">Questions 1–3</div>
+                <div style="font-size: 13px; font-style: italic; margin-bottom: 12px;">Choose THREE correct answers. Which THREE things does the Guide to the Library have information about?</div>
+
+                <div class="question-block" data-q="q_multi">
+                    <div class="options-list">
+                        <label class="option-label"><input type="checkbox" name="opt" value="book reservations"> book reservations</label>
+                        <label class="option-label"><input type="checkbox" name="opt" value="reading room rules"> reading room rules</label>
+                        <label class="option-label"><input type="checkbox" name="opt" value="catalogue"> catalogue</label>
+                        <label class="option-label"><input type="checkbox" name="opt" value="disabled facilities"> disabled facilities</label>
+                        <label class="option-label"><input type="checkbox" name="opt" value="location of rooms"> location of rooms</label>
+                        <label class="option-label"><input type="checkbox" name="opt" value="café"> café</label>
+                        <label class="option-label"><input type="checkbox" name="opt" value="regular events"> regular events</label>
+                        <label class="option-label"><input type="checkbox" name="opt" value="staff"> staff</label>
+                    </div>
+                    <div class="feedback-box" id="fb-multi"></div>
+                </div>
+
+                <div class="actions">
+                    <button type="button" class="action-btn submit-btn">Enviar respostas</button>
+                    <button type="button" class="action-btn clear-btn">Limpar</button>
+                </div>
+            </form>
+            <div class="status-msg">Sincronizado com a nuvem</div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs e Lógica de Sincronização -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, setDoc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC2pSWdBIREaPmpOvaiNzZWGUuCEupxp1c",
+            authDomain: "studendtrackerpanel.firebaseapp.com",
+            projectId: "studendtrackerpanel",
+            storageBucket: "studendtrackerpanel.firebasestorage.app",
+            messagingSenderId: "1004678184015",
+            appId: "1:1004678184015:web:be965625c08d8ee73ffe3a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Gabaritos Oficiais validados
+        const answerKeys = {
+            task1: { q1: "She wanted to understand her own background.", q2: "interviews", q3: "organising what she had collected" },
+            task2: { q1: "designers", q2: "managers", q3: "electricians" },
+            task3: { q1: "motivation", q2: "time-management", q3: "modules", q4: "summer school" },
+            task4: { q1: "challenge", q2: "school", q3: "health", q4: "interests", q5: "tutor" },
+            task5: { q1: "round", q2: "12 years", q3: "4", q4: "green", q5: "reasonable", q6: "1.20 metres", q7: "lock" },
+            task6: { q1: "H", q2: "A", q3: "C" },
+            task7: { multi: ["book reservations", "location of rooms", "café"] }
+        };
+
+        let currentActiveTask = 'task1';
+
+        window.switchTask = function(taskId) {
+            document.querySelectorAll('.container').forEach(el => el.classList.remove('active-section'));
+            document.querySelectorAll('.sub-tab-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(taskId).classList.add('active-section');
+            event.currentTarget.classList.add('active');
+            currentActiveTask = taskId;
+            loadSavedData(taskId);
+        };
+
+        function normalizeText(txt) {
+            return (txt || "").trim().toLowerCase().replace(/[\s\-_]+/g, '');
+        }
+
+        function showResults(taskId, userAnswers) {
+            const keys = answerKeys[taskId];
+            const container = document.getElementById(taskId);
+
+            if (taskId === 'task7') {
+                const selected = userAnswers.multi || [];
+                const correctSet = keys.multi;
+                const fb = container.querySelector('#fb-multi');
+                
+                let matches = selected.filter(item => correctSet.includes(item)).length;
+                if (matches === 3 && selected.length === 3) {
+                    fb.className = "feedback-box correct";
+                    fb.innerHTML = `<strong>Correto!</strong>`;
+                } else {
+                    fb.className = "feedback-box incorrect";
+                    fb.innerHTML = `Incorreto. <em>correct answer:</em> <strong>${correctSet.join(', ')}</strong>`;
+                }
+                return;
+            }
+
+            for (const [qKey, correctVal] of Object.entries(keys)) {
+                const qBlock = container.querySelector(`[data-q="${qKey}"]`);
+                if (!qBlock) continue;
+                const fbBox = qBlock.querySelector('.feedback-box') || container.querySelector(`#fb-${qKey}`);
+                if (!fbBox) continue;
+
+                const userVal = userAnswers[qKey] || "";
+                
+                if (taskId === 'task1' || taskId === 'task6') {
+                    if (userVal === correctVal) {
+                        fbBox.className = "feedback-box correct";
+                        fbBox.innerHTML = `<strong>Correto!</strong>`;
+                    } else {
+                        fbBox.className = "feedback-box incorrect";
+                        fbBox.innerHTML = `Incorreto. <em>correct answer:</em> <strong>${correctVal}</strong>`;
+                    }
+                } else {
+                    if (normalizeText(userVal) === normalizeText(correctVal) || normalizeText(userVal).includes(normalizeText(correctVal))) {
+                        fbBox.className = "feedback-box correct";
+                        fbBox.innerHTML = `<strong>Correto!</strong>`;
+                    } else {
+                        fbBox.className = "feedback-box incorrect";
+                        fbBox.innerHTML = `Incorreto. <em>correct answer:</em> <strong>${correctVal}</strong>`;
+                    }
+                }
+            }
+        }
+
+        async function loadSavedData(taskId) {
+            const statusMsg = document.querySelector(`#${taskId} .status-msg`);
+            try {
+                const docRef = doc(db, "ielts_practice", `listening_${taskId}`);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    const container = document.getElementById(taskId);
+                    if (data.answers) {
+                        if (taskId === 'task7') {
+                            const boxes = container.querySelectorAll('input[name="opt"]');
+                            boxes.forEach(b => {
+                                if ((data.answers.multi || []).includes(b.value)) b.checked = true;
+                            });
+                        } else {
+                            for (const [q, val] of Object.entries(data.answers)) {
+                                const input = container.querySelector(`[name="${q}"][value="${val}"]`) || container.querySelector(`input[name="${q}"]`);
+                                if (input) {
+                                    if (input.type === 'radio') {
+                                        if (input.value === val) input.checked = true;
+                                    } else {
+                                        input.value = val;
+                                    }
+                                }
+                            }
+                        }
+                        if (data.submitted) {
+                            showResults(taskId, data.answers);
+                        }
+                    }
+                }
+            } catch (e) {
+                console.error("Erro ao carregar dados", e);
+            }
+        }
+
+        // Eventos de Envio e Limpeza
+        document.querySelectorAll('.quiz-form').forEach(form => {
+            const container = form.closest('.container');
+            const taskId = container.getAttribute('data-task-id');
+            const submitBtn = form.querySelector('.submit-btn');
+            const clearBtn = form.querySelector('.clear-btn');
+            const statusMsg = container.querySelector('.status-msg');
+
+            submitBtn.addEventListener('click', async () => {
+                let answers = {};
+                if (taskId === 'task7') {
+                    const checked = container.querySelectorAll('input[name="opt"]:checked');
+                    answers.multi = Array.from(checked).map(cb => cb.value);
+                } else if (taskId === 'task1' || taskId === 'task6') {
+                    const radios = container.querySelectorAll('input[type="radio"]:checked');
+                    radios.forEach(r => answers[r.name] = r.value);
+                } else {
+                    const texts = container.querySelectorAll('input[type="text"]');
+                    texts.forEach(t => answers[t.name] = t.value);
+                }
+
+                statusMsg.textContent = "Salvando na nuvem...";
+                try {
+                    const docRef = doc(db, "ielts_practice", `listening_${taskId}`);
+                    await setDoc(docRef, {
+                        answers: answers,
+                        submitted: true,
+                        updatedAt: new Date().toISOString()
+                    });
+                    showResults(taskId, answers);
+                    statusMsg.textContent = "Respostas salvas com sucesso!";
+                } catch (error) {
+                    console.error("Erro ao salvar:", error);
+                    statusMsg.textContent = "Erro ao salvar na nuvem.";
+                }
+            });
+
+            clearBtn.addEventListener('click', async () => {
+                form.reset();
+                container.querySelectorAll('.feedback-box').forEach(fb => {
+                    fb.className = "feedback-box";
+                    fb.innerHTML = "";
+                });
+                statusMsg.textContent = "Limpando dados...";
+                try {
+                    const docRef = doc(db, "ielts_practice", `listening_${taskId}`);
+                    await deleteDoc(docRef);
+                    statusMsg.textContent = "Dados limpos com sucesso!";
+                } catch (error) {
+                    statusMsg.textContent = "Erro ao resetar.";
+                }
+            });
+        });
+
+        // Carrega os dados da primeira tarefa ao abrir
+        loadSavedData('task1');
+    </script>
+</body>
+</html>
