@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS Speaking Practice Game</title>
+    <!-- Google Fonts: Cinzel Decorative & Century Gothic fallback -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark-purple: #502064;
+            --burgundy: #6B0F1A;
+            --charcoal: #1A1A1A;
+            --lavender: #6B3A7E;
+            --light-lavender: #D8B4D9;
+            --pink-accent: #F48FB1;
+            --bg-light: #FDF8FE;
+            --white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--charcoal);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 2rem;
+            color: var(--lavender);
+            margin-bottom: 5px;
+        }
+
+        p.subtitle {
+            font-style: italic;
+            color: var(--burgundy);
+            font-size: 0.95rem;
+        }
+
+        /* Controls Panel */
+        .controls-panel {
+            background: var(--white);
+            border: 2px solid var(--light-lavender);
+            border-radius: 12px;
+            padding: 15px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(80, 32, 100, 0.08);
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        label {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: var(--dark-purple);
+        }
+
+        select {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--light-lavender);
+            font-family: 'Century Gothic', sans-serif;
+            background: var(--bg-light);
+            color: var(--charcoal);
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* Start Button */
+        .start-btn {
+            background-color: var(--dark-purple);
+            color: var(--white);
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-family: 'Cinzel Decorative', serif;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(80, 32, 100, 0.3);
+        }
+
+        .start-btn:hover {
+            background-color: var(--burgundy);
+            transform: translateY(-2px);
+        }
+
+        /* Timer Display */
+        .timer-display {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--burgundy);
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        /* Cards Grid */
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 12px;
+            border-left: 6px solid var(--lavender);
+            box-shadow: 0 4px 15px rgba(80, 32, 100, 0.08);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        .card-category {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 0.9rem;
+            color: var(--burgundy);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-content {
+            font-size: 1.15rem;
+            font-weight: bold;
+            color: var(--dark-purple);
+            margin-bottom: 12px;
+        }
+
+        .card-hint {
+            font-size: 0.85rem;
+            color: #555;
+            background: var(--bg-light);
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px dashed var(--light-lavender);
+        }
+
+        /* Firebase Status Notification */
+        #db-status {
+            font-size: 0.8rem;
+            color: var(--dark-purple);
+            margin-top: auto;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>IELTS Speaking Game</h1>
+        <p class="subtitle">Desafie a sua fluidez combinando Conectores, Idioms, Paráfrase, Gramática e Temas</p>
+    </header>
+
+    <!-- Controls -->
+    <div class="controls-panel">
+        <div class="control-group">
+            <label for="difficulty">Dificuldade</label>
+            <select id="difficulty">
+                <option value="easy">Fácil (2 Cards Principais)</option>
+                <option value="medium" selected>Médio (4 Cards)</option>
+                <option value="hard">Master IELTS (Todos os 6 Cards)</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label for="timer-setting">Cronómetro</label>
+            <select id="timer-setting">
+                <option value="30">30 Segundos</option>
+                <option value="45">45 Segundos</option>
+                <option value="60" selected>60 Segundos</option>
+                <option value="120">120 Segundos (Part 2)</option>
+                <option value="off">Sem Cronómetro</option>
+            </select>
+        </div>
+
+        <div style="display: flex; align-items: flex-end;">
+            <button class="start-btn" onclick="startGame()">Start / Shuffle</button>
+        </div>
+    </div>
+
+    <div class="timer-display" id="timer-box">Tempo Restante: <span id="countdown">60</span>s</div>
+
+    <!-- Cards Layout -->
+    <div class="cards-container" id="game-board">
+        <div class="card" style="grid-column: 1 / -1; text-align: center; color: #777;">
+            Clique em <strong>"Start / Shuffle"</strong> para sortear os seus desafios de fala!
+        </div>
+    </div>
+
+    <div id="db-status">A ligar ao Firestore...</div>
+
+    <!-- Firebase SDK Modular (v10) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // Configuração do seu Firebase (Student Tracker Panel)
+        const firebaseConfig = {
+            apiKey: "AIzaSyC2pSwDBIREaPmpOvainZzWGuuCEupxp1c",
+            authDomain: "studenttrackerpanel.firebaseapp.com",
+            projectId: "studenttrackerpanel",
+            storageBucket: "studenttrackerpanel.firebasestorage.app",
+            messagingSenderId: "1004678184015",
+            appId: "1:1004678184015:web:be95625c08d8ee73ffe3a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        
+        document.getElementById('db-status').innerText = "✓ Ligado ao Firestore com sucesso!";
+        window.dbRef = db;
+        window.addDoc = addDoc;
+        window.collection = collection;
+        window.serverTimestamp = serverTimestamp;
+    </script>
+
+    <!-- Jogo e Dados -->
+    <script>
+        // Bancos de dados integrados extraídos dos documentos
+        const dataPool = {
+            linkingWords: [
+                { title: "Linking Word / Connector", content: "However / Nevertheless", hint: "Contraste uma ideia anterior com uma ressalva." },
+                { title: "Linking Word / Connector", content: "As a result / Consequently", hint: "Mostre uma relação clara de causa e efeito." },
+                { title: "Linking Word / Connector", content: "Furthermore / In addition", hint: "Adicione um argumento extra de peso." },
+                { title: "Linking Word / Connector", content: "On the other hand", hint: "Apresente o ponto de vista oposto." },
+                { title: "Linking Word / Connector", content: "Despite the fact that...", hint: "Introduza uma concessão complexa." }
+            ],
+            fillers: [
+                { title: "Speaking Filler / Marker", content: "Let me think about that for a moment...", hint: "Ganhe tempo de reflexão de forma natural." },
+                { title: "Speaking Filler / Marker", content: "Off the top of my head...", hint: "Dê uma estimativa ou pensamento imediato." },
+                { title: "Speaking Filler / Marker", content: "To be completely honest...", hint: "Introduza uma opinião pessoal autêntica." },
+                { title: "Speaking Filler / Marker", content: "What I mean to say is...", hint: "Refraseie ou clarifique o que disse." }
+            ],
+            idioms: [
+                { title: "Idiom / Phrasal Verb", content: "Over the moon", hint: "Descreva algo que o deixou extremamente feliz." },
+                { title: "Idiom / Phrasal Verb", content: "Once in a blue moon", hint: "Fale de um hábito que ocorre raramente." },
+                { title: "Idiom / Phrasal Verb", content: "Catch up with...", hint: "Use o phrasal verb para falar de reencontros ou pendências." },
+                { title: "Idiom / Phrasal Verb", content: "A piece of cake", hint: "Descreva uma tarefa fácil." },
+                { title: "Idiom / Phrasal Verb", content: "Put up with...", hint: "Fale de algo incómodo que precisa de tolerar." }
+            ],
+            paraphrase: [
+                { title: "Paraphrase Strategy", content: "In other words...", hint: "Explique o conceito anterior por outras palavras." },
+                { title: "Idiom / Synonym", content: "Escalate / Surge (Substitui Increase)", hint: "Evite a palavra 'increase' usando vocabulário rico." },
+                { title: "Academic Synonym", content: "Crucial / Paramount (Substitui Important)", hint: " Eleve o nível do seu vocabulário de grau." },
+                { title: "Paraphrase Strategy", content: "Put simply...", hint: "Resuma uma ideia complexa de forma simples." }
+            ],
+            tenses: [
+                { title: "Target Verb Tense", content: "Present Perfect (have / has done)", hint: "Fale de experiências de vida ou mudanças recentes." },
+                { title: "Target Verb Tense", content: "Past Continuous (was / were doing)", hint: "Descreva o que estava a acontecer num momento passado." },
+                { title: "Target Verb Tense", content: "Second Conditional (If + Past, would...)", hint: "Especule sobre uma situação hipotética." },
+                { title: "Target Verb Tense", content: "Used to + Infinitive", hint: "Fale de hábitos passados que já não pratica." }
+            ],
+            topics: [
+                { title: "IELTS Speaking Topic", content: "Technology & AI", hint: "Como a tecnologia mudou o quotidiano?" },
+                { title: "IELTS Speaking Topic", content: "Environment & Green Cities", hint: "Ações sustentáveis e mobilidade urbana." },
+                { title: "IELTS Speaking Topic", content: "Education & Online Learning", hint: "O futuro das escolas e universidades." },
+                { title: "IELTS Speaking Topic", content: "Tourism & Cultural Travel", hint: "Impactos do turismo de massa nas cidades." },
+                { title: "IELTS Speaking Topic", content: "Health & Lifestyle", hint: "Hábitos de bem-estar e alimentação." }
+            ]
+        };
+
+        let countdownInterval = null;
+
+        function getRandomItem(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        async function startGame() {
+            const difficulty = document.getElementById('difficulty').value;
+            const timerSetting = document.getElementById('timer-setting').value;
+            const board = document.getElementById('game-board');
+
+            // Seleção de acordo com a dificuldade
+            let selectedCards = [];
+            selectedCards.push(getRandomItem(dataPool.linkingWords));
+            selectedCards.push(getRandomItem(dataPool.topics));
+
+            if (difficulty === 'medium' || difficulty === 'hard') {
+                selectedCards.push(getRandomItem(dataPool.fillers));
+                selectedCards.push(getRandomItem(dataPool.idioms));
+            }
+
+            if (difficulty === 'hard') {
+                selectedCards.push(getRandomItem(dataPool.paraphrase));
+                selectedCards.push(getRandomItem(dataPool.tenses));
+            }
+
+            // Renderizar na tela
+            board.innerHTML = '';
+            selectedCards.forEach(card => {
+                const cardEl = document.createElement('div');
+                cardEl.className = 'card';
+                cardEl.innerHTML = `
+                    <div>
+                        <div class="card-category">${card.title}</div>
+                        <div class="card-content">${card.content}</div>
+                    </div>
+                    <div class="card-hint">💡 ${card.hint}</div>
+                `;
+                board.appendChild(cardEl);
+            });
+
+            // Gestão do Timer
+            const timerBox = document.getElementById('timer-box');
+            if (timerSetting === 'off') {
+                timerBox.style.display = 'none';
+            } else {
+                timerBox.style.display = 'block';
+                let timeLeft = parseInt(timerSetting);
+                document.getElementById('countdown').innerText = timeLeft;
+
+                if (countdownInterval) clearInterval(countdownInterval);
+
+                countdownInterval = setInterval(() => {
+                    timeLeft--;
+                    document.getElementById('countdown').innerText = timeLeft;
+                    if (timeLeft <= 0) {
+                        clearInterval(countdownInterval);
+                        alert("Tempo esgotado! Tente avaliar se conseguiu usar todos os elementos sorteados.");
+                    }
+                }, 1000);
+            }
+
+            // Registo opcional no Firestore
+            try {
+                if (window.dbRef && window.addDoc) {
+                    await window.addDoc(window.collection(window.dbRef, "ielts_game_sessions"), {
+                        difficulty: difficulty,
+                        cardsDrawn: selectedCards.map(c => c.content),
+                        timestamp: window.serverTimestamp()
+                    });
+                }
+            } catch (e) {
+                console.log("Sessão praticada localmente (Firestore pendente).");
+            }
+        }
+    </script>
+</body>
+</html>
