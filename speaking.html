@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS Speaking Practice & Descriptors</title>
+    <style>
+        :root {
+            --bg-color: #F8F7FA;
+            --card-bg: #FFFFFF;
+            --text-main: #1A1A1A;
+            --text-muted: #6B3A7E;
+            --primary-purple: #502064;
+            --accent-wine: #6B0F1A;
+            --light-lavender: #D8B4D9;
+            --border-color: #E2D8E5;
+            --success-color: #2e7d32;
+        }
+
+        body {
+            font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .main-wrapper {
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        /* Menu de Navegação Superior */
+        .top-nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .top-nav a {
+            flex: 1;
+            min-width: 110px;
+            text-align: center;
+            padding: 12px;
+            background-color: var(--card-bg);
+            color: var(--primary-purple);
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 6px rgba(80, 32, 100, 0.04);
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .top-nav a.active, .top-nav a:hover {
+            background-color: var(--primary-purple);
+            color: white;
+            border-color: var(--primary-purple);
+        }
+
+        /* Seletor de Partes do Speaking */
+        .speaking-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .sub-tab-btn {
+            background-color: #FFFFFF;
+            color: var(--primary-purple);
+            border: 1px solid var(--light-lavender);
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Century Gothic', CenturyGothic, sans-serif;
+        }
+
+        .sub-tab-btn.active, .sub-tab-btn:hover {
+            background-color: var(--light-lavender);
+            color: var(--primary-purple);
+            border-color: var(--primary-purple);
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(80, 32, 100, 0.08);
+            padding: 30px;
+            box-sizing: border-box;
+            border: 1px solid var(--border-color);
+            display: none;
+        }
+
+        .container.active-section {
+            display: block;
+        }
+
+        h1 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--primary-purple);
+        }
+
+        .subtitle {
+            font-size: 13px;
+            font-style: italic;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .speaking-layout {
+            display: flex;
+            gap: 24px;
+        }
+
+        @media (max-width: 850px) {
+            .speaking-layout {
+                flex-direction: column;
+            }
+        }
+
+        .task-prompt {
+            flex: 1;
+            background: #FAFAFC;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .speaking-evaluation-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .score-input-box {
+            background: #F3ECF5;
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid var(--light-lavender);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .score-input-box label {
+            font-weight: 700;
+            color: var(--primary-purple);
+            font-size: 14px;
+        }
+
+        input[type="number"] {
+            width: 80px;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            text-align: center;
+            font-family: 'Century Gothic', sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--primary-purple);
+        }
+
+        .descriptors-box {
+            background: #FAFAFC;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .descriptors-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary-purple);
+            margin-bottom: 12px;
+            border-bottom: 2px solid var(--light-lavender);
+            padding-bottom: 6px;
+        }
+
+        .criterion-group {
+            margin-bottom: 14px;
+        }
+
+        .criterion-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--accent-wine);
+            margin-bottom: 4px;
+        }
+
+        .comment-textarea {
+            width: 100%;
+            height: 60px;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-family: 'Century Gothic', CenturyGothic, sans-serif;
+            font-size: 12px;
+            resize: vertical;
+            box-sizing: border-box;
+            background-color: #FFFFFF;
+        }
+
+        .comment-textarea:focus {
+            outline: none;
+            border-color: var(--primary-purple);
+            box-shadow: 0 0 0 2px rgba(80, 32, 100, 0.1);
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        button.action-btn {
+            flex: 1;
+            padding: 10px 16px;
+            font-size: 13px;
+            font-weight: 700;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Century Gothic', CenturyGothic, sans-serif;
+        }
+
+        .submit-btn { background-color: var(--primary-purple); color: white; }
+        .submit-btn:hover { background-color: #3b164a; }
+        .clear-btn { background-color: var(--border-color); color: var(--primary-purple); }
+        .clear-btn:hover { background-color: #d1c2d4; }
+
+        .status-msg { text-align: center; font-size: 11px; font-style: italic; color: var(--text-muted); margin-top: 8px; }
+    </style>
+</head>
+<body>
+    <div class="main-wrapper">
+        <!-- Navegação Principal -->
+        <nav class="top-nav">
+            <a href="index.html">Overview</a>
+            <a href="listening.html">Listening</a>
+            <a href="reading.html">Reading</a>
+            <a href="writing.html">Writing</a>
+            <a href="speaking.html" class="active">Speaking</a>
+            <a href="scores.html">Scores</a>
+        </nav>
+
+        <!-- Seletor de Partes do Speaking -->
+        <div class="speaking-selector">
+            <button class="sub-tab-btn active" onclick="switchTask('spk_part1')">Part 1 (Introduction & Interview)</button>
+            <button class="sub-tab-btn" onclick="switchTask('spk_part2')">Part 2 (Long Turn / Cue Card)</button>
+            <button class="sub-tab-btn" onclick="switchTask('spk_part3')">Part 3 (Two-way Discussion)</button>
+        </div>
+
+        <!-- ================= SPEAKING PART 1 ================= -->
+        <div id="spk_part1" class="container active-section" data-task-id="spk_part1">
+            <h1>IELTS Speaking Practice</h1>
+            <div class="subtitle">Part 1 - Introduction and Interview (4-5 minutes)</div>
+            <div class="speaking-layout">
+                <div class="task-prompt">
+                    <p><strong>The examiner will ask you general questions about yourself and a range of familiar topics, such as home, family, work, studies and interests[cite: 7, 23].</strong></p>
+                    <p><em>Exemplo de Tópicos Comuns:</em></p>
+                    <ul>
+                        <li>Where do you live? Do you live in a house or an apartment?</li>
+                        <li>What do you like about your hometown?</li>
+                        <li>Do you work or are you a student? What subjects are you studying?</li>
+                        <li>Let's talk about free time. What do you usually do at weekends?</li>
+                    </ul>
+                </div>
+                <div class="speaking-evaluation-area">
+                    <div class="score-input-box">
+                        <label for="input-spk_part1">Atribuição de Nota (Band):</label>
+                        <input type="number" id="input-spk_part1" min="0" max="9" step="0.5" placeholder="0.0">
+                    </div>
+                    <div class="descriptors-box">
+                        <div class="descriptors-title">Band Descriptors & Feedback (Part 1)</div>
+                        <div class="criterion-group">
+                            <div class="criterion-label">1. Fluency and Coherence[cite: 45]</div>
+                            <textarea class="comment-textarea" data-crit="fc" placeholder="Comentários sobre fluência, hesitações e coesão..."></textarea>
+                        </div>
+                        <div class="criterion-group">
+                            <div class="criterion-label">2. Lexical Resource (Vocabulary)[cite: 45]</div>
+                            <textarea class="comment-textarea" data-crit="lr" placeholder="Comentários sobre variedade e precisão de vocabulário..."></textarea>
+                        </div>
+                        <div class="criterion-group">
+                            <div class="criterion-label">3. Grammatical Range and Accuracy[cite: 45]</div>
+                            <textarea class="comment-textarea" data-crit="gra" placeholder="Comentários sobre estruturas gramaticais e exatidão..."></textarea>
+                        </div>
+                        <div class="criterion-group">
+                            <div class="criterion-label">4. Pronunciation[cite: 45]</div>
+                            <textarea class="comment-textarea" data-crit="pron" placeholder="Comentários sobre entoação, clareza e ritmo..."></textarea>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <button type="button" class="action-btn submit-btn">Salvar Avaliação</button>
+                        <button type="button" class="action-btn clear-btn">Limpar</button>
+                    </div>
+                    <div class="status-msg">Sincronizado com a nuvem</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= SPEAKING PART 2 ================= -->
+        <div id="spk_part2" class="container" data-task-id="spk_part2">
+            <h1>IELTS Speaking Practice</h1>
+            <div class="subtitle">Part 2 - Long Turn / Cue Card (3-4 minutes)</div>
+            <div class="speaking-layout">
+                <div class="task-prompt">
+                    <p><strong>You will be given a task card with a topic. You have 1 minute to prepare and make notes. Then you must speak for 1 to 2 minutes.</strong></p>
+                    <div style="background: #FFFFFF; border: 1px solid var(--border-color); padding: 14px; border-radius: 6px; margin-top: 12px;">
+                        <p style="margin-top:0;"><strong>Describe a book that you recently read.</strong></p>
+                        <p>You should say:</p>
+                        <ul style="margin-bottom:0;">
+                            <li>what kind of book it is</li>
+                            <li>what it is about</li>
+                            <li>why you decided to read it</li>
+                            <li>and explain how you felt about it.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="speaking-evaluation-area">
+                    <div class="score-input-box">
+                        <label for="input-spk_part2">Atribuição de Nota (Band):</label>
+                        <input type="number" id="input-spk_part2" min="0" max="9" step="0.5" placeholder="0.0">
+                    </div>
+                    <div class="descriptors-box">
+                        <div class="descriptors-title">Band Descriptors & Feedback (Part 2)</div>
+                        <div class="criterion-group">
+                            <div class="criterion-label">1. Fluency and Coherence[cite: 45]</div>
+                            <textarea class="comment-textarea" data-crit="fc" placeholder="Comentários sobre capacidade de falar sem interrupções excessivas..."></textarea>
+                        </div>
+                        <div class="criterion-group">
+                            <div class="criterion-label">2. Lexical Resource (Vocabulary)[cite: 45]</div>
+                            <textarea class="comment-textarea" data-crit="lr" placeholder="Comentários sobre vocabulário temático e paráfrases..."></textarea>
+                        </div>
+                        <div class="criterion-group">
+                            <div class="criterion-label">3. Grammatical Range and Accuracy[cite: 45]</div>
+                            <textarea class="comment-textarea" data-crit="gra" placeholder="Comentários sobre estruturas complexas utilizadas..."></textarea>
+                        </div>
+                        <div class="criterion-group">
+                            <div class="criterion-label">4. Pronunciation[cite: 45]</div>
+                            <textarea class="comment-textarea" data-crit="pron" placeholder="Comentários sobre acentuação e inteligibilidade..."></textarea>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <button type="button" class="action-btn submit-btn">Salvar Avaliação</button>
+                        <button type="button" class="action-btn clear-btn">Limpar</button>
+                    </div>
+                    <div class="status-msg">Sincronizado com a nuvem</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= SPEAKING PART 3 ================= -->
+        <div id="spk_part3" class="container" data-task-id="spk_part3">
+            <h1>IELTS Speaking Practice</h1>
+            <div class="subtitle">Part 3 - Two-way Discussion (4-5 minutes)</div>
+            <div class="speaking-layout">
+                <div class="task-prompt">
+                    <p><strong>The examiner will ask further questions connected to the topic in Part 2. These questions give you an opportunity to discuss more abstract ideas and issues[cite: 7, 23].</strong></p>
+                    <p><em>Exemplo de Questões de Discussão:</em></p>
+                    <ul>
+                        <li>What are the differences between reading books in print and reading them digitally?</li>
+                        <li>Do you think people nowadays read books less than they did in the past? Why?</li>
+                        <li>What factors make a book successful internationally?</li>
+                    </ul>
+                </div>
+                <div class="speaking-evaluation-area">
+                    <div class="score-input-box">
+                        <label for="input-spk_part3">Atribuição de Nota (Band):</label>
+                        <input type="number" id="input-spk_part3" min="0" max="9" step="0.5" placeholder="0.0">
+                    </div>
+                    <div class="descriptors-box">
+                        <div class="descriptors-title">Band Descriptors & Feedback (Part 3)</div>
+                        <div class="criterion-group">
+                            <div class="criterion-label">1. Fluency and Coherence[cite: 45]</div>
+                            <textarea class="comment-textarea" data-crit="fc" placeholder="Comentários sobre argumentação fluida e desenvolvimento de ideias..."></textarea>
+                        </div>
+                        <div class="criterion-group">
+                            <div class="criterion-label">2. Lexical Resource (Vocabulary)[cite: 45]</div>
+                            <textarea class="comment-textarea" data-crit="lr" placeholder="Comentários sobre vocabulário abstrato e preciso..."></textarea>
+                        </div>
+                        <div class="criterion-group">
+                            <div class="criterion-label">3. Grammatical Range and Accuracy[cite: 45]</div>
+                            <textarea class="comment-textarea" data-crit="gra" placeholder="Comentários sobre domínio gramatical em tópicos complexos..."></textarea>
+                        </div>
+                        <div class="criterion-group">
+                            <div class="criterion-label">4. Pronunciation[cite: 45]</div>
+                            <textarea class="comment-textarea" data-crit="pron" placeholder="Comentários sobre entoação em discursos longos..."></textarea>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <button type="button" class="action-btn submit-btn">Salvar Avaliação</button>
+                        <button type="button" class="action-btn clear-btn">Limpar</button>
+                    </div>
+                    <div class="status-msg">Sincronizado com a nuvem</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs e Lógica -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, setDoc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC2pSWdBIREaPmpOvaiNzZWGUuCEupxp1c",
+            authDomain: "studendtrackerpanel.firebaseapp.com",
+            projectId: "studendtrackerpanel",
+            storageBucket: "studendtrackerpanel.firebasestorage.app",
+            messagingSenderId: "1004678184015",
+            appId: "1:1004678184015:web:be965625c08d8ee73ffe3a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.switchTask = function(taskId) {
+            document.querySelectorAll('.container').forEach(el => el.classList.remove('active-section'));
+            document.querySelectorAll('.sub-tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(taskId).classList.add('active-section');
+            if (event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+            }
+            loadSavedData(taskId);
+        };
+
+        document.querySelectorAll('.container').forEach(container => {
+            const taskId = container.getAttribute('data-task-id');
+            const scoreInput = container.querySelector('input[type="number"]');
+            const submitBtn = container.querySelector('.submit-btn');
+            const clearBtn = container.querySelector('.clear-btn');
+            const statusMsg = container.querySelector('.status-msg');
+
+            submitBtn.addEventListener('click', async () => {
+                const scoreVal = parseFloat(scoreInput.value) || 0;
+                let comments = {};
+                container.querySelectorAll('.comment-textarea').forEach(ta => {
+                    comments[ta.getAttribute('data-crit')] = ta.value;
+                });
+
+                statusMsg.textContent = "Salvando na nuvem...";
+                try {
+                    // Salva os dados específicos da tarefa de Speaking
+                    await setDoc(doc(db, "ielts_practice", `speaking_${taskId}`), {
+                        score: scoreVal,
+                        comments: comments,
+                        updatedAt: new Date().toISOString()
+                    });
+
+                    // Se for a Part 2 ou se preferir atualizar o global, atualizamos também o Speaking Score geral na nuvem
+                    if (taskId === 'spk_part2' || scoreVal > 0) {
+                        const scoresSnap = await getDoc(doc(db, "ielts_practice", "scores_summary"));
+                        let scoresData = scoresSnap.exists() ? scoresSnap.data() : {};
+                        scoresData.speakingScore = scoreVal;
+                        scoresData.updatedAt = new Date().toISOString();
+                        await setDoc(doc(db, "ielts_practice", "scores_summary"), scoresData);
+                    }
+
+                    statusMsg.textContent = "Avaliação salva com sucesso!";
+                } catch (error) {
+                    console.error("Erro ao salvar:", error);
+                    statusMsg.textContent = "Erro ao salvar na nuvem.";
+                }
+            });
+
+            clearBtn.addEventListener('click', async () => {
+                scoreInput.value = "";
+                container.querySelectorAll('.comment-textarea').forEach(ta => ta.value = "");
+                statusMsg.textContent = "Limpando dados...";
+                try {
+                    await deleteDoc(doc(db, "ielts_practice", `speaking_${taskId}`));
+                    statusMsg.textContent = "Dados limpos com sucesso!";
+                } catch (error) {
+                    statusMsg.textContent = "Erro ao resetar.";
+                }
+            });
+        });
+
+        async function loadSavedData(taskId) {
+            try {
+                const docRef = doc(db, "ielts_practice", `speaking_${taskId}`);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    const container = document.getElementById(taskId);
+                    const scoreInput = container.querySelector('input[type="number"]');
+                    if (data.score !== undefined) scoreInput.value = data.score;
+                    if (data.comments) {
+                        container.querySelectorAll('.comment-textarea').forEach(ta => {
+                            const crit = ta.getAttribute('data-crit');
+                            if (data.comments[crit]) ta.value = data.comments[crit];
+                        });
+                    }
+                }
+            } catch (e) {
+                console.error("Erro ao carregar dados", e);
+            }
+        }
+
+        loadSavedData('spk_part1');
+    </script>
+</body>
+</html>
