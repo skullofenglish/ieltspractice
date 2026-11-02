@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS Scores & Overall Band Calculator</title>
+    <style>
+        :root {
+            --bg-color: #F8F7FA;
+            --card-bg: #FFFFFF;
+            --text-main: #1A1A1A;
+            --text-muted: #6B3A7E;
+            --primary-purple: #502064;
+            --accent-wine: #6B0F1A;
+            --accent-pink: #F48FB1;
+            --light-lavender: #D8B4D9;
+            --border-color: #E2D8E5;
+            --success-color: #2e7d32;
+        }
+
+        body {
+            font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .main-wrapper {
+            width: 100%;
+            max-width: 850px;
+        }
+
+        /* Menu de Navegação Superior */
+        .top-nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .top-nav a {
+            flex: 1;
+            min-width: 110px;
+            text-align: center;
+            padding: 12px;
+            background-color: var(--card-bg);
+            color: var(--primary-purple);
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 6px rgba(80, 32, 100, 0.04);
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .top-nav a.active, .top-nav a:hover {
+            background-color: var(--primary-purple);
+            color: white;
+            border-color: var(--primary-purple);
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(80, 32, 100, 0.08);
+            padding: 36px;
+            box-sizing: border-box;
+            border: 1px solid var(--border-color);
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--primary-purple);
+        }
+
+        .subtitle {
+            font-size: 13px;
+            font-style: italic;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        /* Painel de Resultado Geral */
+        .overall-box {
+            background: linear-gradient(135deg, var(--primary-purple), var(--accent-wine));
+            color: white;
+            padding: 24px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(80, 32, 100, 0.15);
+        }
+
+        .overall-title {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            opacity: 0.9;
+        }
+
+        .overall-score {
+            font-size: 56px;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+
+        .overall-desc {
+            font-size: 13px;
+            font-style: italic;
+            opacity: 0.9;
+        }
+
+        /* Grelha de Scores Individuais */
+        .scores-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .score-card {
+            background: #FAFAFC;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 18px;
+            text-align: center;
+        }
+
+        .score-card h3 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            color: var(--primary-purple);
+        }
+
+        .score-val {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--accent-wine);
+            margin-bottom: 6px;
+        }
+
+        .score-detail {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        input[type="number"] {
+            width: 70px;
+            padding: 6px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            text-align: center;
+            font-family: 'Century Gothic', sans-serif;
+            font-size: 14px;
+            font-weight: bold;
+            color: var(--primary-purple);
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 16px;
+        }
+
+        button.action-btn {
+            flex: 1;
+            padding: 12px 16px;
+            font-size: 13px;
+            font-weight: 700;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Century Gothic', CenturyGothic, sans-serif;
+        }
+
+        .submit-btn {
+            background-color: var(--primary-purple);
+            color: white;
+        }
+
+        .submit-btn:hover {
+            background-color: #3b164a;
+        }
+
+        .status-msg {
+            text-align: center;
+            font-size: 11px;
+            font-style: italic;
+            color: var(--text-muted);
+            margin-top: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-wrapper">
+        <!-- Navegação Principal -->
+        <nav class="top-nav">
+            <a href="index.html">Overview</a>
+            <a href="listening.html">Listening</a>
+            <a href="reading.html">Reading</a>
+            <a href="writing.html">Writing</a>
+            <a href="speaking.html">Speaking</a>
+            <a href="scores.html" class="active">Scores</a>
+        </nav>
+
+        <div class="container">
+            <h1>IELTS Band Score Summary</h1>
+            <div class="subtitle">Cálculo Automático da Nota Geral com base nas 4 Habilidades</div>
+
+            <!-- Painel de Destaque da Nota Geral -->
+            <div class="overall-box">
+                <div class="overall-title">Overall Band Score</div>
+                <div class="overall-score" id="overall-display">-</div>
+                <div class="overall-desc" id="overall-level">Aguardando dados das 4 secções</div>
+            </div>
+
+            <!-- Grelha de Componentes -->
+            <div class="scores-grid">
+                <!-- Listening -->
+                <div class="score-card">
+                    <h3>Listening</h3>
+                    <div class="score-val" id="score-listening">-</div>
+                    <div class="score-detail" id="detail-listening">Acertos: 0 / 25</div>
+                </div>
+
+                <!-- Reading -->
+                <div class="score-card">
+                    <h3>Reading</h3>
+                    <div class="score-val" id="score-reading">-</div>
+                    <div class="score-detail" id="detail-reading">Acertos: 0 / 47</div>
+                </div>
+
+                <!-- Writing -->
+                <div class="score-card">
+                    <h3>Writing</h3>
+                    <div class="score-val" style="margin-top: 4px;">
+                        <input type="number" id="input-writing" min="0" max="9" step="0.5" placeholder="0.0" oninput="recalculateAll()">
+                    </div>
+                    <div class="score-detail">Atribuído via Descriptors</div>
+                </div>
+
+                <!-- Speaking -->
+                <div class="score-card">
+                    <h3>Speaking</h3>
+                    <div class="score-val" style="margin-top: 4px;">
+                        <input type="number" id="input-speaking" min="0" max="9" step="0.5" placeholder="0.0" oninput="recalculateAll()">
+                    </div>
+                    <div class="score-detail">Atribuído via Descriptors</div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button type="button" class="action-btn submit-btn" onclick="saveScores()">Salvar Quadro de Notas</button>
+            </div>
+            <div class="status-msg" id="status-msg">Sincronizado com a nuvem</div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC2pSWdBIREaPmpOvaiNzZWGUuCEupxp1c",
+            authDomain: "studendtrackerpanel.firebaseapp.com",
+            projectId: "studendtrackerpanel",
+            storageBucket: "studendtrackerpanel.firebasestorage.app",
+            messagingSenderId: "1004678184015",
+            appId: "1:1004678184015:web:be965625c08d8ee73ffe3a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Tabela Proporcional Listening (25 Perguntas)
+        function getListeningBand(correct) {
+            if (correct >= 24) return 9.0;
+            if (correct >= 23) return 8.5;
+            if (correct >= 22) return 8.0;
+            if (correct >= 20) return 7.5;
+            if (correct >= 19) return 7.0;
+            if (correct >= 16) return 6.5;
+            if (correct >= 14) return 6.0;
+            if (correct >= 11) return 5.5;
+            if (correct >= 10) return 5.0;
+            if (correct >= 8)  return 4.5;
+            if (correct >= 6)  return 4.0;
+            return 0.0;
+        }
+
+        // Tabela Proporcional Reading (47 Perguntas)
+        function getReadingBand(correct) {
+            if (correct >= 46) return 9.0;
+            if (correct >= 43) return 8.5;
+            if (correct >= 41) return 8.0;
+            if (correct >= 39) return 7.5;
+            if (correct >= 35) return 7.0;
+            if (correct >= 32) return 6.5;
+            if (correct >= 27) return 6.0;
+            if (correct >= 22) return 5.5;
+            if (correct >= 18) return 5.0;
+            if (correct >= 15) return 4.5;
+            if (correct >= 12) return 4.0;
+            return 0.0;
+        }
+
+        // Regra Oficial de Arredondamento IELTS para Overall Score
+        function calculateIELTSOverall(l, r, w, s) {
+            const avg = (l + r + w + s) / 4;
+            const floor = Math.floor(avg);
+            const decimal = avg - floor;
+
+            if (decimal < 0.25) return floor;
+            if (decimal < 0.75) return floor + 0.5;
+            return floor + 1.0;
+        }
+
+        function getBandDescription(score) {
+            if (score >= 9.0) return "Expert User";
+            if (score >= 8.0) return "Very Good User";
+            if (score >= 7.0) return "Good User";
+            if (score >= 6.0) return "Competent User";
+            if (score >= 5.0) return "Modest User";
+            if (score >= 4.0) return "Limited User";
+            return "Incomplete";
+        }
+
+        let currentListeningBand = 0;
+        let currentReadingBand = 0;
+
+        window.recalculateAll = function() {
+            const wVal = parseFloat(document.getElementById('input-writing').value) || 0;
+            const sVal = parseFloat(document.getElementById('input-speaking').value) || 0;
+
+            if (currentListeningBand > 0 || currentReadingBand > 0 || wVal > 0 || sVal > 0) {
+                const overall = calculateIELTSOverall(currentListeningBand, currentReadingBand, wVal, sVal);
+                document.getElementById('overall-display').textContent = overall.toFixed(1);
+                document.getElementById('overall-level').textContent = getBandDescription(overall);
+            } else {
+                document.getElementById('overall-display').textContent = "-";
+                document.getElementById('overall-level').textContent = "Aguardando dados das 4 secções";
+            }
+        };
+
+        async function fetchAllScores() {
+            const statusMsg = document.getElementById('status-msg');
+            statusMsg.textContent = "Carregando notas do Firebase...";
+
+            // 1. Calcular acertos do Listening (Task 1 a 7)
+            let listeningCorrect = 0;
+            const listeningKeys = {
+                task1: { q1: "She wanted to understand her own background.", q2: "interviews", q3: "organising what she had collected" },
+                task2: { q1: "designers", q2: "managers", q3: "electricians" },
+                task3: { q1: "motivation", q2: "time-management", q3: "modules", q4: "summer school" },
+                task4: { q1: "challenge", q2: "school", q3: "health", q4: "interests", q5: "tutor" },
+                task5: { q1: "round", q2: "12 years", q3: "4", q4: "green", q5: "reasonable", q6: "1.20 metres", q7: "lock" },
+                task6: { q1: "H", q2: "A", q3: "C" },
+                task7: { multi: ["book reservations", "location of rooms", "café"] }
+            };
+
+            for (let i = 1; i <= 7; i++) {
+                try {
+                    const snap = await getDoc(doc(db, "ielts_practice", `listening_task${i}`));
+                    if (snap.exists() && snap.data().answers) {
+                        const ans = snap.data().answers;
+                        const keys = listeningKeys[`task${i}`];
+                        if (i === 7) {
+                            const sel = ans.multi || [];
+                            if (sel.filter(x => keys.multi.includes(x)).length === 3 && sel.length === 3) listeningCorrect += 3;
+                        } else {
+                            for (const [q, val] of Object.entries(keys)) {
+                                const uVal = (ans[q] || "").trim().toLowerCase();
+                                if (uVal && (uVal === val.toLowerCase() || uVal.includes(val.toLowerCase()))) listeningCorrect++;
+                            }
+                        }
+                    }
+                } catch(e){}
+            }
+
+            currentListeningBand = getListeningBand(listeningCorrect);
+            document.getElementById('score-listening').textContent = currentListeningBand > 0 ? currentListeningBand.toFixed(1) : "0.0";
+            document.getElementById('detail-listening').textContent = `Acertos: ${listeningCorrect} / 25`;
+
+            // 2. Calcular acertos do Reading (Task 1 a 10)
+            let readingCorrect = 0;
+            const readingKeys = {
+                task1: { q1: "abolishing pay schemes that are based on age", q2: "allows the expertise of older workers to be put to use", q3: "appeal to distinct groups of older workers", q4: "older people are good at running their own business" },
+                task2: { q1: "she started by seeking to understand how basic terms were used in the past", q2: "she examined how their methods evolved and changed", q3: "they used old ways of analysing written information for new purposes" },
+                task3: { q1: "theropods", q2: "collarbones", q3: "reptile", q4: "similarities", q5: "claw" },
+                task4: { q1: "material", q2: "fundamental", q3: "complex", q4: "easy" },
+                task5: { q1: "frustration", q2: "first-time user", q3: "essential", q4: "special knowledge", q5: "legal formulations" },
+                task6: { q1: "A", q2: "A", q3: "B", q4: "E" },
+                task7: { q1: "temperate", q2: "sub-tropical", q3: "South African tunneling", q4: "early spring", q5: "two" },
+                task8: { q1: "thorium", q2: "pitchblende", q3: "radium", q4: "soldiers", q5: "illness", q6: "neutron" },
+                task9: { q1: "FALSE", q2: "NOT GIVEN", q3: "TRUE" },
+                task10: {
+                    q1_2: ["They can predict areas that may cause trouble in the future.", "They are more skilled in personal relationships."],
+                    q3_4: ["They do not stay with the same company for very long.", "They are not as well educated as older workers."]
+                }
+            };
+
+            for (let i = 1; i <= 10; i++) {
+                try {
+                    const snap = await getDoc(doc(db, "ielts_practice", `reading_task${i}`));
+                    if (snap.exists() && snap.data().answers) {
+                        const ans = snap.data().answers;
+                        const keys = readingKeys[`task${i}`];
+                        if (i === 10) {
+                            if ((ans.q1_2 || []).filter(x => keys.q1_2.includes(x)).length === 2) readingCorrect += 2;
+                            if ((ans.q3_4 || []).filter(x => keys.q3_4.includes(x)).length === 2) readingCorrect += 2;
+                        } else {
+                            for (const [q, val] of Object.entries(keys)) {
+                                const uVal = (ans[q] || "").trim().toLowerCase();
+                                if (uVal && (uVal === val.toLowerCase() || uVal.includes(val.toLowerCase()))) readingCorrect++;
+                            }
+                        }
+                    }
+                } catch(e){}
+            }
+
+            currentReadingBand = getReadingBand(readingCorrect);
+            document.getElementById('score-reading').textContent = currentReadingBand > 0 ? currentReadingBand.toFixed(1) : "0.0";
+            document.getElementById('detail-reading').textContent = `Acertos: ${readingCorrect} / 47`;
+
+            // 3. Carregar notas guardadas do Writing e Speaking
+            try {
+                const savedScores = await getDoc(doc(db, "ielts_practice", "scores_summary"));
+                if (savedScores.exists()) {
+                    const data = savedScores.data();
+                    if (data.writingScore) document.getElementById('input-writing').value = data.writingScore;
+                    if (data.speakingScore) document.getElementById('input-speaking').value = data.speakingScore;
+                }
+            } catch(e){}
+
+            recalculateAll();
+            statusMsg.textContent = "Sincronizado com a nuvem";
+        }
+
+        window.saveScores = async function() {
+            const statusMsg = document.getElementById('status-msg');
+            statusMsg.textContent = "Salvando notas na nuvem...";
+            const wVal = parseFloat(document.getElementById('input-writing').value) || 0;
+            const sVal = parseFloat(document.getElementById('input-speaking').value) || 0;
+            const overall = calculateIELTSOverall(currentListeningBand, currentReadingBand, wVal, sVal);
+
+            try {
+                await setDoc(doc(db, "ielts_practice", "scores_summary"), {
+                    listeningScore: currentListeningBand,
+                    readingScore: currentReadingBand,
+                    writingScore: wVal,
+                    speakingScore: sVal,
+                    overallScore: overall,
+                    updatedAt: new Date().toISOString()
+                });
+                statusMsg.textContent = "Notas salvas com sucesso!";
+            } catch(e) {
+                statusMsg.textContent = "Erro ao salvar na nuvem.";
+            }
+        };
+
+        fetchAllScores();
+    </script>
+</body>
+</html>
