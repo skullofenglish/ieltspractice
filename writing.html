@@ -170,7 +170,7 @@
 
         .essay-textarea {
             width: 100%;
-            height: 320px;
+            height: 260px;
             padding: 14px;
             border: 1px solid var(--border-color);
             border-radius: 8px;
@@ -199,7 +199,7 @@
         .actions {
             display: flex;
             gap: 12px;
-            margin-top: 16px;
+            margin-top: 12px;
         }
 
         button.action-btn {
@@ -224,8 +224,56 @@
             font-size: 12px; 
             font-style: italic; 
             color: var(--text-muted); 
-            margin-top: 8px; 
+            margin-top: 6px; 
             min-height: 18px;
+        }
+
+        /* Teacher / Examiner Correction Box */
+        .correction-panel {
+            margin-top: 20px;
+            background-color: #FBF8FC;
+            border: 1px solid var(--light-lavender);
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .correction-panel h3 {
+            font-size: 14px;
+            color: var(--primary-purple);
+            margin-top: 0;
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 6px;
+        }
+
+        .descriptor-feedback-group {
+            margin-bottom: 10px;
+        }
+
+        .descriptor-feedback-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: bold;
+            color: var(--text-muted);
+            margin-bottom: 3px;
+        }
+
+        .descriptor-feedback-group textarea {
+            width: 100%;
+            height: 55px;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-family: 'Century Gothic', CenturyGothic, sans-serif;
+            font-size: 12px;
+            resize: vertical;
+            background-color: #FFF;
+            box-sizing: border-box;
+        }
+
+        .descriptor-feedback-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-purple);
         }
 
         /* Band Descriptors Table Styling */
@@ -297,8 +345,11 @@
             <button class="sub-tab-btn descriptors-btn" onclick="switchTask('w_band_descriptors', this)">Band Descriptors</button>
         </div>
 
+        <!-- Template Macro de Tarefa de Escrita (Gerado para todas as 6 tarefas) -->
+        <!-- Função auxiliar que injeta o layout padrão com os campos de correção por descritor -->
+
         <!-- TASK 1: TRANSPORT -->
-        <div id="w_task1_transport" class="container active-section" data-task-id="w_task1_transport">
+        <div id="w_task1_transport" class="container active-section" data-task-id="w_task1_transport" data-task-type="task1">
             <h1>Academic Writing Task 1: Transport</h1>
             <div class="subtitle">Spend about 20 minutes on this task. Write at least 150 words.</div>
             <div class="writing-layout">
@@ -310,6 +361,28 @@
                 <div class="writing-input-area">
                     <textarea class="essay-textarea" placeholder="Digite a sua redação aqui..."></textarea>
                     <div class="word-counter">Palavras: <span class="count">0</span></div>
+                    
+                    <!-- Painel de Correção por Descritor -->
+                    <div class="correction-panel">
+                        <h3>Feedback do Professor / Examinador</h3>
+                        <div class="descriptor-feedback-group">
+                            <label class="desc-label-1">Task Achievement / Response:</label>
+                            <textarea class="feedback-ta" placeholder="Comentários sobre o cumprimento da tarefa e clareza da posição..."></textarea>
+                        </div>
+                        <div class="descriptor-feedback-group">
+                            <label>Coherence & Cohesion:</label>
+                            <textarea class="feedback-cc" placeholder="Comentários sobre a organização, progressão lógica e conectivos..."></textarea>
+                        </div>
+                        <div class="descriptor-feedback-group">
+                            <label>Lexical Resource:</label>
+                            <textarea class="feedback-lr" placeholder="Comentários sobre vocabulário, precisão e uso de termos acadêmicos..."></textarea>
+                        </div>
+                        <div class="descriptor-feedback-group">
+                            <label>Grammatical Range & Accuracy:</label>
+                            <textarea class="feedback-gra" placeholder="Comentários sobre estruturas gramaticais, pontuação e precisão..."></textarea>
+                        </div>
+                    </div>
+
                     <div class="actions">
                         <button type="button" class="action-btn submit-btn">Enviar / Salvar</button>
                         <button type="button" class="action-btn clear-btn">Limpar</button>
@@ -320,7 +393,7 @@
         </div>
 
         <!-- TASK 1: EDUCATION -->
-        <div id="w_task1a_education" class="container" data-task-id="w_task1a_education">
+        <div id="w_task1a_education" class="container" data-task-id="w_task1a_education" data-task-type="task1">
             <h1>Academic Writing Task 1: Education</h1>
             <div class="subtitle">Spend about 20 minutes on this task. Write at least 150 words.</div>
             <div class="writing-layout">
@@ -332,6 +405,27 @@
                 <div class="writing-input-area">
                     <textarea class="essay-textarea" placeholder="Digite a sua redação aqui..."></textarea>
                     <div class="word-counter">Palavras: <span class="count">0</span></div>
+                    
+                    <div class="correction-panel">
+                        <h3>Feedback do Professor / Examinador</h3>
+                        <div class="descriptor-feedback-group">
+                            <label class="desc-label-1">Task Achievement / Response:</label>
+                            <textarea class="feedback-ta" placeholder="Comentários sobre o cumprimento da tarefa e clareza da posição..."></textarea>
+                        </div>
+                        <div class="descriptor-feedback-group">
+                            <label>Coherence & Cohesion:</label>
+                            <textarea class="feedback-cc" placeholder="Comentários sobre a organização, progressão lógica e conectivos..."></textarea>
+                        </div>
+                        <div class="descriptor-feedback-group">
+                            <label>Lexical Resource:</label>
+                            <textarea class="feedback-lr" placeholder="Comentários sobre vocabulário, precisão e uso de termos acadêmicos..."></textarea>
+                        </div>
+                        <div class="descriptor-feedback-group">
+                            <label>Grammatical Range & Accuracy:</label>
+                            <textarea class="feedback-gra" placeholder="Comentários sobre estruturas gramaticais, pontuação e precisão..."></textarea>
+                        </div>
+                    </div>
+
                     <div class="actions">
                         <button type="button" class="action-btn submit-btn">Enviar / Salvar</button>
                         <button type="button" class="action-btn clear-btn">Limpar</button>
@@ -342,7 +436,7 @@
         </div>
 
         <!-- TASK 1: MEDIA -->
-        <div id="w_task1b_media" class="container" data-task-id="w_task1b_media">
+        <div id="w_task1b_media" class="container" data-task-id="w_task1b_media" data-task-type="task1">
             <h1>Academic Writing Task 1: Media</h1>
             <div class="subtitle">Spend about 20 minutes on this task. Write at least 150 words.</div>
             <div class="writing-layout">
@@ -354,6 +448,27 @@
                 <div class="writing-input-area">
                     <textarea class="essay-textarea" placeholder="Digite a sua redação aqui..."></textarea>
                     <div class="word-counter">Palavras: <span class="count">0</span></div>
+                    
+                    <div class="correction-panel">
+                        <h3>Feedback do Professor / Examinador</h3>
+                        <div class="descriptor-feedback-group">
+                            <label class="desc-label-1">Task Achievement / Response:</label>
+                            <textarea class="feedback-ta" placeholder="Comentários sobre o cumprimento da tarefa e clareza da posição..."></textarea>
+                        </div>
+                        <div class="descriptor-feedback-group">
+                            <label>Coherence & Cohesion:</label>
+                            <textarea class="feedback-cc" placeholder="Comentários sobre a organização, progressão lógica e conectivos..."></textarea>
+                        </div>
+                        <div class="descriptor-feedback-group">
+                            <label>Lexical Resource:</label>
+                            <textarea class="feedback-lr" placeholder="Comentários sobre vocabulário, precisão e uso de termos acadêmicos..."></textarea>
+                        </div>
+                        <div class="descriptor-feedback-group">
+                            <label>Grammatical Range & Accuracy:</label>
+                            <textarea class="feedback-gra" placeholder="Comentários sobre estruturas gramaticais, pontuação e precisão..."></textarea>
+                        </div>
+                    </div>
+
                     <div class="actions">
                         <button type="button" class="action-btn submit-btn">Enviar / Salvar</button>
                         <button type="button" class="action-btn clear-btn">Limpar</button>
@@ -364,7 +479,7 @@
         </div>
 
         <!-- TASK 1: BRICKS -->
-        <div id="w_task1c_bricks" class="container" data-task-id="w_task1c_bricks">
+        <div id="w_task1c_bricks" class="container" data-task-id="w_task1c_bricks" data-task-type="task1">
             <h1>Academic Writing Task 1: Bricks Manufacturing</h1>
             <div class="subtitle">Spend about 20 minutes on this task. Write at least 150 words.</div>
             <div class="writing-layout">
@@ -376,6 +491,27 @@
                 <div class="writing-input-area">
                     <textarea class="essay-textarea" placeholder="Digite a sua redação aqui..."></textarea>
                     <div class="word-counter">Palavras: <span class="count">0</span></div>
+                    
+                    <div class="correction-panel">
+                        <h3>Feedback do Professor / Examinador</h3>
+                        <div class="descriptor-feedback-group">
+                            <label class="desc-label-1">Task Achievement / Response:</label>
+                            <textarea class="feedback-ta" placeholder="Comentários sobre o cumprimento da tarefa e clareza da posição..."></textarea>
+                        </div>
+                        <div class="descriptor-feedback-group">
+                            <label>Coherence & Cohesion:</label>
+                            <textarea class="feedback-cc" placeholder="Comentários sobre a organização, progressão lógica e conectivos..."></textarea>
+                        </div>
+                        <div class="descriptor-feedback-group">
+                            <label>Lexical Resource:</label>
+                            <textarea class="feedback-lr" placeholder="Comentários sobre vocabulário, precisão e uso de termos acadêmicos..."></textarea>
+                        </div>
+                        <div class="descriptor-feedback-group">
+                            <label>Grammatical Range & Accuracy:</label>
+                            <textarea class="feedback-gra" placeholder="Comentários sobre estruturas gramaticais, pontuação e precisão..."></textarea>
+                        </div>
+                    </div>
+
                     <div class="actions">
                         <button type="button" class="action-btn submit-btn">Enviar / Salvar</button>
                         <button type="button" class="action-btn clear-btn">Limpar</button>
@@ -386,7 +522,7 @@
         </div>
 
         <!-- TASK 2: WEALTH -->
-        <div id="w_task2a_wealth" class="container" data-task-id="w_task2a_wealth">
+        <div id="w_task2a_wealth" class="container" data-task-id="w_task2a_wealth" data-task-type="task2">
             <h1>Academic Writing Task 2: Wealth & Upbringing</h1>
             <div class="subtitle">Spend about 40 minutes on this task. Write at least 250 words.</div>
             <div class="writing-layout">
@@ -399,6 +535,27 @@
                 <div class="writing-input-area">
                     <textarea class="essay-textarea" placeholder="Digite a sua redação aqui..."></textarea>
                     <div class="word-counter">Palavras: <span class="count">0</span></div>
+                    
+                    <div class="correction-panel">
+                        <h3>Feedback do Professor / Examinador</h3>
+                        <div class="descriptor-feedback-group">
+                            <label class="desc-label-2">Task Achievement / Response:</label>
+                            <textarea class="feedback-ta" placeholder="Comentários sobre o cumprimento da tarefa e clareza da posição..."></textarea>
+                        </div>
+                        <div class="descriptor-feedback-group">
+                            <label>Coherence & Cohesion:</label>
+                            <textarea class="feedback-cc" placeholder="Comentários sobre a organização, progressão lógica e conectivos..."></textarea>
+                        </div>
+                        <div class="descriptor-feedback-group">
+                            <label>Lexical Resource:</label>
+                            <textarea class="feedback-lr" placeholder="Comentários sobre vocabulário, precisão e uso de termos acadêmicos..."></textarea>
+                        </div>
+                        <div class="descriptor-feedback-group">
+                            <label>Grammatical Range & Accuracy:</label>
+                            <textarea class="feedback-gra" placeholder="Comentários sobre estruturas gramaticais, pontuação e precisão..."></textarea>
+                        </div>
+                    </div>
+
                     <div class="actions">
                         <button type="button" class="action-btn submit-btn">Enviar / Salvar</button>
                         <button type="button" class="action-btn clear-btn">Limpar</button>
@@ -409,7 +566,7 @@
         </div>
 
         <!-- TASK 2: TOURISM -->
-        <div id="w_task2b_tourism" class="container" data-task-id="w_task2b_tourism">
+        <div id="w_task2b_tourism" class="container" data-task-id="w_task2b_tourism" data-task-type="task2">
             <h1>Academic Writing Task 2: International Tourism</h1>
             <div class="subtitle">Spend about 40 minutes on this task. Write at least 250 words.</div>
             <div class="writing-layout">
@@ -422,6 +579,27 @@
                 <div class="writing-input-area">
                     <textarea class="essay-textarea" placeholder="Digite a sua redação aqui..."></textarea>
                     <div class="word-counter">Palavras: <span class="count">0</span></div>
+                    
+                    <div class="correction-panel">
+                        <h3>Feedback do Professor / Examinador</h3>
+                        <div class="descriptor-feedback-group">
+                            <label class="desc-label-2">Task Achievement / Response:</label>
+                            <textarea class="feedback-ta" placeholder="Comentários sobre o cumprimento da tarefa e clareza da posição..."></textarea>
+                        </div>
+                        <div class="descriptor-feedback-group">
+                            <label>Coherence & Cohesion:</label>
+                            <textarea class="feedback-cc" placeholder="Comentários sobre a organização, progressão lógica e conectivos..."></textarea>
+                        </div>
+                        <div class="descriptor-feedback-group">
+                            <label>Lexical Resource:</label>
+                            <textarea class="feedback-lr" placeholder="Comentários sobre vocabulário, precisão e uso de termos acadêmicos..."></textarea>
+                        </div>
+                        <div class="descriptor-feedback-group">
+                            <label>Grammatical Range & Accuracy:</label>
+                            <textarea class="feedback-gra" placeholder="Comentários sobre estruturas gramaticais, pontuação e precisão..."></textarea>
+                        </div>
+                    </div>
+
                     <div class="actions">
                         <button type="button" class="action-btn submit-btn">Enviar / Salvar</button>
                         <button type="button" class="action-btn clear-btn">Limpar</button>
@@ -605,6 +783,13 @@
             const taskId = container.getAttribute('data-task-id');
             const textarea = container.querySelector('.essay-textarea');
             const counterSpan = container.querySelector('.word-counter .count');
+            
+            // Campos de feedback por descritor
+            const fbTa = container.querySelector('.feedback-ta');
+            const fbCc = container.querySelector('.feedback-cc');
+            const fbLr = container.querySelector('.feedback-lr');
+            const fbGra = container.querySelector('.feedback-gra');
+
             const submitBtn = container.querySelector('.submit-btn');
             const clearBtn = container.querySelector('.clear-btn');
             const statusMsg = container.querySelector('.status-msg');
@@ -614,16 +799,26 @@
             });
 
             submitBtn.addEventListener('click', async () => {
-                const text = textarea.value;
+                const payload = {
+                    essay: textarea.value,
+                    feedback: {
+                        taskAchievement: fbTa ? fbTa.value : '',
+                        coherenceCohesion: fbCc ? fbCc.value : '',
+                        lexicalResource: fbLr ? fbLr.value : '',
+                        grammarRangeAccuracy: fbGra ? fbGra.value : ''
+                    },
+                    updatedAt: new Date().toISOString()
+                };
+
                 statusMsg.textContent = "Salvando na nuvem...";
                 
                 // Fallback Local Storage
-                localStorage.setItem(`writing_${taskId}`, text);
+                localStorage.setItem(`writing_${taskId}`, JSON.stringify(payload));
 
                 if (db) {
                     try {
                         const docRef = doc(db, "ielts_practice", `writing_${taskId}`);
-                        await setDoc(docRef, { essay: text, updatedAt: new Date().toISOString() });
+                        await setDoc(docRef, payload);
                         statusMsg.textContent = "Sincronizado na nuvem (visível em todos os dispositivos)!";
                     } catch (error) {
                         console.error("Erro ao salvar no Firestore:", error);
@@ -637,6 +832,11 @@
             clearBtn.addEventListener('click', async () => {
                 textarea.value = "";
                 counterSpan.textContent = "0";
+                if(fbTa) fbTa.value = "";
+                if(fbCc) fbCc.value = "";
+                if(fbLr) fbLr.value = "";
+                if(fbGra) fbGra.value = "";
+
                 statusMsg.textContent = "Limpando...";
                 
                 localStorage.removeItem(`writing_${taskId}`);
@@ -660,17 +860,33 @@
             if (!container) return;
             const textarea = container.querySelector('.essay-textarea');
             const counterSpan = container.querySelector('.word-counter .count');
+            
+            const fbTa = container.querySelector('.feedback-ta');
+            const fbCc = container.querySelector('.feedback-cc');
+            const fbLr = container.querySelector('.feedback-lr');
+            const fbGra = container.querySelector('.feedback-gra');
             const statusMsg = container.querySelector('.status-msg');
 
-            // Tenta carregar primeiro do Firebase Firestore
+            function applyData(data) {
+                if (data.essay) {
+                    textarea.value = data.essay;
+                    counterSpan.textContent = countWords(data.essay);
+                }
+                if (data.feedback) {
+                    if(fbTa) fbTa.value = data.feedback.taskAchievement || '';
+                    if(fbCc) fbCc.value = data.feedback.coherenceCohesion || '';
+                    if(fbLr) fbLr.value = data.feedback.lexicalResource || '';
+                    if(fbGra) fbGra.value = data.feedback.grammarRangeAccuracy || '';
+                }
+            }
+
+            // Tenta carregar do Firebase Firestore
             if (db) {
                 try {
                     const docRef = doc(db, "ielts_practice", `writing_${taskId}`);
                     const docSnap = await getDoc(docRef);
-                    if (docSnap.exists() && docSnap.data().essay) {
-                        const text = docSnap.data().essay;
-                        textarea.value = text;
-                        counterSpan.textContent = countWords(text);
+                    if (docSnap.exists()) {
+                        applyData(docSnap.data());
                         statusMsg.textContent = "Carregado da nuvem.";
                         return;
                     }
@@ -679,12 +895,19 @@
                 }
             }
 
-            // Fallback para LocalStorage se o documento não existir no Firebase
+            // Fallback para LocalStorage
             const localSaved = localStorage.getItem(`writing_${taskId}`);
             if (localSaved) {
-                textarea.value = localSaved;
-                counterSpan.textContent = countWords(localSaved);
-                statusMsg.textContent = "Carregado do armazenamento local.";
+                try {
+                    const data = JSON.parse(localSaved);
+                    applyData(data);
+                    statusMsg.textContent = "Carregado do armazenamento local.";
+                } catch(err) {
+                    // Compatibilidade com formato antigo apenas texto
+                    textarea.value = localSaved;
+                    counterSpan.textContent = countWords(localSaved);
+                    statusMsg.textContent = "Carregado do armazenamento local.";
+                }
             } else {
                 statusMsg.textContent = "";
             }
