@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IELTS Speaking Practice & Descriptors</title>
+    <title>IELTS Speaking Practice - Clássica Gótica</title>
     <style>
         :root {
             --bg-color: #F8F7FA;
@@ -14,7 +14,8 @@
             --accent-wine: #6B0F1A;
             --light-lavender: #D8B4D9;
             --border-color: #E2D8E5;
-            --success-color: #2e7d32;
+            --table-header-bg: #502064;
+            --table-header-text: #FFFFFF;
         }
 
         body {
@@ -33,11 +34,11 @@
             max-width: 1200px;
         }
 
-        /* Menu de Navegação Superior */
+        /* Top Navigation Bar */
         .top-nav {
             display: flex;
             gap: 10px;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             flex-wrap: wrap;
         }
 
@@ -63,7 +64,7 @@
             border-color: var(--primary-purple);
         }
 
-        /* Seletor de Partes do Speaking */
+        /* Speaking Sub-tabs Navigation */
         .speaking-selector {
             display: flex;
             flex-wrap: wrap;
@@ -85,9 +86,20 @@
         }
 
         .sub-tab-btn.active, .sub-tab-btn:hover {
-            background-color: var(--light-lavender);
-            color: var(--primary-purple);
+            background-color: var(--primary-purple);
+            color: #FFFFFF;
             border-color: var(--primary-purple);
+        }
+
+        .sub-tab-btn.descriptors-btn {
+            background-color: var(--accent-wine);
+            color: #FFFFFF;
+            border-color: var(--accent-wine);
+            margin-left: auto;
+        }
+
+        .sub-tab-btn.descriptors-btn:hover, .sub-tab-btn.descriptors-btn.active {
+            background-color: #4a0a12;
         }
 
         .container {
@@ -141,82 +153,27 @@
             line-height: 1.6;
         }
 
-        .speaking-evaluation-area {
+        .speaking-input-area {
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 16px;
         }
 
-        .score-input-box {
-            background: #F3ECF5;
-            padding: 16px;
-            border-radius: 8px;
-            border: 1px solid var(--light-lavender);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .score-input-box label {
-            font-weight: 700;
-            color: var(--primary-purple);
-            font-size: 14px;
-        }
-
-        input[type="number"] {
-            width: 80px;
-            padding: 8px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            text-align: center;
-            font-family: 'Century Gothic', sans-serif;
-            font-size: 16px;
-            font-weight: bold;
-            color: var(--primary-purple);
-        }
-
-        .descriptors-box {
-            background: #FAFAFC;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 16px;
-        }
-
-        .descriptors-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--primary-purple);
-            margin-bottom: 12px;
-            border-bottom: 2px solid var(--light-lavender);
-            padding-bottom: 6px;
-        }
-
-        .criterion-group {
-            margin-bottom: 14px;
-        }
-
-        .criterion-label {
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--accent-wine);
-            margin-bottom: 4px;
-        }
-
-        .comment-textarea {
+        .speech-notes-textarea {
             width: 100%;
-            height: 60px;
-            padding: 8px;
+            height: 220px;
+            padding: 14px;
             border: 1px solid var(--border-color);
-            border-radius: 6px;
+            border-radius: 8px;
             font-family: 'Century Gothic', CenturyGothic, sans-serif;
-            font-size: 12px;
+            font-size: 13px;
+            line-height: 1.5;
             resize: vertical;
             box-sizing: border-box;
             background-color: #FFFFFF;
         }
 
-        .comment-textarea:focus {
+        .speech-notes-textarea:focus {
             outline: none;
             border-color: var(--primary-purple);
             box-shadow: 0 0 0 2px rgba(80, 32, 100, 0.1);
@@ -225,7 +182,7 @@
         .actions {
             display: flex;
             gap: 12px;
-            margin-top: 10px;
+            margin-top: 12px;
         }
 
         button.action-btn {
@@ -237,6 +194,7 @@
             border-radius: 6px;
             cursor: pointer;
             font-family: 'Century Gothic', CenturyGothic, sans-serif;
+            transition: background 0.2s;
         }
 
         .submit-btn { background-color: var(--primary-purple); color: white; }
@@ -244,7 +202,107 @@
         .clear-btn { background-color: var(--border-color); color: var(--primary-purple); }
         .clear-btn:hover { background-color: #d1c2d4; }
 
-        .status-msg { text-align: center; font-size: 11px; font-style: italic; color: var(--text-muted); margin-top: 8px; }
+        .status-msg { 
+            text-align: center; 
+            font-size: 12px; 
+            font-style: italic; 
+            color: var(--text-muted); 
+            margin-top: 6px; 
+            min-height: 18px;
+        }
+
+        /* Teacher / Examiner Correction Box */
+        .correction-panel {
+            margin-top: 20px;
+            background-color: #FBF8FC;
+            border: 1px solid var(--light-lavender);
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .correction-panel h3 {
+            font-size: 14px;
+            color: var(--primary-purple);
+            margin-top: 0;
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 6px;
+        }
+
+        .descriptor-feedback-group {
+            margin-bottom: 10px;
+        }
+
+        .descriptor-feedback-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: bold;
+            color: var(--text-muted);
+            margin-bottom: 3px;
+        }
+
+        .descriptor-feedback-group textarea {
+            width: 100%;
+            height: 50px;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-family: 'Century Gothic', CenturyGothic, sans-serif;
+            font-size: 12px;
+            resize: vertical;
+            background-color: #FFF;
+            box-sizing: border-box;
+        }
+
+        .descriptor-feedback-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-purple);
+        }
+
+        /* Band Descriptors Table Styling */
+        .descriptors-table-wrapper {
+            overflow-x: auto;
+            margin-top: 15px;
+        }
+
+        .descriptors-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            text-align: left;
+        }
+
+        .descriptors-table th, .descriptors-table td {
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            vertical-align: top;
+        }
+
+        .descriptors-table th {
+            background-color: var(--table-header-bg);
+            color: var(--table-header-text);
+            font-weight: 700;
+        }
+
+        .descriptors-table tr:nth-child(even) {
+            background-color: #FDFBFD;
+        }
+
+        .band-badge {
+            font-weight: bold;
+            font-size: 14px;
+            color: var(--primary-purple);
+            text-align: center;
+        }
+
+        .descriptor-section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary-purple);
+            margin: 25px 0 10px 0;
+            border-bottom: 2px solid var(--light-lavender);
+            padding-bottom: 4px;
+        }
     </style>
 </head>
 <body>
@@ -259,161 +317,245 @@
             <a href="scores.html">Scores</a>
         </nav>
 
-        <!-- Seletor de Partes do Speaking -->
+        <!-- Sub-navegação por Partes do Speaking -->
         <div class="speaking-selector">
-            <button class="sub-tab-btn active" onclick="switchTask('spk_part1')">Part 1 (Introduction & Interview)</button>
-            <button class="sub-tab-btn" onclick="switchTask('spk_part2')">Part 2 (Long Turn / Cue Card)</button>
-            <button class="sub-tab-btn" onclick="switchTask('spk_part3')">Part 3 (Two-way Discussion)</button>
+            <button class="sub-tab-btn active" onclick="switchTask('spk_part1', this)">Speaking Part 1</button>
+            <button class="sub-tab-btn" onclick="switchTask('spk_part2', this)">Speaking Part 2</button>
+            <button class="sub-tab-btn" onclick="switchTask('spk_part3', this)">Speaking Part 3</button>
+            <button class="sub-tab-btn descriptors-btn" onclick="switchTask('spk_band_descriptors', this)">Band Descriptors</button>
         </div>
 
-        <!-- ================= SPEAKING PART 1 ================= -->
+        <!-- SPEAKING PART 1 -->
         <div id="spk_part1" class="container active-section" data-task-id="spk_part1">
-            <h1>IELTS Speaking Practice</h1>
-            <div class="subtitle">Part 1 - Introduction and Interview (4-5 minutes)</div>
+            <h1>IELTS Speaking Part 1: Introduction & Interview</h1>
+            <div class="subtitle">General questions about yourself, your home, work, studies, and familiar topics.</div>
             <div class="speaking-layout">
                 <div class="task-prompt">
-                    <p><strong>The examiner will ask you general questions about yourself and a range of familiar topics, such as home, family, work, studies and interests[cite: 7, 23].</strong></p>
-                    <p><em>Exemplo de Tópicos Comuns:</em></p>
+                    <p><strong>Sample Questions:</strong></p>
                     <ul>
-                        <li>Where do you live? Do you live in a house or an apartment?</li>
-                        <li>What do you like about your hometown?</li>
-                        <li>Do you work or are you a student? What subjects are you studying?</li>
-                        <li>Let's talk about free time. What do you usually do at weekends?</li>
+                        <p><em>Where do you live? Do you live in a house or an apartment?</em></p>
+                        <p><em>What do you like most about your hometown?</em></p>
+                        <p><em>Let's talk about your daily routine. What time do you usually get up?</em></p>
+                        <p><em>Do you prefer mornings or evenings? Why?</em></p>
                     </ul>
+                    <p style="font-size: 12px; color: var(--text-muted);">Dica: Pratique respondendo com frases naturais, desenvolvendo um pouco a resposta sem exagerar no tempo.</p>
                 </div>
-                <div class="speaking-evaluation-area">
-                    <div class="score-input-box">
-                        <label for="input-spk_part1">Atribuição de Nota (Band):</label>
-                        <input type="number" id="input-spk_part1" min="0" max="9" step="0.5" placeholder="0.0">
+                <div class="speaking-input-area">
+                    <label style="font-size: 12px; font-weight: bold; color: var(--primary-purple); margin-bottom: 5px;">Notas de Resposta / Tópicos Principais:</label>
+                    <textarea class="speech-notes-textarea" placeholder="Escreva suas ideias principais ou notas para a prática oral..."></textarea>
+                    
+                    <!-- Painel de Correção por Descritor -->
+                    <div class="correction-panel">
+                        <h3>Feedback do Professor / Examinador</h3>
+                        <div class="descriptor-feedback-group">
+                            <label>Fluency and Coherence:</label>
+                            <textarea class="feedback-fc" placeholder="Comentários sobre fluência, hesitações, ritmo e coesão..."></textarea>
+                        </div>
+                        <div class="descriptor-feedback-group">
+                            <label>Lexical Resource:</label>
+                            <textarea class="feedback-lr" placeholder="Comentários sobre vocabulário, flexibilidade e expressões idiomáticas..."></textarea>
+                        </div>
+                        <div class="descriptor-feedback-group">
+                            <label>Grammatical Range and Accuracy:</label>
+                            <textarea class="feedback-gra" placeholder="Comentários sobre estruturas gramaticais e precisão..."></textarea>
+                        </div>
+                        <div class="descriptor-feedback-group">
+                            <label>Pronunciation:</label>
+                            <textarea class="feedback-pron" placeholder="Comentários sobre entonação, ritmo, chunking e clareza..."></textarea>
+                        </div>
                     </div>
-                    <div class="descriptors-box">
-                        <div class="descriptors-title">Band Descriptors & Feedback (Part 1)</div>
-                        <div class="criterion-group">
-                            <div class="criterion-label">1. Fluency and Coherence[cite: 45]</div>
-                            <textarea class="comment-textarea" data-crit="fc" placeholder="Comentários sobre fluência, hesitações e coesão..."></textarea>
-                        </div>
-                        <div class="criterion-group">
-                            <div class="criterion-label">2. Lexical Resource (Vocabulary)[cite: 45]</div>
-                            <textarea class="comment-textarea" data-crit="lr" placeholder="Comentários sobre variedade e precisão de vocabulário..."></textarea>
-                        </div>
-                        <div class="criterion-group">
-                            <div class="criterion-label">3. Grammatical Range and Accuracy[cite: 45]</div>
-                            <textarea class="comment-textarea" data-crit="gra" placeholder="Comentários sobre estruturas gramaticais e exatidão..."></textarea>
-                        </div>
-                        <div class="criterion-group">
-                            <div class="criterion-label">4. Pronunciation[cite: 45]</div>
-                            <textarea class="comment-textarea" data-crit="pron" placeholder="Comentários sobre entoação, clareza e ritmo..."></textarea>
-                        </div>
-                    </div>
+
                     <div class="actions">
-                        <button type="button" class="action-btn submit-btn">Salvar Avaliação</button>
+                        <button type="button" class="action-btn submit-btn">Enviar / Salvar</button>
                         <button type="button" class="action-btn clear-btn">Limpar</button>
                     </div>
-                    <div class="status-msg">Sincronizado com a nuvem</div>
+                    <div class="status-msg"></div>
                 </div>
             </div>
         </div>
 
-        <!-- ================= SPEAKING PART 2 ================= -->
+        <!-- SPEAKING PART 2 -->
         <div id="spk_part2" class="container" data-task-id="spk_part2">
-            <h1>IELTS Speaking Practice</h1>
-            <div class="subtitle">Part 2 - Long Turn / Cue Card (3-4 minutes)</div>
+            <h1>IELTS Speaking Part 2: Long Turn (Cue Card)</h1>
+            <div class="subtitle">Talk on a specific topic for 1 to 2 minutes after 1 minute of preparation.</div>
             <div class="speaking-layout">
                 <div class="task-prompt">
-                    <p><strong>You will be given a task card with a topic. You have 1 minute to prepare and make notes. Then you must speak for 1 to 2 minutes.</strong></p>
-                    <div style="background: #FFFFFF; border: 1px solid var(--border-color); padding: 14px; border-radius: 6px; margin-top: 12px;">
-                        <p style="margin-top:0;"><strong>Describe a book that you recently read.</strong></p>
-                        <p>You should say:</p>
-                        <ul style="margin-bottom:0;">
-                            <li>what kind of book it is</li>
-                            <li>what it is about</li>
-                            <li>why you decided to read it</li>
-                            <li>and explain how you felt about it.</li>
-                        </ul>
-                    </div>
+                    <p><strong>Describe a book that you read recently.</strong></p>
+                    <p>You should say:</p>
+                    <ul>
+                        <li>what kind of book it is</li>
+                        <li>what it is about</li>
+                        <li>why you decided to read it</li>
+                    </ul>
+                    <p>and explain what you learned from reading this book.</p>
                 </div>
-                <div class="speaking-evaluation-area">
-                    <div class="score-input-box">
-                        <label for="input-spk_part2">Atribuição de Nota (Band):</label>
-                        <input type="number" id="input-spk_part2" min="0" max="9" step="0.5" placeholder="0.0">
+                <div class="speaking-input-area">
+                    <label style="font-size: 12px; font-weight: bold; color: var(--primary-purple); margin-bottom: 5px;">Tópicos / Notas para o Minuto de Preparação:</label>
+                    <textarea class="speech-notes-textarea" placeholder="Organize suas ideias em bullet points (1 minuto de prep)..."></textarea>
+                    
+                    <div class="correction-panel">
+                        <h3>Feedback do Professor / Examinador</h3>
+                        <div class="descriptor-feedback-group">
+                            <label>Fluency and Coherence:</label>
+                            <textarea class="feedback-fc" placeholder="Comentários sobre desenvolvimento do tópico e coesão..."></textarea>
+                        </div>
+                        <div class="descriptor-feedback-group">
+                            <label>Lexical Resource:</label>
+                            <textarea class="feedback-lr" placeholder="Comentários sobre vocabulário, precisão e paráfrase..."></textarea>
+                        </div>
+                        <div class="descriptor-feedback-group">
+                            <label>Grammatical Range and Accuracy:</label>
+                            <textarea class="feedback-gra" placeholder="Comentários sobre variedades de estruturas e precisão..."></textarea>
+                        </div>
+                        <div class="descriptor-feedback-group">
+                            <label>Pronunciation:</label>
+                            <textarea class="feedback-pron" placeholder="Comentários sobre clareza, acentuação e entonação..."></textarea>
+                        </div>
                     </div>
-                    <div class="descriptors-box">
-                        <div class="descriptors-title">Band Descriptors & Feedback (Part 2)</div>
-                        <div class="criterion-group">
-                            <div class="criterion-label">1. Fluency and Coherence[cite: 45]</div>
-                            <textarea class="comment-textarea" data-crit="fc" placeholder="Comentários sobre capacidade de falar sem interrupções excessivas..."></textarea>
-                        </div>
-                        <div class="criterion-group">
-                            <div class="criterion-label">2. Lexical Resource (Vocabulary)[cite: 45]</div>
-                            <textarea class="comment-textarea" data-crit="lr" placeholder="Comentários sobre vocabulário temático e paráfrases..."></textarea>
-                        </div>
-                        <div class="criterion-group">
-                            <div class="criterion-label">3. Grammatical Range and Accuracy[cite: 45]</div>
-                            <textarea class="comment-textarea" data-crit="gra" placeholder="Comentários sobre estruturas complexas utilizadas..."></textarea>
-                        </div>
-                        <div class="criterion-group">
-                            <div class="criterion-label">4. Pronunciation[cite: 45]</div>
-                            <textarea class="comment-textarea" data-crit="pron" placeholder="Comentários sobre acentuação e inteligibilidade..."></textarea>
-                        </div>
-                    </div>
+
                     <div class="actions">
-                        <button type="button" class="action-btn submit-btn">Salvar Avaliação</button>
+                        <button type="button" class="action-btn submit-btn">Enviar / Salvar</button>
                         <button type="button" class="action-btn clear-btn">Limpar</button>
                     </div>
-                    <div class="status-msg">Sincronizado com a nuvem</div>
+                    <div class="status-msg"></div>
                 </div>
             </div>
         </div>
 
-        <!-- ================= SPEAKING PART 3 ================= -->
+        <!-- SPEAKING PART 3 -->
         <div id="spk_part3" class="container" data-task-id="spk_part3">
-            <h1>IELTS Speaking Practice</h1>
-            <div class="subtitle">Part 3 - Two-way Discussion (4-5 minutes)</div>
+            <h1>IELTS Speaking Part 3: Two-way Discussion</h1>
+            <div class="subtitle">More abstract and deeper discussion related to the topic in Part 2.</div>
             <div class="speaking-layout">
                 <div class="task-prompt">
-                    <p><strong>The examiner will ask further questions connected to the topic in Part 2. These questions give you an opportunity to discuss more abstract ideas and issues[cite: 7, 23].</strong></p>
-                    <p><em>Exemplo de Questões de Discussão:</em></p>
+                    <p><strong>Discussion Topics (Reading & Literature):</strong></p>
                     <ul>
-                        <li>What are the differences between reading books in print and reading them digitally?</li>
-                        <li>Do you think people nowadays read books less than they did in the past? Why?</li>
-                        <li>What factors make a book successful internationally?</li>
+                        <p><em>What kinds of books are most popular in your country today?</em></p>
+                        <p><em>Do you think reading books in digital format will ever completely replace traditional paper books?</em></p>
+                        <p><em>Why do you think some people prefer reading physical books rather than e-books?</em></p>
                     </ul>
                 </div>
-                <div class="speaking-evaluation-area">
-                    <div class="score-input-box">
-                        <label for="input-spk_part3">Atribuição de Nota (Band):</label>
-                        <input type="number" id="input-spk_part3" min="0" max="9" step="0.5" placeholder="0.0">
+                <div class="speaking-input-area">
+                    <label style="font-size: 12px; font-weight: bold; color: var(--primary-purple); margin-bottom: 5px;">Notas de Resposta / Argumentos:</label>
+                    <textarea class="speech-notes-textarea" placeholder="Escreva ideias de argumentos para discussões abstratas..."></textarea>
+                    
+                    <div class="correction-panel">
+                        <h3>Feedback do Professor / Examinador</h3>
+                        <div class="descriptor-feedback-group">
+                            <label>Fluency and Coherence:</label>
+                            <textarea class="feedback-fc" placeholder="Comentários sobre capacidade de argumentação e discurso..."></textarea>
+                        </div>
+                        <div class="descriptor-feedback-group">
+                            <label>Lexical Resource:</label>
+                            <textarea class="feedback-lr" placeholder="Comentários sobre termos abstratos e precisão..."></textarea>
+                        </div>
+                        <div class="descriptor-feedback-group">
+                            <label>Grammatical Range and Accuracy:</label>
+                            <textarea class="feedback-gra" placeholder="Comentários sobre estruturas complexas e fluidez..."></textarea>
+                        </div>
+                        <div class="descriptor-feedback-group">
+                            <label>Pronunciation:</label>
+                            <textarea class="feedback-pron" placeholder="Comentários sobre ritmo em falas longas..."></textarea>
+                        </div>
                     </div>
-                    <div class="descriptors-box">
-                        <div class="descriptors-title">Band Descriptors & Feedback (Part 3)</div>
-                        <div class="criterion-group">
-                            <div class="criterion-label">1. Fluency and Coherence[cite: 45]</div>
-                            <textarea class="comment-textarea" data-crit="fc" placeholder="Comentários sobre argumentação fluida e desenvolvimento de ideias..."></textarea>
-                        </div>
-                        <div class="criterion-group">
-                            <div class="criterion-label">2. Lexical Resource (Vocabulary)[cite: 45]</div>
-                            <textarea class="comment-textarea" data-crit="lr" placeholder="Comentários sobre vocabulário abstrato e preciso..."></textarea>
-                        </div>
-                        <div class="criterion-group">
-                            <div class="criterion-label">3. Grammatical Range and Accuracy[cite: 45]</div>
-                            <textarea class="comment-textarea" data-crit="gra" placeholder="Comentários sobre domínio gramatical em tópicos complexos..."></textarea>
-                        </div>
-                        <div class="criterion-group">
-                            <div class="criterion-label">4. Pronunciation[cite: 45]</div>
-                            <textarea class="comment-textarea" data-crit="pron" placeholder="Comentários sobre entoação em discursos longos..."></textarea>
-                        </div>
-                    </div>
+
                     <div class="actions">
-                        <button type="button" class="action-btn submit-btn">Salvar Avaliação</button>
+                        <button type="button" class="action-btn submit-btn">Enviar / Salvar</button>
                         <button type="button" class="action-btn clear-btn">Limpar</button>
                     </div>
-                    <div class="status-msg">Sincronizado com a nuvem</div>
+                    <div class="status-msg"></div>
                 </div>
+            </div>
+        </div>
+
+        <!-- BAND DESCRIPTORS TAB -->
+        <div id="spk_band_descriptors" class="container">
+            <h1>IELTS Speaking Assessment Criteria (Band Descriptors)</h1>
+            <div class="subtitle">Tabela Oficial de Avaliação - Speaking (Academic and General Training)[cite: 26]</div>
+            
+            <div class="descriptor-section-title">Speaking Band Descriptors (Bands 9 to 1)</div>
+            <div class="descriptors-table-wrapper">
+                <table class="descriptors-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 7%;">Band</th>
+                            <th style="width: 23%;">Fluency and Coherence</th>
+                            <th style="width: 23%;">Lexical Resource</th>
+                            <th style="width: 23%;">Grammatical Range and Accuracy</th>
+                            <th style="width: 24%;">Pronunciation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="band-badge">9</td>
+                            <td>Fluent with only very occasional repetition or self-correction; hesitation is content-related. Topic fully coherent and appropriately extended[cite: 26].</td>
+                            <td>Total flexibility and precise use in all contexts. Sustained use of accurate and idiomatic language[cite: 26].</td>
+                            <td>Structures precise and accurate at all times, apart from native-like mistakes[cite: 26].</td>
+                            <td>Full range of phonological features used with precision. Effortlessly understood throughout; accent has no effect on intelligibility[cite: 26].</td>
+                        </tr>
+                        <tr>
+                            <td class="band-badge">8</td>
+                            <td>Fluent with occasional repetition/self-correction. Topic development coherent and relevant; effective paraphrase[cite: 26].</td>
+                            <td>Wide resource readily and flexibly used. Skilful use of less common/idiomatic items despite minor inaccuracies[cite: 26].</td>
+                            <td>Wide range of structures flexibly used. Majority of sentences error-free with minor occasional inappropriacies[cite: 26].</td>
+                            <td>Wide range of phonological features. Sustained appropriate rhythm, stress, and intonation. Easily understood[cite: 26].</td>
+                        </tr>
+                        <tr>
+                            <td class="band-badge">7</td>
+                            <td>Able to keep going without noticeable effort. Flexible use of discourse markers and cohesive features[cite: 26].</td>
+                            <td>Resource flexibly used to discuss a variety of topics. Ability to use less common/idiomatic items with awareness of style[cite: 26].</td>
+                            <td>Range of structures flexibly used; error-free sentences frequent. Both simple and complex sentences effective[cite: 26].</td>
+                            <td>Shows positive features of band 6 and some of band 8. Flexible intonation and stress control[cite: 26].</td>
+                        </tr>
+                        <tr>
+                            <td class="band-badge">6</td>
+                            <td>Willingness to produce long turns, though coherence may be lost at times due to hesitation/repetition. Uses discourse markers[cite: 27].</td>
+                            <td>Resource sufficient to discuss topics at length. Vocabulary may be inappropriate but meaning clear; successful paraphrase[cite: 27].</td>
+                            <td>Mix of short and complex sentence forms with limited flexibility. Errors in complex structures rarely impede communication[cite: 27].</td>
+                            <td>Range of phonological features used with variable control. Chunking generally appropriate; individual mispronunciations cause occasional lack of clarity[cite: 27].</td>
+                        </tr>
+                        <tr>
+                            <td class="band-badge">5</td>
+                            <td>Usually able to keep going but relies on repetition/slow speech. Hesitations for basic lexis/grammar. Overuse of certain markers[cite: 27].</td>
+                            <td>Resource sufficient for familiar/unfamiliar topics with limited flexibility. Attempts paraphrase. Frequent inappropriacies[cite: 27].</td>
+                            <td>Basic sentence forms fairly well controlled. Complex structures limited, nearly always contain errors[cite: 27].</td>
+                            <td>Acceptable features limited. Frequent lapses in rhythm; intonation control limited. Mispronunciations cause lack of clarity, requiring some effort to understand[cite: 27].</td>
+                        </tr>
+                        <tr>
+                            <td class="band-badge">4</td>
+                            <td>Unable to keep going without noticeable pauses; slow with frequent repetition. Links simple sentences repetitiously[cite: 27].</td>
+                            <td>Resource for familiar topics only. Basic meaning conveyed on unfamiliar topics. Rarely attempts paraphrase[cite: 27].</td>
+                            <td>Basic sentence forms and short error-free utterances. Subordinate clauses rare; repetitive structures and frequent errors[cite: 27].</td>
+                            <td>Limited acceptable phonological features. Frequent mispronunciations causing lack of clarity and difficulty for listener[cite: 27].</td>
+                        </tr>
+                        <tr>
+                            <td class="band-badge">3</td>
+                            <td>Frequent long pauses while searching for words. Limited ability to link simple sentences[cite: 28].</td>
+                            <td>Resource limited to simple vocabulary for personal information. Inadequate for unfamiliar topics[cite: 28].</td>
+                            <td>Basic sentence forms attempted; errors numerous except in memorised utterances[cite: 28].</td>
+                            <td>Shows some features of band 2 and 4[cite: 28].</td>
+                        </tr>
+                        <tr>
+                            <td class="band-badge">2</td>
+                            <td>Lengthy pauses before nearly every word. Frequently unable to convey basic message[cite: 28].</td>
+                            <td>Very limited resource. Isolated words or memorised utterances[cite: 28].</td>
+                            <td>No evidence of basic sentence forms[cite: 28].</td>
+                            <td>Overall problems with delivery impair connected speech. Mainly mispronounced[cite: 28].</td>
+                        </tr>
+                        <tr>
+                            <td class="band-badge">1</td>
+                            <td>Essentially none. Speech totally incoherent[cite: 28].</td>
+                            <td>No resource bar a few isolated words[cite: 28].</td>
+                            <td>No rateable language unless memorised[cite: 28].</td>
+                            <td>Unintelligible[cite: 28].</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
-    <!-- Firebase SDKs e Lógica -->
+    <!-- Firebase Script for Multi-Device Real-time Sync -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, doc, setDoc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -427,92 +569,156 @@
             appId: "1:1004678184015:web:be965625c08d8ee73ffe3a"
         };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        let db = null;
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+        } catch (e) {
+            console.warn("Firebase não inicializado, usando localStorage como fallback local.");
+        }
 
-        window.switchTask = function(taskId) {
+        window.switchTask = function(taskId, btnElement) {
             document.querySelectorAll('.container').forEach(el => el.classList.remove('active-section'));
             document.querySelectorAll('.sub-tab-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(taskId).classList.add('active-section');
-            if (event && event.currentTarget) {
-                event.currentTarget.classList.add('active');
+            
+            const targetContainer = document.getElementById(taskId);
+            if(targetContainer) {
+                targetContainer.classList.add('active-section');
             }
-            loadSavedData(taskId);
+            if(btnElement) {
+                btnElement.classList.add('active');
+            }
+            
+            if (taskId !== 'spk_band_descriptors') {
+                loadSavedData(taskId);
+            }
         };
 
-        document.querySelectorAll('.container').forEach(container => {
+        document.querySelectorAll('.container[data-task-id]').forEach(container => {
             const taskId = container.getAttribute('data-task-id');
-            const scoreInput = container.querySelector('input[type="number"]');
+            const textarea = container.querySelector('.speech-notes-textarea');
+            
+            // Campos de feedback específicos do Speaking por descritor
+            const fbFc = container.querySelector('.feedback-fc');
+            const fbLr = container.querySelector('.feedback-lr');
+            const fbGra = container.querySelector('.feedback-gra');
+            const fbPron = container.querySelector('.feedback-pron');
+
             const submitBtn = container.querySelector('.submit-btn');
             const clearBtn = container.querySelector('.clear-btn');
             const statusMsg = container.querySelector('.status-msg');
 
             submitBtn.addEventListener('click', async () => {
-                const scoreVal = parseFloat(scoreInput.value) || 0;
-                let comments = {};
-                container.querySelectorAll('.comment-textarea').forEach(ta => {
-                    comments[ta.getAttribute('data-crit')] = ta.value;
-                });
+                const payload = {
+                    notes: textarea ? textarea.value : '',
+                    feedback: {
+                        fluencyCoherence: fbFc ? fbFc.value : '',
+                        lexicalResource: fbLr ? fbLr.value : '',
+                        grammarRangeAccuracy: fbGra ? fbGra.value : '',
+                        pronunciation: fbPron ? fbPron.value : ''
+                    },
+                    updatedAt: new Date().toISOString()
+                };
 
                 statusMsg.textContent = "Salvando na nuvem...";
-                try {
-                    // Salva os dados específicos da tarefa de Speaking
-                    await setDoc(doc(db, "ielts_practice", `speaking_${taskId}`), {
-                        score: scoreVal,
-                        comments: comments,
-                        updatedAt: new Date().toISOString()
-                    });
+                
+                // Fallback Local Storage
+                localStorage.setItem(`speaking_${taskId}`, JSON.stringify(payload));
 
-                    // Se for a Part 2 ou se preferir atualizar o global, atualizamos também o Speaking Score geral na nuvem
-                    if (taskId === 'spk_part2' || scoreVal > 0) {
-                        const scoresSnap = await getDoc(doc(db, "ielts_practice", "scores_summary"));
-                        let scoresData = scoresSnap.exists() ? scoresSnap.data() : {};
-                        scoresData.speakingScore = scoreVal;
-                        scoresData.updatedAt = new Date().toISOString();
-                        await setDoc(doc(db, "ielts_practice", "scores_summary"), scoresData);
+                if (db) {
+                    try {
+                        const docRef = doc(db, "ielts_practice", `speaking_${taskId}`);
+                        await setDoc(docRef, payload);
+                        statusMsg.textContent = "Sincronizado na nuvem (visível em todos os dispositivos)!";
+                    } catch (error) {
+                        console.error("Erro ao salvar no Firestore:", error);
+                        statusMsg.textContent = "Salvo localmente (erro ao conectar na nuvem).";
                     }
-
-                    statusMsg.textContent = "Avaliação salva com sucesso!";
-                } catch (error) {
-                    console.error("Erro ao salvar:", error);
-                    statusMsg.textContent = "Erro ao salvar na nuvem.";
+                } else {
+                    statusMsg.textContent = "Salvo localmente!";
                 }
             });
 
             clearBtn.addEventListener('click', async () => {
-                scoreInput.value = "";
-                container.querySelectorAll('.comment-textarea').forEach(ta => ta.value = "");
-                statusMsg.textContent = "Limpando dados...";
-                try {
-                    await deleteDoc(doc(db, "ielts_practice", `speaking_${taskId}`));
-                    statusMsg.textContent = "Dados limpos com sucesso!";
-                } catch (error) {
-                    statusMsg.textContent = "Erro ao resetar.";
+                if(textarea) textarea.value = "";
+                if(fbFc) fbFc.value = "";
+                if(fbLr) fbLr.value = "";
+                if(fbGra) fbGra.value = "";
+                if(fbPron) fbPron.value = "";
+
+                statusMsg.textContent = "Limpando...";
+                
+                localStorage.removeItem(`speaking_${taskId}`);
+
+                if (db) {
+                    try {
+                        const docRef = doc(db, "ielts_practice", `speaking_${taskId}`);
+                        await deleteDoc(docRef);
+                        statusMsg.textContent = "Conteúdo limpo com sucesso!";
+                    } catch (error) {
+                        statusMsg.textContent = "Conteúdo limpo localmente.";
+                    }
+                } else {
+                    statusMsg.textContent = "Conteúdo limpo com sucesso!";
                 }
             });
         });
 
         async function loadSavedData(taskId) {
-            try {
-                const docRef = doc(db, "ielts_practice", `speaking_${taskId}`);
-                const docSnap = await getDoc(docRef);
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    const container = document.getElementById(taskId);
-                    const scoreInput = container.querySelector('input[type="number"]');
-                    if (data.score !== undefined) scoreInput.value = data.score;
-                    if (data.comments) {
-                        container.querySelectorAll('.comment-textarea').forEach(ta => {
-                            const crit = ta.getAttribute('data-crit');
-                            if (data.comments[crit]) ta.value = data.comments[crit];
-                        });
-                    }
+            const container = document.getElementById(taskId);
+            if (!container) return;
+            const textarea = container.querySelector('.speech-notes-textarea');
+            
+            const fbFc = container.querySelector('.feedback-fc');
+            const fbLr = container.querySelector('.feedback-lr');
+            const fbGra = container.querySelector('.feedback-gra');
+            const fbPron = container.querySelector('.feedback-pron');
+            const statusMsg = container.querySelector('.status-msg');
+
+            function applyData(data) {
+                if (data.notes && textarea) {
+                    textarea.value = data.notes;
                 }
-            } catch (e) {
-                console.error("Erro ao carregar dados", e);
+                if (data.feedback) {
+                    if(fbFc) fbFc.value = data.feedback.fluencyCoherence || '';
+                    if(fbLr) fbLr.value = data.feedback.lexicalResource || '';
+                    if(fbGra) fbGra.value = data.feedback.grammarRangeAccuracy || '';
+                    if(fbPron) fbPron.value = data.feedback.pronunciation || '';
+                }
+            }
+
+            // Tenta carregar do Firebase Firestore
+            if (db) {
+                try {
+                    const docRef = doc(db, "ielts_practice", `speaking_${taskId}`);
+                    const docSnap = await getDoc(docRef);
+                    if (docSnap.exists()) {
+                        applyData(docSnap.data());
+                        statusMsg.textContent = "Carregado da nuvem.";
+                        return;
+                    }
+                } catch (e) {
+                    console.warn("Falha ao buscar da nuvem, recorrendo ao localStorage:", e);
+                }
+            }
+
+            // Fallback para LocalStorage
+            const localSaved = localStorage.getItem(`speaking_${taskId}`);
+            if (localSaved) {
+                try {
+                    const data = JSON.parse(localSaved);
+                    applyData(data);
+                    statusMsg.textContent = "Carregado do armazenamento local.";
+                } catch(err) {
+                    if(textarea) textarea.value = localSaved;
+                    statusMsg.textContent = "Carregado do armazenamento local.";
+                }
+            } else {
+                statusMsg.textContent = "";
             }
         }
 
+        // Carrega por padrão a primeira parte ao abrir
         loadSavedData('spk_part1');
     </script>
 </body>
