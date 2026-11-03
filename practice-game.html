@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IELTS Speaking Practice Game</title>
-    <!-- Google Fonts: Cinzel Decorative & Century Gothic fallback -->
+    <!-- Google Fonts: Cinzel Decorative -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -32,12 +32,12 @@
 
         header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         h1 {
             font-family: 'Cinzel Decorative', serif;
-            font-size: 2rem;
+            font-size: 2.2rem;
             color: var(--lavender);
             margin-bottom: 5px;
         }
@@ -46,6 +46,7 @@
             font-style: italic;
             color: var(--burgundy);
             font-size: 0.95rem;
+            margin-top: 0;
         }
 
         /* Controls Panel */
@@ -59,9 +60,9 @@
             gap: 15px;
             justify-content: center;
             align-items: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             box-shadow: 0 4px 12px rgba(80, 32, 100, 0.08);
-            max-width: 800px;
+            max-width: 850px;
             width: 100%;
         }
 
@@ -93,7 +94,7 @@
             background-color: var(--dark-purple);
             color: var(--white);
             border: none;
-            padding: 12px 30px;
+            padding: 12px 32px;
             font-size: 1.1rem;
             font-family: 'Cinzel Decorative', serif;
             font-weight: 700;
@@ -108,13 +109,36 @@
             transform: translateY(-2px);
         }
 
-        /* Timer Display */
-        .timer-display {
-            font-size: 1.2rem;
+        .start-btn:disabled {
+            background-color: #aaa;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Timer Display em Destaque */
+        .timer-container {
+            background: var(--dark-purple);
+            color: var(--white);
+            border: 3px solid var(--pink-accent);
+            border-radius: 50px;
+            padding: 10px 25px;
+            font-size: 1.5rem;
             font-weight: bold;
-            color: var(--burgundy);
-            margin-bottom: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(107, 15, 26, 0.2);
             display: none;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .timer-container.warning {
+            background: var(--burgundy);
+            animation: pulse 1s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
         }
 
         /* Cards Grid */
@@ -136,11 +160,13 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: transform 0.3s ease;
+            min-height: 140px;
+            transition: transform 0.2s ease, border-color 0.2s ease;
         }
 
-        .card:hover {
-            transform: translateY(-4px);
+        .card.spinning {
+            border-left-color: var(--pink-accent);
+            background: #FAF3FA;
         }
 
         .card-category {
@@ -168,7 +194,6 @@
             border: 1px dashed var(--light-lavender);
         }
 
-        /* Firebase Status Notification */
         #db-status {
             font-size: 0.8rem;
             color: var(--dark-purple);
@@ -182,7 +207,7 @@
 
     <header>
         <h1>IELTS Speaking Game</h1>
-        <p class="subtitle">Desafie a sua fluidez combinando Conectores, Idioms, Paráfrase, Gramática e Temas</p>
+        <p class="subtitle">Roleta de Fluidez: Conectores, Expressões, Gramática e Temas em Tempo Real</p>
     </header>
 
     <!-- Controls -->
@@ -190,14 +215,14 @@
         <div class="control-group">
             <label for="difficulty">Dificuldade</label>
             <select id="difficulty">
-                <option value="easy">Fácil (2 Cards Principais)</option>
+                <option value="easy">Fácil (2 Cards)</option>
                 <option value="medium" selected>Médio (4 Cards)</option>
-                <option value="hard">Master IELTS (Todos os 6 Cards)</option>
+                <option value="hard">Master IELTS (6 Cards)</option>
             </select>
         </div>
 
         <div class="control-group">
-            <label for="timer-setting">Cronómetro</label>
+            <label for="timer-setting">Tempo de Resposta</label>
             <select id="timer-setting">
                 <option value="30">30 Segundos</option>
                 <option value="45">45 Segundos</option>
@@ -208,27 +233,29 @@
         </div>
 
         <div style="display: flex; align-items: flex-end;">
-            <button class="start-btn" onclick="startGame()">Start / Shuffle</button>
+            <button class="start-btn" id="start-btn" onclick="startRoulette()">Start / Shuffle</button>
         </div>
     </div>
 
-    <div class="timer-display" id="timer-box">Tempo Restante: <span id="countdown">60</span>s</div>
+    <!-- Display do Cronómetro Grande -->
+    <div class="timer-container" id="timer-box">
+        ⏱️ <span id="timer-text">Tempo: 60s</span>
+    </div>
 
-    <!-- Cards Layout -->
+    <!-- Layout dos Cards -->
     <div class="cards-container" id="game-board">
         <div class="card" style="grid-column: 1 / -1; text-align: center; color: #777;">
-            Clique em <strong>"Start / Shuffle"</strong> para sortear os seus desafios de fala!
+            Clique em <strong>"Start / Shuffle"</strong> para girar a roleta de desafios!
         </div>
     </div>
 
     <div id="db-status">A ligar ao Firestore...</div>
 
-    <!-- Firebase SDK Modular (v10) -->
+    <!-- Firebase SDK Modular -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // Configuração do seu Firebase (Student Tracker Panel)
         const firebaseConfig = {
             apiKey: "AIzaSyC2pSwDBIREaPmpOvainZzWGuuCEupxp1c",
             authDomain: "studenttrackerpanel.firebaseapp.com",
@@ -248,125 +275,196 @@
         window.serverTimestamp = serverTimestamp;
     </script>
 
-    <!-- Jogo e Dados -->
     <script>
-        // Bancos de dados integrados extraídos dos documentos
+        // Banco de dados completo
         const dataPool = {
             linkingWords: [
-                { title: "Linking Word / Connector", content: "However / Nevertheless", hint: "Contraste uma ideia anterior com uma ressalva." },
-                { title: "Linking Word / Connector", content: "As a result / Consequently", hint: "Mostre uma relação clara de causa e efeito." },
-                { title: "Linking Word / Connector", content: "Furthermore / In addition", hint: "Adicione um argumento extra de peso." },
-                { title: "Linking Word / Connector", content: "On the other hand", hint: "Apresente o ponto de vista oposto." },
-                { title: "Linking Word / Connector", content: "Despite the fact that...", hint: "Introduza uma concessão complexa." }
+                { title: "Linking Word", content: "However / Nevertheless", hint: "Contraste a sua ideia anterior." },
+                { title: "Linking Word", content: "As a result / Consequently", hint: "Mostre causa e efeito direto." },
+                { title: "Linking Word", content: "Furthermore / In addition", hint: "Adicione um argumento forte." },
+                { title: "Linking Word", content: "On the other hand", hint: "Apresente o ponto de vista oposto." },
+                { title: "Linking Word", content: "Despite the fact that...", hint: "Use uma concessão gramatical rica." }
             ],
             fillers: [
-                { title: "Speaking Filler / Marker", content: "Let me think about that for a moment...", hint: "Ganhe tempo de reflexão de forma natural." },
-                { title: "Speaking Filler / Marker", content: "Off the top of my head...", hint: "Dê uma estimativa ou pensamento imediato." },
-                { title: "Speaking Filler / Marker", content: "To be completely honest...", hint: "Introduza uma opinião pessoal autêntica." },
-                { title: "Speaking Filler / Marker", content: "What I mean to say is...", hint: "Refraseie ou clarifique o que disse." }
+                { title: "Speaking Filler", content: "Let me think about that for a moment...", hint: "Ganhe tempo de reflexão." },
+                { title: "Speaking Filler", content: "Off the top of my head...", hint: "Dê uma estimativa imediata." },
+                { title: "Speaking Filler", content: "To be completely honest...", hint: "Expresse uma opinião autêntica." },
+                { title: "Speaking Filler", content: "What I mean to say is...", hint: "Refraseie a sua ideia." }
             ],
             idioms: [
-                { title: "Idiom / Phrasal Verb", content: "Over the moon", hint: "Descreva algo que o deixou extremamente feliz." },
-                { title: "Idiom / Phrasal Verb", content: "Once in a blue moon", hint: "Fale de um hábito que ocorre raramente." },
-                { title: "Idiom / Phrasal Verb", content: "Catch up with...", hint: "Use o phrasal verb para falar de reencontros ou pendências." },
-                { title: "Idiom / Phrasal Verb", content: "A piece of cake", hint: "Descreva uma tarefa fácil." },
-                { title: "Idiom / Phrasal Verb", content: "Put up with...", hint: "Fale de algo incómodo que precisa de tolerar." }
+                { title: "Idiom / Phrasal Verb", content: "Over the moon", hint: "Fale de algo extremamente positivo." },
+                { title: "Idiom / Phrasal Verb", content: "Once in a blue moon", hint: "Descreva um hábito muito raro." },
+                { title: "Idiom / Phrasal Verb", content: "Catch up with...", hint: "Use para falar de colocar conversa em dia." },
+                { title: "Idiom / Phrasal Verb", content: "A piece of cake", hint: "Descreva algo fácil." },
+                { title: "Idiom / Phrasal Verb", content: "Put up with...", hint: "Descreva algo incomodo que tolera." }
             ],
             paraphrase: [
-                { title: "Paraphrase Strategy", content: "In other words...", hint: "Explique o conceito anterior por outras palavras." },
-                { title: "Idiom / Synonym", content: "Escalate / Surge (Substitui Increase)", hint: "Evite a palavra 'increase' usando vocabulário rico." },
-                { title: "Academic Synonym", content: "Crucial / Paramount (Substitui Important)", hint: " Eleve o nível do seu vocabulário de grau." },
-                { title: "Paraphrase Strategy", content: "Put simply...", hint: "Resuma uma ideia complexa de forma simples." }
+                { title: "Paraphrase Strategy", content: "In other words...", hint: "Explique com outras palavras." },
+                { title: "Academic Synonym", content: "Escalate / Surge (≠ Increase)", hint: "Evite o uso repetitivo de 'increase'." },
+                { title: "Academic Synonym", content: "Crucial / Paramount (≠ Important)", hint: "Eleve o vocabulário de importância." },
+                { title: "Paraphrase Strategy", content: "Put simply...", hint: "Simplifique um conceito complexo." }
             ],
             tenses: [
-                { title: "Target Verb Tense", content: "Present Perfect (have / has done)", hint: "Fale de experiências de vida ou mudanças recentes." },
-                { title: "Target Verb Tense", content: "Past Continuous (was / were doing)", hint: "Descreva o que estava a acontecer num momento passado." },
-                { title: "Target Verb Tense", content: "Second Conditional (If + Past, would...)", hint: "Especule sobre uma situação hipotética." },
-                { title: "Target Verb Tense", content: "Used to + Infinitive", hint: "Fale de hábitos passados que já não pratica." }
+                { title: "Target Verb Tense", content: "Present Perfect (have/has done)", hint: "Experiências de vida ou recente conexão." },
+                { title: "Target Verb Tense", content: "Past Continuous (was/were doing)", hint: "Ações contínuas no passado." },
+                { title: "Target Verb Tense", content: "Second Conditional (If + Past, would...)", hint: "Especulação hipotética." },
+                { title: "Target Verb Tense", content: "Used to + Infinitive", hint: "Hábitos passados já encerrados." }
             ],
             topics: [
-                { title: "IELTS Speaking Topic", content: "Technology & AI", hint: "Como a tecnologia mudou o quotidiano?" },
-                { title: "IELTS Speaking Topic", content: "Environment & Green Cities", hint: "Ações sustentáveis e mobilidade urbana." },
-                { title: "IELTS Speaking Topic", content: "Education & Online Learning", hint: "O futuro das escolas e universidades." },
-                { title: "IELTS Speaking Topic", content: "Tourism & Cultural Travel", hint: "Impactos do turismo de massa nas cidades." },
-                { title: "IELTS Speaking Topic", content: "Health & Lifestyle", hint: "Hábitos de bem-estar e alimentação." }
+                { title: "IELTS Topic", content: "Technology & AI", hint: "Impactos da IA e tecnologia no dia a dia." },
+                { title: "IELTS Topic", content: "Environment & Sustainability", hint: "Ações verdes e poluição urbana." },
+                { title: "IELTS Topic", content: "Education & Career", hint: "O futuro das profissões e universidades." },
+                { title: "IELTS Topic", content: "Tourism & Culture", hint: "Turismo de massa e tradições locais." },
+                { title: "IELTS Topic", content: "Health & Lifestyle", hint: "Bem-estar, desporto e rotinas." }
             ]
         };
 
-        let countdownInterval = null;
+        // Sintetizador de Som (Web Audio API)
+        let audioCtx = null;
+
+        function playTickSound(frequency = 400) {
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.04);
+            } catch (e) {}
+        }
+
+        let timerInterval = null;
 
         function getRandomItem(arr) {
             return arr[Math.floor(Math.random() * arr.length)];
         }
 
-        async function startGame() {
+        function startRoulette() {
+            const startBtn = document.getElementById('start-btn');
             const difficulty = document.getElementById('difficulty').value;
-            const timerSetting = document.getElementById('timer-setting').value;
             const board = document.getElementById('game-board');
+            const timerBox = document.getElementById('timer-box');
 
-            // Seleção de acordo com a dificuldade
-            let selectedCards = [];
-            selectedCards.push(getRandomItem(dataPool.linkingWords));
-            selectedCards.push(getRandomItem(dataPool.topics));
+            // Reset do Timer
+            if (timerInterval) clearInterval(timerInterval);
+            timerBox.style.display = 'none';
+            timerBox.classList.remove('warning');
 
+            startBtn.disabled = true;
+
+            // Definir categorias com base na dificuldade
+            let categories = [dataPool.linkingWords, dataPool.topics];
             if (difficulty === 'medium' || difficulty === 'hard') {
-                selectedCards.push(getRandomItem(dataPool.fillers));
-                selectedCards.push(getRandomItem(dataPool.idioms));
+                categories.push(dataPool.fillers, dataPool.idioms);
             }
-
             if (difficulty === 'hard') {
-                selectedCards.push(getRandomItem(dataPool.paraphrase));
-                selectedCards.push(getRandomItem(dataPool.tenses));
+                categories.push(dataPool.paraphrase, dataPool.tenses);
             }
 
-            // Renderizar na tela
+            // Criar a estrutura dos cards na tela
             board.innerHTML = '';
-            selectedCards.forEach(card => {
+            const cardElements = categories.map(pool => {
                 const cardEl = document.createElement('div');
-                cardEl.className = 'card';
+                cardEl.className = 'card spinning';
                 cardEl.innerHTML = `
                     <div>
-                        <div class="card-category">${card.title}</div>
-                        <div class="card-content">${card.content}</div>
+                        <div class="card-category">${pool[0].title}</div>
+                        <div class="card-content">...</div>
                     </div>
-                    <div class="card-hint">💡 ${card.hint}</div>
+                    <div class="card-hint">Girando roleta...</div>
                 `;
                 board.appendChild(cardEl);
+                return { element: cardEl, pool: pool, finalItem: getRandomItem(pool) };
             });
 
-            // Gestão do Timer
-            const timerBox = document.getElementById('timer-box');
-            if (timerSetting === 'off') {
-                timerBox.style.display = 'none';
-            } else {
-                timerBox.style.display = 'block';
-                let timeLeft = parseInt(timerSetting);
-                document.getElementById('countdown').innerText = timeLeft;
+            // Efeito da Roleta Desacelerando
+            let step = 0;
+            const totalSteps = 25; // Quantidade de rotações
 
-                if (countdownInterval) clearInterval(countdownInterval);
+            function spinStep() {
+                step++;
+                cardElements.forEach(item => {
+                    const randomTemp = getRandomItem(item.pool);
+                    item.element.querySelector('.card-content').innerText = randomTemp.content;
+                    item.element.querySelector('.card-hint').innerText = "💡 " + randomTemp.hint;
+                });
 
-                countdownInterval = setInterval(() => {
-                    timeLeft--;
-                    document.getElementById('countdown').innerText = timeLeft;
-                    if (timeLeft <= 0) {
-                        clearInterval(countdownInterval);
-                        alert("Tempo esgotado! Tente avaliar se conseguiu usar todos os elementos sorteados.");
-                    }
-                }, 1000);
+                // Som de Tick com frequência ajustada
+                playTickSound(350 + step * 10);
+
+                if (step < totalSteps) {
+                    // Desaceleração gradual
+                    const delay = 50 + Math.pow(step, 1.8);
+                    setTimeout(spinStep, delay);
+                } else {
+                    // Parada Final e Exibição dos Itens Definitivos
+                    cardElements.forEach(item => {
+                        item.element.classList.remove('spinning');
+                        item.element.querySelector('.card-content').innerText = item.finalItem.content;
+                        item.element.querySelector('.card-hint').innerText = "💡 " + item.finalItem.hint;
+                    });
+
+                    playTickSound(800); // Som de trava final
+                    startBtn.disabled = false;
+
+                    // Iniciar o Cronómetro após a roleta parar
+                    initTimer();
+
+                    // Salvar no Firestore
+                    saveToFirestore(difficulty, cardElements.map(i => i.finalItem.content));
+                }
             }
 
-            // Registo opcional no Firestore
+            spinStep();
+        }
+
+        function initTimer() {
+            const timerSetting = document.getElementById('timer-setting').value;
+            const timerBox = document.getElementById('timer-box');
+            const timerText = document.getElementById('timer-text');
+
+            if (timerSetting === 'off') return;
+
+            let timeLeft = parseInt(timerSetting);
+            timerBox.style.display = 'flex';
+            timerText.innerText = `Tempo: ${timeLeft}s`;
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerText.innerText = `Tempo: ${timeLeft}s`;
+
+                if (timeLeft <= 10 && timeLeft > 0) {
+                    timerBox.classList.add('warning');
+                }
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timerText.innerText = " Tempo Esgotado!";
+                    alert(" O tempo acabou! Verifique se conseguiu usar todas as expressões sorteadas.");
+                }
+            }, 1000);
+        }
+
+        async function saveToFirestore(difficulty, cardsDrawn) {
             try {
                 if (window.dbRef && window.addDoc) {
                     await window.addDoc(window.collection(window.dbRef, "ielts_game_sessions"), {
                         difficulty: difficulty,
-                        cardsDrawn: selectedCards.map(c => c.content),
+                        cardsDrawn: cardsDrawn,
                         timestamp: window.serverTimestamp()
                     });
                 }
-            } catch (e) {
-                console.log("Sessão praticada localmente (Firestore pendente).");
-            }
+            } catch (e) {}
         }
     </script>
 </body>
