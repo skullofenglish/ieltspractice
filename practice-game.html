@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -115,7 +115,7 @@
             transform: none;
         }
 
-        /* Timer Display em Destaque */
+        /* Timer Display */
         .timer-container {
             background: var(--dark-purple);
             color: var(--white);
@@ -207,28 +207,28 @@
 
     <header>
         <h1>IELTS Speaking Game</h1>
-        <p class="subtitle">Roleta de Fluidez: Conectores, Expressões, Gramática e Temas em Tempo Real</p>
+        <p class="subtitle">Fluency Roulette: Connectors, Expressions, Grammar & Topics in Real Time</p>
     </header>
 
-    <!-- Controls -->
+    <!-- Controls Panel -->
     <div class="controls-panel">
         <div class="control-group">
-            <label for="difficulty">Dificuldade</label>
+            <label for="difficulty">Difficulty Level</label>
             <select id="difficulty">
-                <option value="easy">Fácil (2 Cards)</option>
-                <option value="medium" selected>Médio (4 Cards)</option>
+                <option value="easy">Easy (2 Cards)</option>
+                <option value="medium" selected>Medium (4 Cards)</option>
                 <option value="hard">Master IELTS (6 Cards)</option>
             </select>
         </div>
 
         <div class="control-group">
-            <label for="timer-setting">Tempo de Resposta</label>
+            <label for="timer-setting">Response Timer</label>
             <select id="timer-setting">
-                <option value="30">30 Segundos</option>
-                <option value="45">45 Segundos</option>
-                <option value="60" selected>60 Segundos</option>
-                <option value="120">120 Segundos (Part 2)</option>
-                <option value="off">Sem Cronómetro</option>
+                <option value="30">30 Seconds</option>
+                <option value="45">45 Seconds</option>
+                <option value="60" selected>60 Seconds</option>
+                <option value="120">120 Seconds (Part 2)</option>
+                <option value="off">No Timer</option>
             </select>
         </div>
 
@@ -237,19 +237,19 @@
         </div>
     </div>
 
-    <!-- Display do Cronómetro Grande -->
+    <!-- Timer Container -->
     <div class="timer-container" id="timer-box">
-        ⏱️ <span id="timer-text">Tempo: 60s</span>
+        ⏱️ <span id="timer-text">Time Remaining: 60s</span>
     </div>
 
-    <!-- Layout dos Cards -->
+    <!-- Cards Container -->
     <div class="cards-container" id="game-board">
         <div class="card" style="grid-column: 1 / -1; text-align: center; color: #777;">
-            Clique em <strong>"Start / Shuffle"</strong> para girar a roleta de desafios!
+            Click <strong>"Start / Shuffle"</strong> to spin the speaking roulette!
         </div>
     </div>
 
-    <div id="db-status">A ligar ao Firestore...</div>
+    <div id="db-status">Connecting to Firestore...</div>
 
     <!-- Firebase SDK Modular -->
     <script type="module">
@@ -268,7 +268,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         
-        document.getElementById('db-status').innerText = "✓ Ligado ao Firestore com sucesso!";
+        document.getElementById('db-status').innerText = "✓ Connected to Firestore successfully!";
         window.dbRef = db;
         window.addDoc = addDoc;
         window.collection = collection;
@@ -276,70 +276,126 @@
     </script>
 
     <script>
-        // Banco de dados completo
+        // Dataset
         const dataPool = {
             linkingWords: [
-                { title: "Linking Word", content: "However / Nevertheless", hint: "Contraste a sua ideia anterior." },
-                { title: "Linking Word", content: "As a result / Consequently", hint: "Mostre causa e efeito direto." },
-                { title: "Linking Word", content: "Furthermore / In addition", hint: "Adicione um argumento forte." },
-                { title: "Linking Word", content: "On the other hand", hint: "Apresente o ponto de vista oposto." },
-                { title: "Linking Word", content: "Despite the fact that...", hint: "Use uma concessão gramatical rica." }
+                { title: "Linking Word", content: "However / Nevertheless", hint: "Contrast your previous statement." },
+                { title: "Linking Word", content: "As a result / Consequently", hint: "Show a direct cause and effect." },
+                { title: "Linking Word", content: "Furthermore / In addition", hint: "Add a compelling supporting point." },
+                { title: "Linking Word", content: "On the other hand", hint: "Introduce an opposing perspective." },
+                { title: "Linking Word", content: "Despite the fact that...", hint: "Use a high-level complex concession." }
             ],
             fillers: [
-                { title: "Speaking Filler", content: "Let me think about that for a moment...", hint: "Ganhe tempo de reflexão." },
-                { title: "Speaking Filler", content: "Off the top of my head...", hint: "Dê uma estimativa imediata." },
-                { title: "Speaking Filler", content: "To be completely honest...", hint: "Expresse uma opinião autêntica." },
-                { title: "Speaking Filler", content: "What I mean to say is...", hint: "Refraseie a sua ideia." }
+                { title: "Speaking Filler", content: "Let me think about that for a moment...", hint: "Gain thinking time naturally." },
+                { title: "Speaking Filler", content: "Off the top of my head...", hint: "Give an unscripted estimate or thought." },
+                { title: "Speaking Filler", content: "To be completely honest...", hint: "Share a frank personal opinion." },
+                { title: "Speaking Filler", content: "What I mean to say is...", hint: "Clarify or rephrase your idea." }
             ],
             idioms: [
-                { title: "Idiom / Phrasal Verb", content: "Over the moon", hint: "Fale de algo extremamente positivo." },
-                { title: "Idiom / Phrasal Verb", content: "Once in a blue moon", hint: "Descreva um hábito muito raro." },
-                { title: "Idiom / Phrasal Verb", content: "Catch up with...", hint: "Use para falar de colocar conversa em dia." },
-                { title: "Idiom / Phrasal Verb", content: "A piece of cake", hint: "Descreva algo fácil." },
-                { title: "Idiom / Phrasal Verb", content: "Put up with...", hint: "Descreva algo incomodo que tolera." }
+                { title: "Idiom / Phrasal Verb", content: "Over the moon", hint: "Describe an extremely happy memory or event." },
+                { title: "Idiom / Phrasal Verb", content: "Once in a blue moon", hint: "Talk about a very rare habit or occurrence." },
+                { title: "Idiom / Phrasal Verb", content: "Catch up with...", hint: "Use the verb to talk about reconnecting with someone." },
+                { title: "Idiom / Phrasal Verb", content: "A piece of cake", hint: "Describe an effortless task or situation." },
+                { title: "Idiom / Phrasal Verb", content: "Put up with...", hint: "Describe an unpleasant issue you have to tolerate." }
             ],
             paraphrase: [
-                { title: "Paraphrase Strategy", content: "In other words...", hint: "Explique com outras palavras." },
-                { title: "Academic Synonym", content: "Escalate / Surge (≠ Increase)", hint: "Evite o uso repetitivo de 'increase'." },
-                { title: "Academic Synonym", content: "Crucial / Paramount (≠ Important)", hint: "Eleve o vocabulário de importância." },
-                { title: "Paraphrase Strategy", content: "Put simply...", hint: "Simplifique um conceito complexo." }
+                { title: "Paraphrase Strategy", content: "In other words...", hint: "Re-explain your previous point simply." },
+                { title: "Academic Synonym", content: "Escalate / Surge (≠ Increase)", hint: "Avoid repeating basic words like 'increase'." },
+                { title: "Academic Synonym", content: "Crucial / Paramount (≠ Important)", hint: "Elevate your vocabulary of importance." },
+                { title: "Paraphrase Strategy", content: "Put simply...", hint: "Summarize a complex concept into simple terms." }
             ],
             tenses: [
-                { title: "Target Verb Tense", content: "Present Perfect (have/has done)", hint: "Experiências de vida ou recente conexão." },
-                { title: "Target Verb Tense", content: "Past Continuous (was/were doing)", hint: "Ações contínuas no passado." },
-                { title: "Target Verb Tense", content: "Second Conditional (If + Past, would...)", hint: "Especulação hipotética." },
-                { title: "Target Verb Tense", content: "Used to + Infinitive", hint: "Hábitos passados já encerrados." }
+                { title: "Target Verb Tense", content: "Present Perfect (have/has done)", hint: "Connect past life experiences to the present." },
+                { title: "Target Verb Tense", content: "Past Continuous (was/were doing)", hint: "Describe an ongoing action in the past." },
+                { title: "Target Verb Tense", content: "Second Conditional (If + Past, would...)", hint: "Talk about a hypothetical scenario." },
+                { title: "Target Verb Tense", content: "Used to + Infinitive", hint: "Discuss past habits that you no longer do." }
             ],
             topics: [
-                { title: "IELTS Topic", content: "Technology & AI", hint: "Impactos da IA e tecnologia no dia a dia." },
-                { title: "IELTS Topic", content: "Environment & Sustainability", hint: "Ações verdes e poluição urbana." },
-                { title: "IELTS Topic", content: "Education & Career", hint: "O futuro das profissões e universidades." },
-                { title: "IELTS Topic", content: "Tourism & Culture", hint: "Turismo de massa e tradições locais." },
-                { title: "IELTS Topic", content: "Health & Lifestyle", hint: "Bem-estar, desporto e rotinas." }
+                { title: "IELTS Topic", content: "Technology & AI", hint: "How AI and tech impact daily routines." },
+                { title: "IELTS Topic", content: "Environment & Sustainability", hint: "Eco-friendly actions and city pollution." },
+                { title: "IELTS Topic", content: "Education & Careers", hint: "The future of jobs and university degrees." },
+                { title: "IELTS Topic", content: "Tourism & Cultural Heritage", hint: "Mass tourism and local traditions." },
+                { title: "IELTS Topic", content: "Health & Lifestyle", hint: "Physical wellness, sport, and diets." }
             ]
         };
 
-        // Sintetizador de Som (Web Audio API)
+        // Sound Synthesizer (Web Audio API)
         let audioCtx = null;
+
+        function getAudioContext() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            return audioCtx;
+        }
 
         function playTickSound(frequency = 400) {
             try {
-                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                if (audioCtx.state === 'suspended') audioCtx.resume();
-                
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
+                const ctx = getAudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
                 
                 osc.type = 'triangle';
-                osc.frequency.setValueAtTime(frequency, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
+                osc.frequency.setValueAtTime(frequency, ctx.currentTime);
+                gain.gain.setValueAtTime(0.08, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
                 
                 osc.connect(gain);
-                gain.connect(audioCtx.destination);
+                gain.connect(ctx.destination);
                 
                 osc.start();
-                osc.stop(audioCtx.currentTime + 0.04);
+                osc.stop(ctx.currentTime + 0.04);
+            } catch (e) {}
+        }
+
+        // Bipe de Aviso (3s, 2s, 1s)
+        function playWarningBeep() {
+            try {
+                const ctx = getAudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(600, ctx.currentTime);
+                gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+                
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                
+                osc.start();
+                osc.stop(ctx.currentTime + 0.12);
+            } catch (e) {}
+        }
+
+        // Alarme de Fim de Tempo (0s)
+        function playTimesUpAlarm() {
+            try {
+                const ctx = getAudioContext();
+                const now = ctx.currentTime;
+
+                // Primeiro bipe
+                const osc1 = ctx.createOscillator();
+                const gain1 = ctx.createGain();
+                osc1.type = 'square';
+                osc1.frequency.setValueAtTime(880, now);
+                gain1.gain.setValueAtTime(0.2, now);
+                gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+                osc1.connect(gain1);
+                gain1.connect(ctx.destination);
+                osc1.start(now);
+                osc1.stop(now + 0.15);
+
+                // Segundo bipe curto
+                const osc2 = ctx.createOscillator();
+                const gain2 = ctx.createGain();
+                osc2.type = 'square';
+                osc2.frequency.setValueAtTime(1100, now + 0.18);
+                gain2.gain.setValueAtTime(0.25, now + 0.18);
+                gain2.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+                osc2.connect(gain2);
+                gain2.connect(ctx.destination);
+                osc2.start(now + 0.18);
+                osc2.stop(now + 0.35);
             } catch (e) {}
         }
 
@@ -355,14 +411,14 @@
             const board = document.getElementById('game-board');
             const timerBox = document.getElementById('timer-box');
 
-            // Reset do Timer
+            // Reset Timer
             if (timerInterval) clearInterval(timerInterval);
             timerBox.style.display = 'none';
             timerBox.classList.remove('warning');
 
             startBtn.disabled = true;
 
-            // Definir categorias com base na dificuldade
+            // Define categories by difficulty
             let categories = [dataPool.linkingWords, dataPool.topics];
             if (difficulty === 'medium' || difficulty === 'hard') {
                 categories.push(dataPool.fillers, dataPool.idioms);
@@ -371,7 +427,7 @@
                 categories.push(dataPool.paraphrase, dataPool.tenses);
             }
 
-            // Criar a estrutura dos cards na tela
+            // Create Card DOM layout
             board.innerHTML = '';
             const cardElements = categories.map(pool => {
                 const cardEl = document.createElement('div');
@@ -381,15 +437,15 @@
                         <div class="card-category">${pool[0].title}</div>
                         <div class="card-content">...</div>
                     </div>
-                    <div class="card-hint">Girando roleta...</div>
+                    <div class="card-hint">Spinning...</div>
                 `;
                 board.appendChild(cardEl);
                 return { element: cardEl, pool: pool, finalItem: getRandomItem(pool) };
             });
 
-            // Efeito da Roleta Desacelerando
+            // Roulette Slowdown Effect
             let step = 0;
-            const totalSteps = 25; // Quantidade de rotações
+            const totalSteps = 25;
 
             function spinStep() {
                 step++;
@@ -399,28 +455,23 @@
                     item.element.querySelector('.card-hint').innerText = "💡 " + randomTemp.hint;
                 });
 
-                // Som de Tick com frequência ajustada
                 playTickSound(350 + step * 10);
 
                 if (step < totalSteps) {
-                    // Desaceleração gradual
                     const delay = 50 + Math.pow(step, 1.8);
                     setTimeout(spinStep, delay);
                 } else {
-                    // Parada Final e Exibição dos Itens Definitivos
+                    // Final Stop
                     cardElements.forEach(item => {
                         item.element.classList.remove('spinning');
                         item.element.querySelector('.card-content').innerText = item.finalItem.content;
                         item.element.querySelector('.card-hint').innerText = "💡 " + item.finalItem.hint;
                     });
 
-                    playTickSound(800); // Som de trava final
+                    playTickSound(800);
                     startBtn.disabled = false;
 
-                    // Iniciar o Cronómetro após a roleta parar
                     initTimer();
-
-                    // Salvar no Firestore
                     saveToFirestore(difficulty, cardElements.map(i => i.finalItem.content));
                 }
             }
@@ -437,20 +488,29 @@
 
             let timeLeft = parseInt(timerSetting);
             timerBox.style.display = 'flex';
-            timerText.innerText = `Tempo: ${timeLeft}s`;
+            timerText.innerText = `Time Remaining: ${timeLeft}s`;
 
             timerInterval = setInterval(() => {
                 timeLeft--;
-                timerText.innerText = `Tempo: ${timeLeft}s`;
+                timerText.innerText = `Time Remaining: ${timeLeft}s`;
 
                 if (timeLeft <= 10 && timeLeft > 0) {
                     timerBox.classList.add('warning');
                 }
 
+                // Bipe nos 3, 2 e 1 segundos finais
+                if (timeLeft <= 3 && timeLeft > 0) {
+                    playWarningBeep();
+                }
+
+                // Fim de tempo
                 if (timeLeft <= 0) {
                     clearInterval(timerInterval);
-                    timerText.innerText = " Tempo Esgotado!";
-                    alert(" O tempo acabou! Verifique se conseguiu usar todas as expressões sorteadas.");
+                    timerText.innerText = "⏱️ Time's Up!";
+                    playTimesUpAlarm();
+                    setTimeout(() => {
+                        alert("Time's up! Check if you managed to incorporate all drawn cards into your speech.");
+                    }, 50);
                 }
             }, 1000);
         }
