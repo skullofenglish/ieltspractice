@@ -35,7 +35,6 @@
             max-width: 850px;
         }
 
-        /* Menu de Navegação Superior (Abas Principais) */
         .top-nav {
             display: flex;
             gap: 10px;
@@ -65,7 +64,6 @@
             border-color: var(--primary-purple);
         }
 
-        /* Seletor de Práticas de Listening */
         .listening-selector {
             display: flex;
             flex-wrap: wrap;
@@ -92,7 +90,6 @@
             border-color: var(--primary-purple);
         }
 
-        /* Container do Exercício */
         .container {
             background-color: var(--card-bg);
             border-radius: 12px;
@@ -131,9 +128,7 @@
             border: 1px solid var(--light-lavender);
         }
 
-        audio {
-            width: 100%;
-        }
+        audio { width: 100%; }
 
         .instruction {
             font-size: 14px;
@@ -260,23 +255,10 @@
             font-family: 'Century Gothic', CenturyGothic, sans-serif;
         }
 
-        .submit-btn {
-            background-color: var(--primary-purple);
-            color: white;
-        }
-
-        .submit-btn:hover {
-            background-color: #3b164a;
-        }
-
-        .clear-btn {
-            background-color: var(--border-color);
-            color: var(--primary-purple);
-        }
-
-        .clear-btn:hover {
-            background-color: #d1c2d4;
-        }
+        .submit-btn { background-color: var(--primary-purple); color: white; }
+        .submit-btn:hover { background-color: #3b164a; }
+        .clear-btn { background-color: var(--border-color); color: var(--primary-purple); }
+        .clear-btn:hover { background-color: #d1c2d4; }
 
         .status-msg {
             text-align: center;
@@ -298,27 +280,26 @@
 <body>
 
     <div class="main-wrapper">
-        <!-- Navegação Principal entre Abas -->
         <nav class="top-nav">
             <a href="index.html">Overview</a>
             <a href="listening.html" class="active">Listening</a>
             <a href="reading.html">Reading</a>
             <a href="writing.html">Writing</a>
+            <a href="speaking.html">Speaking</a>
             <a href="scores.html">Scores</a>
         </nav>
 
-        <!-- Seletor das Práticas de Listening -->
         <div class="listening-selector">
-            <button class="sub-tab-btn active" onclick="switchTask('task1')">1. Multiple Choice (1)</button>
-            <button class="sub-tab-btn" onclick="switchTask('task2')">2. Short Answer</button>
-            <button class="sub-tab-btn" onclick="switchTask('task3')">3. Sentence Completion</button>
-            <button class="sub-tab-btn" onclick="switchTask('task4')">4. Table Completion</button>
-            <button class="sub-tab-btn" onclick="switchTask('task5')">5. Note Completion</button>
-            <button class="sub-tab-btn" onclick="switchTask('task6')">6. Plan/Map/Diagram</button>
-            <button class="sub-tab-btn" onclick="switchTask('task7')">7. Multiple Choice (Multi)</button>
+            <button class="sub-tab-btn active" onclick="switchTask('task1', this)">1. Multiple Choice (1)</button>
+            <button class="sub-tab-btn" onclick="switchTask('task2', this)">2. Short Answer</button>
+            <button class="sub-tab-btn" onclick="switchTask('task3', this)">3. Sentence Completion</button>
+            <button class="sub-tab-btn" onclick="switchTask('task4', this)">4. Table Completion</button>
+            <button class="sub-tab-btn" onclick="switchTask('task5', this)">5. Note Completion</button>
+            <button class="sub-tab-btn" onclick="switchTask('task6', this)">6. Plan/Map/Diagram</button>
+            <button class="sub-tab-btn" onclick="switchTask('task7', this)">7. Multiple Choice (Multi)</button>
         </div>
 
-        <!-- ================= TASK 1 ================= -->
+        <!-- TASK 1 -->
         <div id="task1" class="container active-section" data-task-id="task1">
             <h1>IELTS Listening Practice</h1>
             <div class="subtitle">Listening Sample task Multiple Choice (one answer)</div>
@@ -330,34 +311,34 @@
             </div>
             <form class="quiz-form">
                 <div class="instruction">Questions 1–3</div>
-                <div style="font-size: 13px; font-style: italic; margin-bottom: 12px;">Choose the correct answer.[cite: 7]</div>
+                <div style="font-size: 13px; font-style: italic; margin-bottom: 12px;">Choose the correct answer.</div>
 
                 <div class="question-block" data-q="q1">
-                    <div class="question-title">1. Why did Judy choose to study the East End of London?[cite: 7]</div>
+                    <div class="question-title">1. Why did Judy choose to study the East End of London?</div>
                     <div class="options-list">
-                        <label class="option-label"><input type="radio" name="q1" value="She wanted to understand her own background."> She wanted to understand her own background.[cite: 7]</label>
-                        <label class="option-label"><input type="radio" name="q1" value="She was interested in place names."> She was interested in place names.[cite: 7]</label>
-                        <label class="option-label"><input type="radio" name="q1" value="She had read several books about it."> She had read several books about it.[cite: 7]</label>
+                        <label class="option-label"><input type="radio" name="q1" value="She wanted to understand her own background."> She wanted to understand her own background.</label>
+                        <label class="option-label"><input type="radio" name="q1" value="She was interested in place names."> She was interested in place names.</label>
+                        <label class="option-label"><input type="radio" name="q1" value="She had read several books about it."> She had read several books about it.</label>
                     </div>
                     <div class="feedback-box"></div>
                 </div>
 
                 <div class="question-block" data-q="q2">
-                    <div class="question-title">2. What was Judy’s main source of materials?[cite: 7]</div>
+                    <div class="question-title">2. What was Judy’s main source of materials?</div>
                     <div class="options-list">
-                        <label class="option-label"><input type="radio" name="q2" value="books"> books[cite: 7]</label>
-                        <label class="option-label"><input type="radio" name="q2" value="newspapers"> newspapers[cite: 7]</label>
-                        <label class="option-label"><input type="radio" name="q2" value="interviews"> interviews[cite: 7]</label>
+                        <label class="option-label"><input type="radio" name="q2" value="books"> books</label>
+                        <label class="option-label"><input type="radio" name="q2" value="newspapers"> newspapers</label>
+                        <label class="option-label"><input type="radio" name="q2" value="interviews"> interviews</label>
                     </div>
                     <div class="feedback-box"></div>
                 </div>
 
                 <div class="question-block" data-q="q3">
-                    <div class="question-title">3. What difficulty did Judy have with her dissertation?[cite: 7]</div>
+                    <div class="question-title">3. What difficulty did Judy have with her dissertation?</div>
                     <div class="options-list">
-                        <label class="option-label"><input type="radio" name="q3" value="writing the first draft"> writing the first draft[cite: 7]</label>
-                        <label class="option-label"><input type="radio" name="q3" value="organising what she had collected"> organising what she had collected[cite: 7]</label>
-                        <label class="option-label"><input type="radio" name="q3" value="finding enough relevant sources"> finding enough relevant sources[cite: 7]</label>
+                        <label class="option-label"><input type="radio" name="q3" value="writing the first draft"> writing the first draft</label>
+                        <label class="option-label"><input type="radio" name="q3" value="organising what she had collected"> organising what she had collected</label>
+                        <label class="option-label"><input type="radio" name="q3" value="finding enough relevant sources"> finding enough relevant sources</label>
                     </div>
                     <div class="feedback-box"></div>
                 </div>
@@ -367,10 +348,10 @@
                     <button type="button" class="action-btn clear-btn">Limpar</button>
                 </div>
             </form>
-            <div class="status-msg">Sincronizado com a nuvem</div>
+            <div class="status-msg"></div>
         </div>
 
-        <!-- ================= TASK 2 ================= -->
+        <!-- TASK 2 -->
         <div id="task2" class="container" data-task-id="task2">
             <h1>IELTS Listening Practice</h1>
             <div class="subtitle">Listening Sample task Short Answer Questions</div>
@@ -382,8 +363,8 @@
             </div>
             <form class="quiz-form">
                 <div class="instruction">Questions 1–3</div>
-                <div style="font-size: 13px; font-style: italic; margin-bottom: 12px;">Answer the questions. Write ONE WORD ONLY for each answer.[cite: 7]</div>
-                <div style="font-size: 13px; font-weight: bold; margin-bottom: 12px;">List THREE types of staff that Pacific Clothing want to recruit at present[cite: 7]</div>
+                <div style="font-size: 13px; font-style: italic; margin-bottom: 12px;">Answer the questions. Write ONE WORD ONLY for each answer.</div>
+                <div style="font-size: 13px; font-weight: bold; margin-bottom: 12px;">List THREE types of staff that Pacific Clothing want to recruit at present</div>
 
                 <div class="question-block" data-q="q1">
                     <div class="question-title">1. <input type="text" name="q1" placeholder="Digite a resposta"></div>
@@ -403,10 +384,10 @@
                     <button type="button" class="action-btn clear-btn">Limpar</button>
                 </div>
             </form>
-            <div class="status-msg">Sincronizado com a nuvem</div>
+            <div class="status-msg"></div>
         </div>
 
-        <!-- ================= TASK 3 ================= -->
+        <!-- TASK 3 -->
         <div id="task3" class="container" data-task-id="task3">
             <h1>IELTS Listening Practice</h1>
             <div class="subtitle">Listening Sample task Sentence Completion</div>
@@ -442,10 +423,10 @@
                     <button type="button" class="action-btn clear-btn">Limpar</button>
                 </div>
             </form>
-            <div class="status-msg">Sincronizado com a nuvem</div>
+            <div class="status-msg"></div>
         </div>
 
-        <!-- ================= TASK 4 ================= -->
+        <!-- TASK 4 -->
         <div id="task4" class="container" data-task-id="task4">
             <h1>IELTS Listening Practice</h1>
             <div class="subtitle">Listening Sample task Table Completion</div>
@@ -502,10 +483,10 @@
                     <button type="button" class="action-btn clear-btn">Limpar</button>
                 </div>
             </form>
-            <div class="status-msg">Sincronizado com a nuvem</div>
+            <div class="status-msg"></div>
         </div>
 
-        <!-- ================= TASK 5 ================= -->
+        <!-- TASK 5 -->
         <div id="task5" class="container" data-task-id="task5">
             <h1>IELTS Listening Practice</h1>
             <div class="subtitle">Listening Sample task Note Completion</div>
@@ -556,10 +537,10 @@
                     <button type="button" class="action-btn clear-btn">Limpar</button>
                 </div>
             </form>
-            <div class="status-msg">Sincronizado com a nuvem</div>
+            <div class="status-msg"></div>
         </div>
 
-        <!-- ================= TASK 6 ================= -->
+        <!-- TASK 6 -->
         <div id="task6" class="container" data-task-id="task6">
             <h1>IELTS Listening Practice</h1>
             <div class="subtitle">Listening Sample task Plan-Map-Diagram Labelling (Type A)</div>
@@ -573,9 +554,7 @@
                 <div class="instruction">Questions 1–3</div>
                 <div style="font-size: 13px; font-style: italic; margin-bottom: 12px;">Label the map. Choose the correct letter, A–H, for each label.</div>
                 
-                <!-- Imagem do Mapa embutida -->
                 <img src="images/Plan-Map-Diagram Labelling (Type A).png" alt="Plan-Map-Diagram Labelling (Type A)" class="task-image" onerror="this.style.display='none'">
-                <div style="font-size: 11px; font-style: italic; color: #666; margin-bottom: 15px;">(Mapa de referência da atividade de rotulagem)</div>
 
                 <table>
                     <thead>
@@ -609,10 +588,10 @@
                     <button type="button" class="action-btn clear-btn">Limpar</button>
                 </div>
             </form>
-            <div class="status-msg">Sincronizado com a nuvem</div>
+            <div class="status-msg"></div>
         </div>
 
-        <!-- ================= TASK 7 ================= -->
+        <!-- TASK 7 -->
         <div id="task7" class="container" data-task-id="task7">
             <h1>IELTS Listening Practice</h1>
             <div class="subtitle">Listening Sample task Multiple choice (more than one answer)</div>
@@ -645,28 +624,14 @@
                     <button type="button" class="action-btn clear-btn">Limpar</button>
                 </div>
             </form>
-            <div class="status-msg">Sincronizado com a nuvem</div>
+            <div class="status-msg"></div>
         </div>
     </div>
 
-    <!-- Firebase SDKs e Lógica de Sincronização -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, doc, setDoc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { doc, setDoc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { db, getStudentKey, getRawStudentName, registerStudentActivity, initStudentBar } from './student-manager.js';
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyC2pSWdBIREaPmpOvaiNzZWGUuCEupxp1c",
-            authDomain: "studendtrackerpanel.firebaseapp.com",
-            projectId: "studendtrackerpanel",
-            storageBucket: "studendtrackerpanel.firebasestorage.app",
-            messagingSenderId: "1004678184015",
-            appId: "1:1004678184015:web:be965625c08d8ee73ffe3a"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        // Gabaritos Oficiais validados
         const answerKeys = {
             task1: { q1: "She wanted to understand her own background.", q2: "interviews", q3: "organising what she had collected" },
             task2: { q1: "designers", q2: "managers", q3: "electricians" },
@@ -679,12 +644,12 @@
 
         let currentActiveTask = 'task1';
 
-        window.switchTask = function(taskId) {
+        window.switchTask = function(taskId, btn) {
             document.querySelectorAll('.container').forEach(el => el.classList.remove('active-section'));
             document.querySelectorAll('.sub-tab-btn').forEach(el => el.classList.remove('active'));
             
             document.getElementById(taskId).classList.add('active-section');
-            event.currentTarget.classList.add('active');
+            if(btn) btn.classList.add('active');
             currentActiveTask = taskId;
             loadSavedData(taskId);
         };
@@ -742,13 +707,32 @@
         }
 
         async function loadSavedData(taskId) {
-            const statusMsg = document.querySelector(`#${taskId} .status-msg`);
+            const container = document.getElementById(taskId);
+            const form = container.querySelector('.quiz-form');
+            const statusMsg = container.querySelector('.status-msg');
+            
+            // Reseta a interface antes de carregar os dados da aluna selecionada
+            form.reset();
+            container.querySelectorAll('.feedback-box').forEach(fb => {
+                fb.className = "feedback-box";
+                fb.innerHTML = "";
+            });
+
+            const studentKey = getStudentKey();
+            const rawName = getRawStudentName();
+
+            if (!studentKey) {
+                statusMsg.textContent = "Digite seu nome ou e-mail no topo para carregar/salvar suas respostas.";
+                return;
+            }
+
+            statusMsg.textContent = `Carregando dados de ${rawName}...`;
+
             try {
-                const docRef = doc(db, "ielts_practice", `listening_${taskId}`);
+                const docRef = doc(db, "ielts_students", studentKey, "listening", taskId);
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists()) {
                     const data = docSnap.data();
-                    const container = document.getElementById(taskId);
                     if (data.answers) {
                         if (taskId === 'task7') {
                             const boxes = container.querySelectorAll('input[name="opt"]');
@@ -771,13 +755,16 @@
                             showResults(taskId, data.answers);
                         }
                     }
+                    statusMsg.textContent = `Sincronizado (${rawName})`;
+                } else {
+                    statusMsg.textContent = `Nenhuma resposta salva ainda para ${rawName}.`;
                 }
             } catch (e) {
-                console.error("Erro ao carregar dados", e);
+                console.error("Erro ao carregar dados:", e);
+                statusMsg.textContent = "Erro ao conectar na nuvem.";
             }
         }
 
-        // Eventos de Envio e Limpeza
         document.querySelectorAll('.quiz-form').forEach(form => {
             const container = form.closest('.container');
             const taskId = container.getAttribute('data-task-id');
@@ -786,6 +773,14 @@
             const statusMsg = container.querySelector('.status-msg');
 
             submitBtn.addEventListener('click', async () => {
+                const studentKey = getStudentKey();
+                const rawName = getRawStudentName();
+                if (!studentKey) {
+                    alert("Por favor, digite seu nome ou e-mail no topo da página antes de enviar!");
+                    document.getElementById('global-student-input').focus();
+                    return;
+                }
+
                 let answers = {};
                 if (taskId === 'task7') {
                     const checked = container.querySelectorAll('input[name="opt"]:checked');
@@ -800,14 +795,15 @@
 
                 statusMsg.textContent = "Salvando na nuvem...";
                 try {
-                    const docRef = doc(db, "ielts_practice", `listening_${taskId}`);
+                    await registerStudentActivity();
+                    const docRef = doc(db, "ielts_students", studentKey, "listening", taskId);
                     await setDoc(docRef, {
                         answers: answers,
                         submitted: true,
                         updatedAt: new Date().toISOString()
                     });
                     showResults(taskId, answers);
-                    statusMsg.textContent = "Respostas salvas com sucesso!";
+                    statusMsg.textContent = `Respostas salvas para ${rawName}!`;
                 } catch (error) {
                     console.error("Erro ao salvar:", error);
                     statusMsg.textContent = "Erro ao salvar na nuvem.";
@@ -815,6 +811,10 @@
             });
 
             clearBtn.addEventListener('click', async () => {
+                const studentKey = getStudentKey();
+                if (!studentKey) return alert("Identifique a aluna no topo antes de limpar.");
+                if (!confirm("Deseja realmente apagar suas respostas desta atividade?")) return;
+
                 form.reset();
                 container.querySelectorAll('.feedback-box').forEach(fb => {
                     fb.className = "feedback-box";
@@ -822,7 +822,7 @@
                 });
                 statusMsg.textContent = "Limpando dados...";
                 try {
-                    const docRef = doc(db, "ielts_practice", `listening_${taskId}`);
+                    const docRef = doc(db, "ielts_students", studentKey, "listening", taskId);
                     await deleteDoc(docRef);
                     statusMsg.textContent = "Dados limpos com sucesso!";
                 } catch (error) {
@@ -831,7 +831,7 @@
             });
         });
 
-        // Carrega os dados da primeira tarefa ao abrir
+        initStudentBar(() => loadSavedData(currentActiveTask));
         loadSavedData('task1');
     </script>
 </body>
