@@ -64,136 +64,6 @@
             border-color: var(--primary-purple);
         }
 
-        /* Student Identification Bar */
-        .identity-bar {
-            background-color: var(--card-bg);
-            border: 1px solid var(--light-lavender);
-            border-radius: 10px;
-            padding: 15px 20px;
-            margin-bottom: 20px;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 15px;
-            box-shadow: 0 2px 8px rgba(80, 32, 100, 0.05);
-        }
-
-        .identity-input-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex: 1;
-            min-width: 280px;
-        }
-
-        .identity-input-group label {
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--primary-purple);
-            white-space: nowrap;
-        }
-
-        .identity-input-group input {
-            flex: 1;
-            padding: 8px 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            font-family: inherit;
-            font-size: 13px;
-        }
-
-        .identity-input-group input:focus {
-            outline: none;
-            border-color: var(--primary-purple);
-        }
-
-        .id-btn {
-            padding: 8px 16px;
-            background-color: var(--primary-purple);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-            font-family: inherit;
-            transition: background 0.2s;
-        }
-
-        .id-btn:hover {
-            background-color: #3b164a;
-        }
-
-        .teacher-toggle-btn {
-            padding: 8px 14px;
-            background-color: transparent;
-            color: var(--accent-wine);
-            border: 1px solid var(--accent-wine);
-            border-radius: 6px;
-            font-weight: 700;
-            font-size: 12px;
-            cursor: pointer;
-            font-family: inherit;
-            transition: all 0.2s;
-        }
-
-        .teacher-toggle-btn:hover, .teacher-toggle-btn.active {
-            background-color: var(--accent-wine);
-            color: white;
-        }
-
-        /* Teacher Student List Drawer */
-        .teacher-panel {
-            display: none;
-            background-color: #FBF8FC;
-            border: 1px solid var(--accent-wine);
-            border-radius: 10px;
-            padding: 15px 20px;
-            margin-bottom: 20px;
-        }
-
-        .teacher-panel.visible {
-            display: block;
-        }
-
-        .teacher-panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .teacher-panel-header h4 {
-            margin: 0;
-            color: var(--accent-wine);
-            font-size: 14px;
-        }
-
-        .student-chips {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .student-chip {
-            padding: 6px 12px;
-            background-color: white;
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--primary-purple);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .student-chip:hover, .student-chip.selected {
-            background-color: var(--primary-purple);
-            color: white;
-            border-color: var(--primary-purple);
-        }
-
         /* Writing Sub-tabs Navigation */
         .writing-selector {
             display: flex;
@@ -464,27 +334,6 @@
             <a href="scores.html">Scores</a>
         </nav>
 
-        <!-- Barra de Identificação da Aluna / Modo Professor -->
-        <div class="identity-bar">
-            <div class="identity-input-group">
-                <label for="student-identifier">Aluna (E-mail ou Nome):</label>
-                <input type="text" id="student-identifier" placeholder="Digite seu e-mail para carregar/salvar suas respostas...">
-                <button type="button" class="id-btn" id="confirm-id-btn">Carregar / Confirmar</button>
-            </div>
-            <button type="button" class="teacher-toggle-btn" id="toggle-teacher-btn">Modo Professor</button>
-        </div>
-
-        <!-- Painel da Professora (Oculto por padrão) -->
-        <div class="teacher-panel" id="teacher-panel">
-            <div class="teacher-panel-header">
-                <h4>Alunas com respostas salvas na nuvem (Clique para visualizar):</h4>
-                <button type="button" class="id-btn" style="padding: 4px 10px; font-size: 11px;" id="refresh-students-btn">Atualizar Lista</button>
-            </div>
-            <div class="student-chips" id="student-list-container">
-                <span style="font-size: 12px; color: var(--text-muted);">Carregando lista de alunas...</span>
-            </div>
-        </div>
-
         <!-- Sub-navegação por Tarefas -->
         <div class="writing-selector">
             <button class="sub-tab-btn active" onclick="switchTask('w_task1_transport', this)">Task 1: Transport</button>
@@ -510,6 +359,7 @@
                     <textarea class="essay-textarea" placeholder="Digite a sua redação aqui..."></textarea>
                     <div class="word-counter">Palavras: <span class="count">0</span></div>
                     
+                    <!-- Painel de Correção por Descritor -->
                     <div class="correction-panel">
                         <h3>Feedback do Professor / Examinador</h3>
                         <div class="descriptor-feedback-group">
@@ -883,111 +733,13 @@
 
     <!-- Firebase Script for Multi-Student & Multi-Device Sync -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, doc, setDoc, getDoc, deleteDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { doc, setDoc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { db, getStudentKey, getRawStudentName, registerStudentActivity, initStudentBar } from './student-manager.js';
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyC2pSWdBIREaPmpOvaiNzZWGUuCEupxp1c",
-            authDomain: "studendtrackerpanel.firebaseapp.com",
-            projectId: "studendtrackerpanel",
-            storageBucket: "studendtrackerpanel.firebasestorage.app",
-            messagingSenderId: "1004678184015",
-            appId: "1:1004678184015:web:be965625c08d8ee73ffe3a"
-        };
-
-        let db = null;
-        let currentTaskId = 'w_task1_transport';
-
-        try {
-            const app = initializeApp(firebaseConfig);
-            db = getFirestore(app);
-        } catch (e) {
-            console.warn("Firebase não inicializado, usando localStorage como fallback local.");
-        }
-
-        // Transforma o e-mail/nome digitado em uma chave segura para o Firestore
-        function getStudentKey() {
-            const raw = document.getElementById('student-identifier').value.trim().toLowerCase();
-            if (!raw) return null;
-            return raw.replace(/[^a-z0-9]/g, '_');
-        }
-
-        function getRawStudentName() {
-            return document.getElementById('student-identifier').value.trim();
-        }
-
-        // Carrega o identificador salvo anteriormente no navegador da aluna
-        const savedIdentity = localStorage.getItem('ielts_student_identity');
-        if (savedIdentity) {
-            document.getElementById('student-identifier').value = savedIdentity;
-        }
-
-        // Botão Confirmar Identidade
-        document.getElementById('confirm-id-btn').addEventListener('click', () => {
-            const rawName = getRawStudentName();
-            if (!rawName) {
-                alert("Por favor, digite seu e-mail ou nome completo para continuar.");
-                return;
-            }
-            localStorage.setItem('ielts_student_identity', rawName);
-            if (currentTaskId !== 'w_band_descriptors') {
-                loadSavedData(currentTaskId);
-            }
-        });
-
-        // Alternar Modo Professor
-        const teacherBtn = document.getElementById('toggle-teacher-btn');
-        const teacherPanel = document.getElementById('teacher-panel');
-        teacherBtn.addEventListener('click', () => {
-            teacherPanel.classList.toggle('visible');
-            teacherBtn.classList.toggle('active');
-            if (teacherPanel.classList.contains('visible')) {
-                fetchStudentList();
-            }
-        });
-
-        document.getElementById('refresh-students-btn').addEventListener('click', fetchStudentList);
-
-        // Busca todas as alunas cadastradas no Firestore para o Modo Professor
-        async function fetchStudentList() {
-            const listContainer = document.getElementById('student-list-container');
-            if (!db) {
-                listContainer.innerHTML = '<span style="font-size: 12px; color: red;">Erro de conexão com a nuvem.</span>';
-                return;
-            }
-            listContainer.innerHTML = '<span style="font-size: 12px; color: var(--text-muted);">Buscando alunas...</span>';
-            try {
-                const querySnapshot = await getDocs(collection(db, "ielts_students"));
-                listContainer.innerHTML = '';
-                if (querySnapshot.empty) {
-                    listContainer.innerHTML = '<span style="font-size: 12px; color: var(--text-muted);">Nenhuma aluna enviou respostas ainda.</span>';
-                    return;
-                }
-                querySnapshot.forEach((studentDoc) => {
-                    const data = studentDoc.data();
-                    const displayName = data.displayName || studentDoc.id;
-                    const chip = document.createElement('button');
-                    chip.type = 'button';
-                    chip.className = 'student-chip';
-                    chip.textContent = displayName;
-                    chip.onclick = () => {
-                        document.querySelectorAll('.student-chip').forEach(c => c.classList.remove('selected'));
-                        chip.classList.add('selected');
-                        document.getElementById('student-identifier').value = displayName;
-                        if (currentTaskId !== 'w_band_descriptors') {
-                            loadSavedData(currentTaskId);
-                        }
-                    };
-                    listContainer.appendChild(chip);
-                });
-            } catch (error) {
-                console.error("Erro ao listar alunas:", error);
-                listContainer.innerHTML = '<span style="font-size: 12px; color: red;">Erro ao carregar lista.</span>';
-            }
-        }
+        let currentActiveTask = 'w_task1_transport';
 
         window.switchTask = function(taskId, btnElement) {
-            currentTaskId = taskId;
+            currentActiveTask = taskId;
             document.querySelectorAll('.container').forEach(el => el.classList.remove('active-section'));
             document.querySelectorAll('.sub-tab-btn').forEach(el => el.classList.remove('active'));
             
@@ -1033,12 +785,10 @@
                 const rawName = getRawStudentName();
 
                 if (!studentKey) {
-                    alert("Por favor, preencha seu e-mail ou nome no campo superior antes de salvar!");
-                    document.getElementById('student-identifier').focus();
+                    alert("Por favor, preencha seu e-mail ou nome no campo superior antes de enviar!");
+                    document.getElementById('global-student-input').focus();
                     return;
                 }
-
-                localStorage.setItem('ielts_student_identity', rawName);
 
                 const payload = {
                     studentName: rawName,
@@ -1053,27 +803,19 @@
                 };
 
                 statusMsg.textContent = "Salvando na nuvem...";
-                localStorage.setItem(`writing_${studentKey}_${taskId}`, JSON.stringify(payload));
 
                 if (db) {
                     try {
-                        // 1. Registra o perfil da aluna na coleção principal (para aparecer no Modo Professor)
-                        await setDoc(doc(db, "ielts_students", studentKey), {
-                            displayName: rawName,
-                            lastActive: new Date().toISOString()
-                        }, { merge: true });
-
-                        // 2. Salva a tarefa isolada dentro da subcoleção daquela aluna
-                        const taskDocRef = doc(db, "ielts_students", studentKey, "tasks", taskId);
+                        await registerStudentActivity();
+                        const taskDocRef = doc(db, "ielts_students", studentKey, "writing", taskId);
                         await setDoc(taskDocRef, payload);
-
                         statusMsg.textContent = `Sincronizado na nuvem para (${rawName})!`;
                     } catch (error) {
                         console.error("Erro ao salvar no Firestore:", error);
-                        statusMsg.textContent = "Salvo localmente (erro ao conectar na nuvem).";
+                        statusMsg.textContent = "Erro ao sincronizar na nuvem.";
                     }
                 } else {
-                    statusMsg.textContent = "Salvo localmente!";
+                    statusMsg.textContent = "Erro: Banco de dados não conectado.";
                 }
             });
 
@@ -1094,18 +836,17 @@
                 if(fbGra) fbGra.value = "";
 
                 statusMsg.textContent = "Limpando...";
-                localStorage.removeItem(`writing_${studentKey}_${taskId}`);
 
                 if (db) {
                     try {
-                        const taskDocRef = doc(db, "ielts_students", studentKey, "tasks", taskId);
+                        const taskDocRef = doc(db, "ielts_students", studentKey, "writing", taskId);
                         await deleteDoc(taskDocRef);
                         statusMsg.textContent = "Conteúdo limpo com sucesso!";
                     } catch (error) {
-                        statusMsg.textContent = "Conteúdo limpo localmente.";
+                        statusMsg.textContent = "Erro ao limpar conteúdo na nuvem.";
                     }
                 } else {
-                    statusMsg.textContent = "Conteúdo limpo com sucesso!";
+                    statusMsg.textContent = "Conteúdo limpo localmente.";
                 }
             });
         });
@@ -1113,16 +854,16 @@
         async function loadSavedData(taskId) {
             const container = document.getElementById(taskId);
             if (!container) return;
-
             const textarea = container.querySelector('.essay-textarea');
             const counterSpan = container.querySelector('.word-counter .count');
+            
             const fbTa = container.querySelector('.feedback-ta');
             const fbCc = container.querySelector('.feedback-cc');
             const fbLr = container.querySelector('.feedback-lr');
             const fbGra = container.querySelector('.feedback-gra');
             const statusMsg = container.querySelector('.status-msg');
 
-            // Limpa os campos visualmente antes de carregar os dados da aluna selecionada
+            // Limpa visualmente antes de carregar
             textarea.value = '';
             counterSpan.textContent = '0';
             if(fbTa) fbTa.value = '';
@@ -1134,7 +875,7 @@
             const rawName = getRawStudentName();
 
             if (!studentKey) {
-                statusMsg.textContent = "Digite seu e-mail/nome no topo para carregar ou salvar suas redações.";
+                statusMsg.textContent = "Digite seu e-mail/nome no topo para carregar seus dados.";
                 return;
             }
 
@@ -1155,37 +896,24 @@
 
             if (db) {
                 try {
-                    const taskDocRef = doc(db, "ielts_students", studentKey, "tasks", taskId);
+                    const taskDocRef = doc(db, "ielts_students", studentKey, "writing", taskId);
                     const docSnap = await getDoc(taskDocRef);
                     if (docSnap.exists()) {
                         applyData(docSnap.data());
                         statusMsg.textContent = `Carregado da nuvem (${rawName}).`;
                         return;
                     } else {
-                        statusMsg.textContent = `Nenhuma redação salva ainda para ${rawName} nesta tarefa.`;
+                        statusMsg.textContent = `Nenhuma redação salva ainda para ${rawName}.`;
                         return;
                     }
                 } catch (e) {
-                    console.warn("Falha ao buscar da nuvem, recorrendo ao localStorage:", e);
+                    console.error("Erro ao buscar dados:", e);
+                    statusMsg.textContent = "Erro ao conectar na nuvem.";
                 }
-            }
-
-            // Fallback LocalStorage
-            const localSaved = localStorage.getItem(`writing_${studentKey}_${taskId}`);
-            if (localSaved) {
-                try {
-                    const data = JSON.parse(localSaved);
-                    applyData(data);
-                    statusMsg.textContent = `Carregado localmente (${rawName}).`;
-                } catch(err) {
-                    statusMsg.textContent = "";
-                }
-            } else {
-                statusMsg.textContent = "";
             }
         }
 
-        // Carrega por padrão a primeira tarefa ao abrir
+        initStudentBar(() => loadSavedData(currentActiveTask));
         loadSavedData('w_task1_transport');
     </script>
 </body>
