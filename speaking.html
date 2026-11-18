@@ -137,20 +137,29 @@
             gap: 24px;
         }
 
-        @media (max-width: 850px) {
+        @media (max-width: 900px) {
             .speaking-layout {
                 flex-direction: column;
             }
         }
 
         .task-prompt {
-            flex: 1;
+            flex: 1.2;
             background: #FAFAFC;
             padding: 20px;
             border-radius: 8px;
             border: 1px solid var(--border-color);
             font-size: 13px;
             line-height: 1.6;
+        }
+
+        .task-prompt ul {
+            margin: 8px 0;
+            padding-left: 20px;
+        }
+
+        .task-prompt li {
+            margin-bottom: 4px;
         }
 
         .speaking-input-area {
@@ -161,7 +170,7 @@
 
         .speech-notes-textarea {
             width: 100%;
-            height: 220px;
+            height: 200px;
             padding: 14px;
             border: 1px solid var(--border-color);
             border-radius: 8px;
@@ -213,7 +222,7 @@
 
         /* Teacher / Examiner Correction Box */
         .correction-panel {
-            margin-top: 20px;
+            margin-top: 15px;
             background-color: #FBF8FC;
             border: 1px solid var(--light-lavender);
             border-radius: 8px;
@@ -221,16 +230,16 @@
         }
 
         .correction-panel h3 {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--primary-purple);
             margin-top: 0;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             border-bottom: 1px solid var(--border-color);
-            padding-bottom: 6px;
+            padding-bottom: 5px;
         }
 
         .descriptor-feedback-group {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .descriptor-feedback-group label {
@@ -238,13 +247,13 @@
             font-size: 11px;
             font-weight: bold;
             color: var(--text-muted);
-            margin-bottom: 3px;
+            margin-bottom: 2px;
         }
 
         .descriptor-feedback-group textarea {
             width: 100%;
-            height: 50px;
-            padding: 8px;
+            height: 45px;
+            padding: 6px;
             border: 1px solid var(--border-color);
             border-radius: 6px;
             font-family: 'Century Gothic', CenturyGothic, sans-serif;
@@ -327,47 +336,47 @@
 
         <!-- SPEAKING PART 1 -->
         <div id="spk_part1" class="container active-section" data-task-id="spk_part1">
-            <h1>IELTS Speaking Part 1: Introduction & Interview</h1>
-            <div class="subtitle">General questions about yourself, your home, work, studies, and familiar topics.</div>
+            <h1>IELTS Speaking Part 1: Introduction and Interview</h1>
+            <div class="subtitle">Duration: 4 to 5 minutes. Direct questions about yourself, your daily life, routine, and personal experiences.</div>
             <div class="speaking-layout">
                 <div class="task-prompt">
-                    <p><strong>Sample Questions:</strong></p>
+                    <p><strong>Overview:</strong> The examiner asks direct questions about familiar topics. This is typically the most natural and conversational part of the test.</p>
+                    <p><strong>Common Themes:</strong></p>
                     <ul>
-                        <p><em>Where do you live? Do you live in a house or an apartment?</em></p>
-                        <p><em>What do you like most about your hometown?</em></p>
-                        <p><em>Let's talk about your daily routine. What time do you usually get up?</em></p>
-                        <p><em>Do you prefer mornings or evenings? Why?</em></p>
+                        <li><strong>Work or Studies:</strong> What you do, why you chose your profession/course, future plans.</li>
+                        <li><strong>Home & Housing:</strong> What your home/apartment is like, your neighborhood, how long you have lived there.</li>
+                        <li><strong>Hometown:</strong> What your city is famous for, what there is to do, whether you enjoy living there.</li>
+                        <li><strong>Interests & Hobbies:</strong> Free time activities, sports, reading, music, social media habits.</li>
+                        <li><strong>Daily Routines:</strong> Daily schedule, eating habits, travel, and holidays.</li>
                     </ul>
-                    <p style="font-size: 12px; color: var(--text-muted);">Dica: Pratique respondendo com frases naturais, desenvolvendo um pouco a resposta sem exagerar no tempo.</p>
                 </div>
                 <div class="speaking-input-area">
-                    <label style="font-size: 12px; font-weight: bold; color: var(--primary-purple); margin-bottom: 5px;">Notas de Resposta / Tópicos Principais:</label>
-                    <textarea class="speech-notes-textarea" placeholder="Escreva suas ideias principais ou notas para a prática oral..."></textarea>
+                    <label style="font-size: 12px; font-weight: bold; color: var(--primary-purple); margin-bottom: 5px;">Response Notes / Key Vocabulary:</label>
+                    <textarea class="speech-notes-textarea" placeholder="Type your notes or practice ideas here..."></textarea>
                     
-                    <!-- Painel de Correção por Descritor -->
                     <div class="correction-panel">
-                        <h3>Feedback do Professor / Examinador</h3>
+                        <h3>Teacher / Examiner Feedback</h3>
                         <div class="descriptor-feedback-group">
                             <label>Fluency and Coherence:</label>
-                            <textarea class="feedback-fc" placeholder="Comentários sobre fluência, hesitações, ritmo e coesão..."></textarea>
+                            <textarea class="feedback-fc" placeholder="Comments on fluency, pacing, and hesitation..."></textarea>
                         </div>
                         <div class="descriptor-feedback-group">
                             <label>Lexical Resource:</label>
-                            <textarea class="feedback-lr" placeholder="Comentários sobre vocabulário, flexibilidade e expressões idiomáticas..."></textarea>
+                            <textarea class="feedback-lr" placeholder="Comments on vocabulary variety and natural expressions..."></textarea>
                         </div>
                         <div class="descriptor-feedback-group">
                             <label>Grammatical Range and Accuracy:</label>
-                            <textarea class="feedback-gra" placeholder="Comentários sobre estruturas gramaticais e precisão..."></textarea>
+                            <textarea class="feedback-gra" placeholder="Comments on sentence structures and accuracy..."></textarea>
                         </div>
                         <div class="descriptor-feedback-group">
                             <label>Pronunciation:</label>
-                            <textarea class="feedback-pron" placeholder="Comentários sobre entonação, ritmo, chunking e clareza..."></textarea>
+                            <textarea class="feedback-pron" placeholder="Comments on intonation, stress, and clarity..."></textarea>
                         </div>
                     </div>
 
                     <div class="actions">
-                        <button type="button" class="action-btn submit-btn">Enviar / Salvar</button>
-                        <button type="button" class="action-btn clear-btn">Limpar</button>
+                        <button type="button" class="action-btn submit-btn">Save / Submit</button>
+                        <button type="button" class="action-btn clear-btn">Clear</button>
                     </div>
                     <div class="status-msg"></div>
                 </div>
@@ -376,46 +385,46 @@
 
         <!-- SPEAKING PART 2 -->
         <div id="spk_part2" class="container" data-task-id="spk_part2">
-            <h1>IELTS Speaking Part 2: Long Turn (Cue Card)</h1>
-            <div class="subtitle">Talk on a specific topic for 1 to 2 minutes after 1 minute of preparation.</div>
+            <h1>IELTS Speaking Part 2: Individual Long Turn (Cue Card)</h1>
+            <div class="subtitle">Duration: 3 to 4 minutes (1 min prep, 1-2 mins speaking). Talk on a specific topic without interruption.</div>
             <div class="speaking-layout">
                 <div class="task-prompt">
-                    <p><strong>Describe a book that you read recently.</strong></p>
-                    <p>You should say:</p>
+                    <p><strong>Overview:</strong> The examiner gives you a task card with a specific topic and prompts. You have 1 minute to prepare and make notes on paper, then speak continuously for 1 to 2 minutes.</p>
+                    <p><strong>Common Cue Card Themes:</strong></p>
                     <ul>
-                        <li>what kind of book it is</li>
-                        <li>what it is about</li>
-                        <li>why you decided to read it</li>
+                        <li><strong>Events & Experiences:</strong> "Describe a time when you helped someone" or "Describe a memorable trip you took."</li>
+                        <li><strong>People:</strong> "Describe a teacher who greatly influenced you" or "Describe a family member you resemble."</li>
+                        <li><strong>Objects & Places:</strong> "Describe a piece of technology you use frequently" or "Describe a park or garden you enjoy visiting."</li>
+                        <li><strong>Habits & Skills:</strong> "Describe a skill you learned recently" or "Describe an interesting book you read."</li>
                     </ul>
-                    <p>and explain what you learned from reading this book.</p>
                 </div>
                 <div class="speaking-input-area">
-                    <label style="font-size: 12px; font-weight: bold; color: var(--primary-purple); margin-bottom: 5px;">Tópicos / Notas para o Minuto de Preparação:</label>
-                    <textarea class="speech-notes-textarea" placeholder="Organize suas ideias em bullet points (1 minuto de prep)..."></textarea>
+                    <label style="font-size: 12px; font-weight: bold; color: var(--primary-purple); margin-bottom: 5px;">Cue Card Prep / Bullet Point Notes (1 min):</label>
+                    <textarea class="speech-notes-textarea" placeholder="Organize your ideas in bullet points here..."></textarea>
                     
                     <div class="correction-panel">
-                        <h3>Feedback do Professor / Examinador</h3>
+                        <h3>Teacher / Examiner Feedback</h3>
                         <div class="descriptor-feedback-group">
                             <label>Fluency and Coherence:</label>
-                            <textarea class="feedback-fc" placeholder="Comentários sobre desenvolvimento do tópico e coesão..."></textarea>
+                            <textarea class="feedback-fc" placeholder="Comments on topic development and sustained speech..."></textarea>
                         </div>
                         <div class="descriptor-feedback-group">
                             <label>Lexical Resource:</label>
-                            <textarea class="feedback-lr" placeholder="Comentários sobre vocabulário, precisão e paráfrase..."></textarea>
+                            <textarea class="feedback-lr" placeholder="Comments on vocabulary and paraphrasing..."></textarea>
                         </div>
                         <div class="descriptor-feedback-group">
                             <label>Grammatical Range and Accuracy:</label>
-                            <textarea class="feedback-gra" placeholder="Comentários sobre variedades de estruturas e precisão..."></textarea>
+                            <textarea class="feedback-gra" placeholder="Comments on structure range and error frequency..."></textarea>
                         </div>
                         <div class="descriptor-feedback-group">
                             <label>Pronunciation:</label>
-                            <textarea class="feedback-pron" placeholder="Comentários sobre clareza, acentuação e entonação..."></textarea>
+                            <textarea class="feedback-pron" placeholder="Comments on speech flow, rhythm, and clarity..."></textarea>
                         </div>
                     </div>
 
                     <div class="actions">
-                        <button type="button" class="action-btn submit-btn">Enviar / Salvar</button>
-                        <button type="button" class="action-btn clear-btn">Limpar</button>
+                        <button type="button" class="action-btn submit-btn">Save / Submit</button>
+                        <button type="button" class="action-btn clear-btn">Clear</button>
                     </div>
                     <div class="status-msg"></div>
                 </div>
@@ -425,43 +434,47 @@
         <!-- SPEAKING PART 3 -->
         <div id="spk_part3" class="container" data-task-id="spk_part3">
             <h1>IELTS Speaking Part 3: Two-way Discussion</h1>
-            <div class="subtitle">More abstract and deeper discussion related to the topic in Part 2.</div>
+            <div class="subtitle">Duration: 4 to 5 minutes. Abstract, in-depth discussion connected to Part 2 themes.</div>
             <div class="speaking-layout">
                 <div class="task-prompt">
-                    <p><strong>Discussion Topics (Reading & Literature):</strong></p>
+                    <p><strong>Overview:</strong> The examiner asks deeper, more abstract follow-up questions linked to Part 2. Sophisticated language is required to argue, analyze pros and cons, speculate, and defend viewpoints.</p>
+                    <p><strong>Common Themes (Socio-cultural & Technological):</strong></p>
                     <ul>
-                        <p><em>What kinds of books are most popular in your country today?</em></p>
-                        <p><em>Do you think reading books in digital format will ever completely replace traditional paper books?</em></p>
-                        <p><em>Why do you think some people prefer reading physical books rather than e-books?</em></p>
+                        <li><strong>Education & Learning:</strong> Shifts in teaching methods, the future of schools, AI in education.</li>
+                        <li><strong>Technology & Society:</strong> Social media impact on communication, screen addiction, automation and the future of work.</li>
+                        <li><strong>Environment:</strong> Climate change, individual vs. governmental responsibility in sustainability.</li>
+                        <li><strong>Culture & Tradition:</strong> Globalization effects on local cultures, preserving historical heritage.</li>
+                        <li><strong>Work & Lifestyle:</strong> Work-life balance, stress in major cities.</li>
                     </ul>
+                    <p style="margin-top: 8px; font-style: italic; color: var(--accent-wine);"><strong>Academic Tip:</strong> While Parts 1 & 2 are personal, Part 3 requires formal vocabulary, complex grammatical structures (passive voice, conditionals, subordinate clauses), and advanced cohesive devices to hit B2–C1 proficiency levels.</p>
                 </div>
                 <div class="speaking-input-area">
-                    <label style="font-size: 12px; font-weight: bold; color: var(--primary-purple); margin-bottom: 5px;">Notas de Resposta / Argumentos:</label>
-                    <textarea class="speech-notes-textarea" placeholder="Escreva ideias de argumentos para discussões abstratas..."></textarea>
+                    <label style="font-size: 12px; font-weight: bold; color: var(--primary-purple); margin-bottom: 5px;">Arguments / Abstract Ideas Notes:</label>
+                    <textarea class="speech-notes-textarea" placeholder="Draft your arguments and complex structures here..."></textarea>
                     
                     <div class="correction-panel">
-                        <h3>Feedback do Professor / Examinador</h3>
+                        <h3>Teacher / Examiner Feedback</h3>
                         <div class="descriptor-feedback-group">
                             <label>Fluency and Coherence:</label>
-                            <textarea class="feedback-fc" placeholder="Comentários sobre capacidade de argumentação e discurso..."></textarea>
+                            <textarea class="feedback-fc" placeholder="Comments on argumentation and discourse flow..."></textarea>
                         </div>
                         <div class="descriptor-feedback-group">
                             <label>Lexical Resource:</label>
-                            <textarea class="feedback-lr" placeholder="Comentários sobre termos abstratos e precisão..."></textarea>
+                            <textarea class="feedback-lr" placeholder="Comments on abstract terminology and precision..."></textarea>
                         </div>
                         <div class="descriptor-feedback-group">
                             <label>Grammatical Range and Accuracy:</label>
-                            <textarea class="feedback-gra" placeholder="Comentários sobre estruturas complexas e fluidez..."></textarea>
+                            <textarea class="feedback-gra" placeholder="Comments on complex sentence control..."></textarea>
                         </div>
                         <div class="descriptor-feedback-group">
                             <label>Pronunciation:</label>
-                            <textarea class="feedback-pron" placeholder="Comentários sobre ritmo em falas longas..."></textarea>
+                            <textarea class="feedback-pron" placeholder="Comments on delivery during extended arguments..."></textarea>
                         </div>
                     </div>
 
                     <div class="actions">
-                        <button type="button" class="action-btn submit-btn">Enviar / Salvar</button>
-                        <button type="button" class="action-btn clear-btn">Limpar</button>
+                        <button type="button" class="action-btn submit-btn">Save / Submit</button>
+                        <button type="button" class="action-btn clear-btn">Clear</button>
                     </div>
                     <div class="status-msg"></div>
                 </div>
@@ -471,7 +484,7 @@
         <!-- BAND DESCRIPTORS TAB -->
         <div id="spk_band_descriptors" class="container">
             <h1>IELTS Speaking Assessment Criteria (Band Descriptors)</h1>
-            <div class="subtitle">Tabela Oficial de Avaliação - Speaking (Academic and General Training)[cite: 26]</div>
+            <div class="subtitle">Official Assessment Table - Speaking (Academic and General Training)[cite: 26]</div>
             
             <div class="descriptor-section-title">Speaking Band Descriptors (Bands 9 to 1)</div>
             <div class="descriptors-table-wrapper">
@@ -598,7 +611,7 @@
                 const rawName = getRawStudentName();
 
                 if (!studentKey) {
-                    alert("Por favor, preencha seu e-mail ou nome no campo superior antes de enviar!");
+                    alert("Please enter your name or email at the top before submitting!");
                     document.getElementById('global-student-input').focus();
                     return;
                 }
@@ -615,31 +628,31 @@
                     updatedAt: new Date().toISOString()
                 };
 
-                statusMsg.textContent = "Salvando na nuvem...";
+                statusMsg.textContent = "Saving to cloud...";
 
                 if (db) {
                     try {
                         await registerStudentActivity();
                         const taskDocRef = doc(db, "ielts_students", studentKey, "speaking", taskId);
                         await setDoc(taskDocRef, payload);
-                        statusMsg.textContent = `Sincronizado na nuvem para (${rawName})!`;
+                        statusMsg.textContent = `Synced to cloud for (${rawName})!`;
                     } catch (error) {
-                        console.error("Erro ao salvar no Firestore:", error);
-                        statusMsg.textContent = "Erro ao sincronizar na nuvem.";
+                        console.error("Firestore error:", error);
+                        statusMsg.textContent = "Error syncing to cloud.";
                     }
                 } else {
-                    statusMsg.textContent = "Erro: Banco de dados não conectado.";
+                    statusMsg.textContent = "Error: Database not connected.";
                 }
             });
 
             clearBtn.addEventListener('click', async () => {
                 const studentKey = getStudentKey();
                 if (!studentKey) {
-                    alert("Identifique a aluna no topo antes de limpar os dados.");
+                    alert("Please identify your profile at the top before clearing data.");
                     return;
                 }
 
-                if (!confirm("Deseja realmente apagar suas notas desta parte?")) return;
+                if (!confirm("Are you sure you want to clear your notes for this part?")) return;
 
                 if(textarea) textarea.value = "";
                 if(fbFc) fbFc.value = "";
@@ -647,18 +660,18 @@
                 if(fbGra) fbGra.value = "";
                 if(fbPron) fbPron.value = "";
 
-                statusMsg.textContent = "Limpando...";
+                statusMsg.textContent = "Clearing...";
 
                 if (db) {
                     try {
                         const taskDocRef = doc(db, "ielts_students", studentKey, "speaking", taskId);
                         await deleteDoc(taskDocRef);
-                        statusMsg.textContent = "Conteúdo limpo com sucesso!";
+                        statusMsg.textContent = "Cleared successfully!";
                     } catch (error) {
-                        statusMsg.textContent = "Erro ao limpar conteúdo na nuvem.";
+                        statusMsg.textContent = "Error clearing cloud content.";
                     }
                 } else {
-                    statusMsg.textContent = "Conteúdo limpo localmente.";
+                    statusMsg.textContent = "Cleared locally.";
                 }
             });
         });
@@ -674,7 +687,6 @@
             const fbPron = container.querySelector('.feedback-pron');
             const statusMsg = container.querySelector('.status-msg');
 
-            // Limpa visualmente antes de carregar
             if(textarea) textarea.value = '';
             if(fbFc) fbFc.value = '';
             if(fbLr) fbLr.value = '';
@@ -685,11 +697,11 @@
             const rawName = getRawStudentName();
 
             if (!studentKey) {
-                statusMsg.textContent = "Digite seu e-mail/nome no topo para carregar seus dados.";
+                statusMsg.textContent = "Enter your name/email at the top to load your data.";
                 return;
             }
 
-            statusMsg.textContent = `Carregando dados de ${rawName}...`;
+            statusMsg.textContent = `Loading data for ${rawName}...`;
 
             function applyData(data) {
                 if (data.notes && textarea) {
@@ -709,15 +721,13 @@
                     const docSnap = await getDoc(taskDocRef);
                     if (docSnap.exists()) {
                         applyData(docSnap.data());
-                        statusMsg.textContent = `Carregado da nuvem (${rawName}).`;
-                        return;
+                        statusMsg.textContent = `Loaded from cloud (${rawName}).`;
                     } else {
-                        statusMsg.textContent = `Nenhum registro de Speaking salvo ainda para ${rawName}.`;
-                        return;
+                        statusMsg.textContent = `No Speaking records found yet for ${rawName}.`;
                     }
                 } catch (e) {
-                    console.error("Erro ao buscar dados:", e);
-                    statusMsg.textContent = "Erro ao conectar na nuvem.";
+                    console.error("Error fetching data:", e);
+                    statusMsg.textContent = "Error connecting to cloud.";
                 }
             }
         }
