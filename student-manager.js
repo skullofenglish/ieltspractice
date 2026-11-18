@@ -1,7 +1,7 @@
-// student-manager.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, doc, setDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc, getDocs, deleteDoc, collection } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+// Configuração do Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyC2pSWdBIREaPmpOvaiNzZWGUuCEupxp1c",
     authDomain: "studendtrackerpanel.firebaseapp.com",
@@ -14,23 +14,34 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 
+// ==========================================
+// CONFIGURAÇÃO DA SENHA DA PROFESSORA
+// ==========================================
+const SENHA_PROFESSORA = "ielts2026"; // <--- Altere aqui para a senha que você preferir!
+
+// Normaliza o nome ou e-mail da aluna para servir como ID seguro no Firestore
 export function getStudentKey() {
-    const raw = (localStorage.getItem('ielts_student_identity') || '').trim().toLowerCase();
-    if (!raw) return null;
-    return raw.replace(/[^a-z0-9]/g, '_');
+    const raw = localStorage.getItem('ielts_current_student') || '';
+    return raw.trim().toLowerCase().replace(/[^a-z0-9]/g, '_');
 }
 
 export function getRawStudentName() {
-    return (localStorage.getItem('ielts_student_identity') || '').trim();
+    return (localStorage.getItem('ielts_current_student') || '').trim();
 }
 
+export function setStudentName(name) {
+    localStorage.setItem('ielts_current_student', name.trim());
+}
+
+// Registra ou atualiza a existência da aluna na coleção principal para listagem no Modo Professor
 export async function registerStudentActivity() {
     const key = getStudentKey();
-    const name = getRawStudentName();
-    if (!key || !name) return;
+    const raw = getRawStudentName();
+    if (!key || !raw || !db) return;
+
     try {
         await setDoc(doc(db, "ielts_students", key), {
-            displayName: name,
+            displayName: raw,
             lastActive: new Date().toISOString()
         }, { merge: true });
     } catch (e) {
@@ -38,91 +49,202 @@ export async function registerStudentActivity() {
     }
 }
 
-export function initStudentBar(onStudentChangeCallback) {
-    const nav = document.querySelector('.top-nav');
-    if (!nav) return;
+// Apaga todos os dados e subcoleções de uma aluna no Firestore
+async function deleteCompleteStudentData(studentKey, displayName) {
+    if (!studentKey || !db) return false;
 
-    const barHTML = `
-        <div id="global-identity-bar" style="background: #FFFFFF; border: 1px solid #D8B4D9; border-radius: 10px; padding: 14px 20px; margin-bottom: 20px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; box-shadow: 0 2px 8px rgba(80, 32, 100, 0.05);">
-            <div style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 260px;">
-                <label for="global-student-input" style="font-size: 13px; font-weight: 700; color: #502064; white-space: nowrap;">Aluna (Nome ou E-mail):</label>
-                <input type="text" id="global-student-input" placeholder="Digite seu nome completo ou e-mail..." style="flex: 1; padding: 8px 12px; border: 1px solid #E2D8E5; border-radius: 6px; font-family: inherit; font-size: 13px;">
-                <button type="button" id="global-confirm-btn" style="padding: 8px 16px; background-color: #502064; color: white; border: none; border-radius: 6px; font-weight: 700; font-size: 13px; cursor: pointer; font-family: inherit;">Confirmar</button>
-            </div>
-            <button type="button" id="global-teacher-btn" style="padding: 8px 14px; background-color: transparent; color: #6B0F1A; border: 1px solid #6B0F1A; border-radius: 6px; font-weight: 700; font-size: 12px; cursor: pointer; font-family: inherit;">Modo Professor</button>
+    const subcollections = ["listening", "reading", "writing", "speaking", "manual_scores"];
+
+    try {
+        // 1. Apagar todos os documentos dentro de cada subcoleção da aluna
+        for (const sub of subcollections) {
+            const subColRef = collection(db, "ielts_students", studentKey, sub);
+            const snapshot = await getDocs(subColRef);
+            for (const docSnap of snapshot.docs) {
+                await deleteDoc(docSnap.ref);
+            }
+        }
+
+        // 2. Apagar o documento raiz da aluna
+        await deleteDoc(doc(db, "ielts_students", studentKey));
+        return true;
+    } catch (error) {
+        console.error("Erro ao excluir dados da aluna:", error);
+        return false;
+    }
+}
+
+// Injeta a barra superior de identificação de aluna e o Modo Professor em qualquer página
+export function initStudentBar(onStudentChangeCallback) {
+    const wrapper = document.querySelector('.main-wrapper');
+    if (!wrapper) return;
+
+    const bar = document.createElement('div');
+    bar.id = 'student-manager-bar';
+    bar.style.cssText = `
+        background: #FFFFFF;
+        border: 1px solid #D8B4D9;
+        border-radius: 10px;
+        padding: 12px 16px;
+        margin-bottom: 16px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 2px 8px rgba(80, 32, 100, 0.06);
+        font-family: 'Century Gothic', sans-serif;
+    `;
+
+    bar.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 8px; flex: 1; min-width: 260px;">
+            <span style="font-size: 13px; font-weight: 700; color: #502064;">Aluna:</span>
+            <input type="text" id="global-student-input" placeholder="Digite seu nome ou e-mail..." 
+                style="flex: 1; padding: 7px 10px; border: 1px solid #E2D8E5; border-radius: 6px; font-size: 13px; font-family: inherit;">
+            <button type="button" id="global-student-save-btn" 
+                style="background: #502064; color: white; border: none; padding: 7px 14px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer;">
+                Confirmar
+            </button>
         </div>
 
-        <div id="global-teacher-panel" style="display: none; background-color: #FBF8FC; border: 1px solid #6B0F1A; border-radius: 10px; padding: 15px 20px; margin-bottom: 20px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                <h4 style="margin: 0; color: #6B0F1A; font-size: 14px;">Alunas cadastradas (Clique para ver as respostas dela):</h4>
-                <button type="button" id="global-refresh-btn" style="padding: 4px 10px; background: #502064; color: white; border: none; border-radius: 4px; font-size: 11px; cursor: pointer;">Atualizar Lista</button>
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <button type="button" id="teacher-mode-toggle" 
+                style="background: transparent; color: #6B0F1A; border: 1px solid #6B0F1A; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer;">
+                Modo Professor
+            </button>
+        </div>
+
+        <div id="teacher-panel" style="display: none; width: 100%; border-top: 1px dashed #D8B4D9; padding-top: 12px; margin-top: 4px;">
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between;">
+                <span style="font-size: 12px; font-weight: 700; color: #6B0F1A;">Selecionar Aluna para Visualizar / Corrigir:</span>
+                <div style="display: flex; gap: 8px; flex: 1; max-width: 550px; flex-wrap: wrap;">
+                    <select id="teacher-student-select" style="flex: 1; min-width: 180px; padding: 6px; border: 1px solid #E2D8E5; border-radius: 6px; font-size: 12px; font-family: inherit;">
+                        <option value="">Carregando lista de alunas...</option>
+                    </select>
+                    <button type="button" id="teacher-refresh-btn" style="background: #6B3A7E; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer;">
+                        Atualizar
+                    </button>
+                    <button type="button" id="teacher-delete-btn" style="background: #6B0F1A; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer;">
+                        Excluir Aluna
+                    </button>
+                </div>
             </div>
-            <div id="global-student-chips" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
         </div>
     `;
 
-    nav.insertAdjacentHTML('afterend', barHTML);
+    wrapper.insertBefore(bar, wrapper.firstChild);
 
-    const input = document.getElementById('global-student-input');
-    const confirmBtn = document.getElementById('global-confirm-btn');
-    const teacherBtn = document.getElementById('global-teacher-btn');
-    const teacherPanel = document.getElementById('global-teacher-panel');
-    const refreshBtn = document.getElementById('global-refresh-btn');
+    const inputEl = document.getElementById('global-student-input');
+    const saveBtn = document.getElementById('global-student-save-btn');
+    const teacherBtn = document.getElementById('teacher-mode-toggle');
+    const teacherPanel = document.getElementById('teacher-panel');
+    const selectEl = document.getElementById('teacher-student-select');
+    const refreshBtn = document.getElementById('teacher-refresh-btn');
+    const deleteBtn = document.getElementById('teacher-delete-btn');
 
-    input.value = getRawStudentName();
+    // Preenche se já existir nome salvo
+    inputEl.value = getRawStudentName();
 
-    confirmBtn.addEventListener('click', async () => {
-        const val = input.value.trim();
+    saveBtn.addEventListener('click', async () => {
+        const val = inputEl.value.trim();
         if (!val) {
-            alert("Por favor, digite seu nome ou e-mail antes de continuar.");
+            alert("Por favor, digite seu nome ou e-mail para identificar suas atividades.");
             return;
         }
-        localStorage.setItem('ielts_student_identity', val);
+        setStudentName(val);
         await registerStudentActivity();
         if (onStudentChangeCallback) onStudentChangeCallback();
+        
+        saveBtn.textContent = "Ativo!";
+        saveBtn.style.background = "#2e7d32";
+        setTimeout(() => {
+            saveBtn.textContent = "Confirmar";
+            saveBtn.style.background = "#502064";
+        }, 1500);
     });
 
+    // Abre ou fecha o Modo Professor mediante senha
     teacherBtn.addEventListener('click', () => {
         const isVisible = teacherPanel.style.display === 'block';
+        
+        if (!isVisible) {
+            const senhaDigitada = prompt("Área restrita. Digite a senha de professora:");
+            if (senhaDigitada !== SENHA_PROFESSORA) {
+                if (senhaDigitada !== null) alert("Senha incorreta!");
+                return;
+            }
+        }
+
         teacherPanel.style.display = isVisible ? 'none' : 'block';
         teacherBtn.style.backgroundColor = isVisible ? 'transparent' : '#6B0F1A';
         teacherBtn.style.color = isVisible ? '#6B0F1A' : 'white';
         if (!isVisible) loadAllStudents();
     });
 
-    refreshBtn.addEventListener('click', loadAllStudents);
-
     async function loadAllStudents() {
-        const container = document.getElementById('global-student-chips');
-        container.innerHTML = '<span style="font-size: 12px; color: #6B3A7E;">Buscando alunas...</span>';
+        selectEl.innerHTML = '<option value="">Buscando alunas...</option>';
         try {
-            const snap = await getDocs(collection(db, "ielts_students"));
-            container.innerHTML = '';
-            if (snap.empty) {
-                container.innerHTML = '<span style="font-size: 12px; color: #6B3A7E;">Nenhuma aluna registrada ainda.</span>';
-                return;
-            }
-            snap.forEach(docSnap => {
-                const name = docSnap.data().displayName || docSnap.id;
-                const chip = document.createElement('button');
-                chip.type = 'button';
-                chip.textContent = name;
-                chip.style.cssText = "padding: 6px 12px; background: white; border: 1px solid #E2D8E5; border-radius: 20px; font-size: 12px; font-weight: 700; color: #502064; cursor: pointer;";
-                chip.onclick = () => {
-                    localStorage.setItem('ielts_student_identity', name);
-                    input.value = name;
-                    document.querySelectorAll('#global-student-chips button').forEach(b => {
-                        b.style.background = 'white';
-                        b.style.color = '#502064';
-                    });
-                    chip.style.background = '#502064';
-                    chip.style.color = 'white';
-                    if (onStudentChangeCallback) onStudentChangeCallback();
-                };
-                container.appendChild(chip);
+            const querySnapshot = await getDocs(collection(db, "ielts_students"));
+            selectEl.innerHTML = '<option value="">-- Escolha uma aluna --</option>';
+            querySnapshot.forEach((docSnap) => {
+                const data = docSnap.data();
+                const option = document.createElement('option');
+                option.value = data.displayName || docSnap.id;
+                option.dataset.key = docSnap.id;
+                option.textContent = data.displayName || docSnap.id;
+                if (docSnap.id === getStudentKey()) {
+                    option.selected = true;
+                }
+                selectEl.appendChild(option);
             });
         } catch (e) {
-            container.innerHTML = '<span style="font-size: 12px; color: red;">Erro ao carregar lista.</span>';
+            console.error("Erro ao listar alunas:", e);
+            selectEl.innerHTML = '<option value="">Erro ao carregar lista</option>';
         }
     }
+
+    selectEl.addEventListener('change', () => {
+        const selectedName = selectEl.value;
+        if (!selectedName) return;
+        inputEl.value = selectedName;
+        setStudentName(selectedName);
+        if (onStudentChangeCallback) onStudentChangeCallback();
+    });
+
+    refreshBtn.addEventListener('click', loadAllStudents);
+
+    // Excluir aluna selecionada e todo o histórico dela
+    deleteBtn.addEventListener('click', async () => {
+        const selectedOption = selectEl.options[selectEl.selectedIndex];
+        const selectedName = selectEl.value;
+        const selectedKey = selectedOption ? selectedOption.dataset.key : null;
+
+        if (!selectedName || !selectedKey) {
+            alert("Selecione uma aluna na lista antes de clicar em Excluir.");
+            return;
+        }
+
+        const confirmacao = confirm(`ATENÇÃO: Tem certeza que deseja excluir PERMANENTEMENTE a aluna "${selectedName}" e TODAS as respostas/notas dela? Essa ação não pode ser desfeita.`);
+        if (!confirmacao) return;
+
+        deleteBtn.textContent = "Excluindo...";
+        deleteBtn.disabled = true;
+
+        const success = await deleteCompleteStudentData(selectedKey, selectedName);
+
+        deleteBtn.textContent = "Excluir Aluna";
+        deleteBtn.disabled = false;
+
+        if (success) {
+            alert(`Aluna "${selectedName}" e todos os seus dados foram removidos com sucesso.`);
+            if (getStudentKey() === selectedKey) {
+                localStorage.removeItem('ielts_current_student');
+                inputEl.value = '';
+                if (onStudentChangeCallback) onStudentChangeCallback();
+            }
+            loadAllStudents();
+        } else {
+            alert("Ocorreu um erro ao tentar excluir os dados da aluna.");
+        }
+    });
 }
