@@ -555,29 +555,15 @@
         </div>
     </div>
 
-    <!-- Firebase Script for Multi-Device Real-time Sync -->
+    <!-- Firebase Script for Multi-Student & Multi-Device Sync -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, doc, setDoc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { doc, setDoc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { db, getStudentKey, getRawStudentName, registerStudentActivity, initStudentBar } from './student-manager.js';
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyC2pSWdBIREaPmpOvaiNzZWGUuCEupxp1c",
-            authDomain: "studendtrackerpanel.firebaseapp.com",
-            projectId: "studendtrackerpanel",
-            storageBucket: "studendtrackerpanel.firebasestorage.app",
-            messagingSenderId: "1004678184015",
-            appId: "1:1004678184015:web:be965625c08d8ee73ffe3a"
-        };
-
-        let db = null;
-        try {
-            const app = initializeApp(firebaseConfig);
-            db = getFirestore(app);
-        } catch (e) {
-            console.warn("Firebase não inicializado, usando localStorage como fallback local.");
-        }
+        let currentActiveTask = 'spk_part1';
 
         window.switchTask = function(taskId, btnElement) {
+            currentActiveTask = taskId;
             document.querySelectorAll('.container').forEach(el => el.classList.remove('active-section'));
             document.querySelectorAll('.sub-tab-btn').forEach(el => el.classList.remove('active'));
             
@@ -598,7 +584,6 @@
             const taskId = container.getAttribute('data-task-id');
             const textarea = container.querySelector('.speech-notes-textarea');
             
-            // Campos de feedback específicos do Speaking por descritor
             const fbFc = container.querySelector('.feedback-fc');
             const fbLr = container.querySelector('.feedback-lr');
             const fbGra = container.querySelector('.feedback-gra');
@@ -609,7 +594,17 @@
             const statusMsg = container.querySelector('.status-msg');
 
             submitBtn.addEventListener('click', async () => {
+                const studentKey = getStudentKey();
+                const rawName = getRawStudentName();
+
+                if (!studentKey) {
+                    alert("Por favor, preencha seu e-mail ou nome no campo superior antes de enviar!");
+                    document.getElementById('global-student-input').focus();
+                    return;
+                }
+
                 const payload = {
+                    studentName: rawName,
                     notes: textarea ? textarea.value : '',
                     feedback: {
                         fluencyCoherence: fbFc ? fbFc.value : '',
@@ -621,25 +616,31 @@
                 };
 
                 statusMsg.textContent = "Salvando na nuvem...";
-                
-                // Fallback Local Storage
-                localStorage.setItem(`speaking_${taskId}`, JSON.stringify(payload));
 
                 if (db) {
                     try {
-                        const docRef = doc(db, "ielts_practice", `speaking_${taskId}`);
-                        await setDoc(docRef, payload);
-                        statusMsg.textContent = "Sincronizado na nuvem (visível em todos os dispositivos)!";
+                        await registerStudentActivity();
+                        const taskDocRef = doc(db, "ielts_students", studentKey, "speaking", taskId);
+                        await setDoc(taskDocRef, payload);
+                        statusMsg.textContent = `Sincronizado na nuvem para (${rawName})!`;
                     } catch (error) {
                         console.error("Erro ao salvar no Firestore:", error);
-                        statusMsg.textContent = "Salvo localmente (erro ao conectar na nuvem).";
+                        statusMsg.textContent = "Erro ao sincronizar na nuvem.";
                     }
                 } else {
-                    statusMsg.textContent = "Salvo localmente!";
+                    statusMsg.textContent = "Erro: Banco de dados não conectado.";
                 }
             });
 
             clearBtn.addEventListener('click', async () => {
+                const studentKey = getStudentKey();
+                if (!studentKey) {
+                    alert("Identifique a aluna no topo antes de limpar os dados.");
+                    return;
+                }
+
+                if (!confirm("Deseja realmente apagar suas notas desta parte?")) return;
+
                 if(textarea) textarea.value = "";
                 if(fbFc) fbFc.value = "";
                 if(fbLr) fbLr.value = "";
@@ -647,19 +648,17 @@
                 if(fbPron) fbPron.value = "";
 
                 statusMsg.textContent = "Limpando...";
-                
-                localStorage.removeItem(`speaking_${taskId}`);
 
                 if (db) {
                     try {
-                        const docRef = doc(db, "ielts_practice", `speaking_${taskId}`);
-                        await deleteDoc(docRef);
+                        const taskDocRef = doc(db, "ielts_students", studentKey, "speaking", taskId);
+                        await deleteDoc(taskDocRef);
                         statusMsg.textContent = "Conteúdo limpo com sucesso!";
                     } catch (error) {
-                        statusMsg.textContent = "Conteúdo limpo localmente.";
+                        statusMsg.textContent = "Erro ao limpar conteúdo na nuvem.";
                     }
                 } else {
-                    statusMsg.textContent = "Conteúdo limpo com sucesso!";
+                    statusMsg.textContent = "Conteúdo limpo localmente.";
                 }
             });
         });
@@ -675,6 +674,23 @@
             const fbPron = container.querySelector('.feedback-pron');
             const statusMsg = container.querySelector('.status-msg');
 
+            // Limpa visualmente antes de carregar
+            if(textarea) textarea.value = '';
+            if(fbFc) fbFc.value = '';
+            if(fbLr) fbLr.value = '';
+            if(fbGra) fbGra.value = '';
+            if(fbPron) fbPron.value = '';
+
+            const studentKey = getStudentKey();
+            const rawName = getRawStudentName();
+
+            if (!studentKey) {
+                statusMsg.textContent = "Digite seu e-mail/nome no topo para carregar seus dados.";
+                return;
+            }
+
+            statusMsg.textContent = `Carregando dados de ${rawName}...`;
+
             function applyData(data) {
                 if (data.notes && textarea) {
                     textarea.value = data.notes;
@@ -687,38 +703,26 @@
                 }
             }
 
-            // Tenta carregar do Firebase Firestore
             if (db) {
                 try {
-                    const docRef = doc(db, "ielts_practice", `speaking_${taskId}`);
-                    const docSnap = await getDoc(docRef);
+                    const taskDocRef = doc(db, "ielts_students", studentKey, "speaking", taskId);
+                    const docSnap = await getDoc(taskDocRef);
                     if (docSnap.exists()) {
                         applyData(docSnap.data());
-                        statusMsg.textContent = "Carregado da nuvem.";
+                        statusMsg.textContent = `Carregado da nuvem (${rawName}).`;
+                        return;
+                    } else {
+                        statusMsg.textContent = `Nenhum registro de Speaking salvo ainda para ${rawName}.`;
                         return;
                     }
                 } catch (e) {
-                    console.warn("Falha ao buscar da nuvem, recorrendo ao localStorage:", e);
+                    console.error("Erro ao buscar dados:", e);
+                    statusMsg.textContent = "Erro ao conectar na nuvem.";
                 }
-            }
-
-            // Fallback para LocalStorage
-            const localSaved = localStorage.getItem(`speaking_${taskId}`);
-            if (localSaved) {
-                try {
-                    const data = JSON.parse(localSaved);
-                    applyData(data);
-                    statusMsg.textContent = "Carregado do armazenamento local.";
-                } catch(err) {
-                    if(textarea) textarea.value = localSaved;
-                    statusMsg.textContent = "Carregado do armazenamento local.";
-                }
-            } else {
-                statusMsg.textContent = "";
             }
         }
 
-        // Carrega por padrão a primeira parte ao abrir
+        initStudentBar(() => loadSavedData(currentActiveTask));
         loadSavedData('spk_part1');
     </script>
 </body>
