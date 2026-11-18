@@ -100,9 +100,7 @@
             display: none;
         }
 
-        .container.active-section {
-            display: block;
-        }
+        .container.active-section { display: block; }
 
         h1 {
             font-size: 22px;
@@ -126,9 +124,7 @@
         }
 
         @media (max-width: 768px) {
-            .reading-layout {
-                flex-direction: column;
-            }
+            .reading-layout { flex-direction: column; }
         }
 
         .reading-text {
@@ -143,9 +139,7 @@
             line-height: 1.6;
         }
 
-        .reading-questions {
-            flex: 1;
-        }
+        .reading-questions { flex: 1; }
 
         .instruction {
             font-size: 14px;
@@ -187,9 +181,7 @@
             background-color: #FFFFFF;
         }
 
-        .option-label:hover {
-            background-color: #F3ECF5;
-        }
+        .option-label:hover { background-color: #F3ECF5; }
 
         input[type="text"], select {
             padding: 6px 10px;
@@ -270,7 +262,6 @@
 </head>
 <body>
     <div class="main-wrapper">
-        <!-- Navegação Principal Atualizada -->
         <nav class="top-nav">
             <a href="index.html">Overview</a>
             <a href="listening.html">Listening</a>
@@ -281,16 +272,16 @@
         </nav>
 
         <div class="reading-selector">
-            <button class="sub-tab-btn active" onclick="switchTask('task1')">1. Multiple Choice (1)</button>
-            <button class="sub-tab-btn" onclick="switchTask('task2')">2. Sentence Endings</button>
-            <button class="sub-tab-btn" onclick="switchTask('task3')">3. Sentence Completion</button>
-            <button class="sub-tab-btn" onclick="switchTask('task4')">4. Summary (List)</button>
-            <button class="sub-tab-btn" onclick="switchTask('task5')">5. Summary (Text)</button>
-            <button class="sub-tab-btn" onclick="switchTask('task6')">6. Matching Features</button>
-            <button class="sub-tab-btn" onclick="switchTask('task7')">7. Table Completion</button>
-            <button class="sub-tab-btn" onclick="switchTask('task8')">8. Note Completion</button>
-            <button class="sub-tab-btn" onclick="switchTask('task9')">9. True/False/NG</button>
-            <button class="sub-tab-btn" onclick="switchTask('task10')">10. Multiple Choice (Multi)</button>
+            <button class="sub-tab-btn active" onclick="switchTask('task1', this)">1. Multiple Choice (1)</button>
+            <button class="sub-tab-btn" onclick="switchTask('task2', this)">2. Sentence Endings</button>
+            <button class="sub-tab-btn" onclick="switchTask('task3', this)">3. Sentence Completion</button>
+            <button class="sub-tab-btn" onclick="switchTask('task4', this)">4. Summary (List)</button>
+            <button class="sub-tab-btn" onclick="switchTask('task5', this)">5. Summary (Text)</button>
+            <button class="sub-tab-btn" onclick="switchTask('task6', this)">6. Matching Features</button>
+            <button class="sub-tab-btn" onclick="switchTask('task7', this)">7. Table Completion</button>
+            <button class="sub-tab-btn" onclick="switchTask('task8', this)">8. Note Completion</button>
+            <button class="sub-tab-btn" onclick="switchTask('task9', this)">9. True/False/NG</button>
+            <button class="sub-tab-btn" onclick="switchTask('task10', this)">10. Multiple Choice (Multi)</button>
         </div>
 
         <!-- TASK 1 -->
@@ -298,13 +289,13 @@
             <h1>IELTS Reading Practice</h1>
             <div class="subtitle">Academic Reading Multiple Choice (one answer)</div>
             <div class="reading-layout">
-        <div class="reading-text">
-            <p>The general assumption is that older workers are paid more in spite of, rather than because of, their productivity. That might partly explain why, when employers are under pressure to cut costs, they persuade a 55-year old to take early retirement. Take away seniority-based pay scales, and older workers may become a much more attractive employment proposition. But most employers and many workers are uncomfortable with the idea of reducing someone’s pay in later life – although manual workers on piece-rates often earn less as they get older. So retaining the services of older workers may mean employing them in different ways.</p>
-            <p>One innovation was devised by IBM Belgium. Faced with the need to cut staff costs, and having decided to concentrate cuts on 55 to 60-year olds, IBM set up a separate company called Skill Team, which re-employed any of the early retired who wanted to go on working up to the age of 60. An employee who joined Skill Team at the age of 55 on a five-year contract would work for 58% of his time, over the full period, for 88% of his last IBM salary. The company offered services to IBM, thus allowing it to retain access to some of the intellectual capital it would otherwise have lost.</p>
-            <p>The best way to tempt the old to go on working may be to build on such ‘bridge’ jobs: part-time or temporary employment that creates a more gradual transition from full-time work to retirement. Studies have found that, in the United States, nearly half of all men and women who had been in full-time jobs in middle age moved into such ‘bridge’ jobs at the end of their working lives. In general, it is the best-paid and worst-paid who carry on working. There seem to be two very different types of bridge job-holder – those who continue working because they have to and those who continue working because they want to, even though they could afford to retire.</p>
-            <p>If the job market grows more flexible, the old may find more jobs that suit them. Often, they will be self-employed. Sometimes, they may start their own businesses: a study by David Storey of Warwick University found that in Britain 70% of businesses started by people over 55 survived, compared with an overall national average of only 19%. But whatever pattern of employment they choose, in the coming years the skills of these ‘grey workers’ will have to be increasingly acknowledged and rewarded.</p>
-        </div>
-            <div class="reading-questions">
+                <div class="reading-text">
+                    <p>The general assumption is that older workers are paid more in spite of, rather than because of, their productivity. That might partly explain why, when employers are under pressure to cut costs, they persuade a 55-year old to take early retirement. Take away seniority-based pay scales, and older workers may become a much more attractive employment proposition. But most employers and many workers are uncomfortable with the idea of reducing someone’s pay in later life – although manual workers on piece-rates often earn less as they get older. So retaining the services of older workers may mean employing them in different ways.</p>
+                    <p>One innovation was devised by IBM Belgium. Faced with the need to cut staff costs, and having decided to concentrate cuts on 55 to 60-year olds, IBM set up a separate company called Skill Team, which re-employed any of the early retired who wanted to go on working up to the age of 60. An employee who joined Skill Team at the age of 55 on a five-year contract would work for 58% of his time, over the full period, for 88% of his last IBM salary. The company offered services to IBM, thus allowing it to retain access to some of the intellectual capital it would otherwise have lost.</p>
+                    <p>The best way to tempt the old to go on working may be to build on such ‘bridge’ jobs: part-time or temporary employment that creates a more gradual transition from full-time work to retirement. Studies have found that, in the United States, nearly half of all men and women who had been in full-time jobs in middle age moved into such ‘bridge’ jobs at the end of their working lives. In general, it is the best-paid and worst-paid who carry on working. There seem to be two very different types of bridge job-holder – those who continue working because they have to and those who continue working because they want to, even though they could afford to retire.</p>
+                    <p>If the job market grows more flexible, the old may find more jobs that suit them. Often, they will be self-employed. Sometimes, they may start their own businesses: a study by David Storey of Warwick University found that in Britain 70% of businesses started by people over 55 survived, compared with an overall national average of only 19%. But whatever pattern of employment they choose, in the coming years the skills of these ‘grey workers’ will have to be increasingly acknowledged and rewarded.</p>
+                </div>
+                <div class="reading-questions">
                     <form class="quiz-form">
                         <div class="instruction">Questions 1–4</div>
                         <div class="question-block" data-q="q1">
@@ -352,7 +343,7 @@
                             <button type="button" class="action-btn clear-btn">Limpar</button>
                         </div>
                     </form>
-                    <div class="status-msg">Sincronizado com a nuvem</div>
+                    <div class="status-msg"></div>
                 </div>
             </div>
         </div>
@@ -412,7 +403,7 @@
                             <button type="button" class="action-btn clear-btn">Limpar</button>
                         </div>
                     </form>
-                    <div class="status-msg">Sincronizado com a nuvem</div>
+                    <div class="status-msg"></div>
                 </div>
             </div>
         </div>
@@ -445,7 +436,7 @@
                             <button type="button" class="action-btn clear-btn">Limpar</button>
                         </div>
                     </form>
-                    <div class="status-msg">Sincronizado com a nuvem</div>
+                    <div class="status-msg"></div>
                 </div>
             </div>
         </div>
@@ -484,7 +475,7 @@
                             <button type="button" class="action-btn clear-btn">Limpar</button>
                         </div>
                     </form>
-                    <div class="status-msg">Sincronizado com a nuvem</div>
+                    <div class="status-msg"></div>
                 </div>
             </div>
         </div>
@@ -512,7 +503,7 @@
                             <button type="button" class="action-btn clear-btn">Limpar</button>
                         </div>
                     </form>
-                    <div class="status-msg">Sincronizado com a nuvem</div>
+                    <div class="status-msg"></div>
                 </div>
             </div>
         </div>
@@ -547,7 +538,7 @@
                             <button type="button" class="action-btn clear-btn">Limpar</button>
                         </div>
                     </form>
-                    <div class="status-msg">Sincronizado com a nuvem</div>
+                    <div class="status-msg"></div>
                 </div>
             </div>
         </div>
@@ -584,7 +575,7 @@
                             <button type="button" class="action-btn clear-btn">Limpar</button>
                         </div>
                     </form>
-                    <div class="status-msg">Sincronizado com a nuvem</div>
+                    <div class="status-msg"></div>
                 </div>
             </div>
         </div>
@@ -618,7 +609,7 @@
                             <button type="button" class="action-btn clear-btn">Limpar</button>
                         </div>
                     </form>
-                    <div class="status-msg">Sincronizado com a nuvem</div>
+                    <div class="status-msg"></div>
                 </div>
             </div>
         </div>
@@ -657,7 +648,7 @@
                             <button type="button" class="action-btn clear-btn">Limpar</button>
                         </div>
                     </form>
-                    <div class="status-msg">Sincronizado com a nuvem</div>
+                    <div class="status-msg"></div>
                 </div>
             </div>
         </div>
@@ -701,27 +692,15 @@
                             <button type="button" class="action-btn clear-btn">Limpar</button>
                         </div>
                     </form>
-                    <div class="status-msg">Sincronizado com a nuvem</div>
+                    <div class="status-msg"></div>
                 </div>
             </div>
         </div>
     </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, doc, setDoc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyC2pSWdBIREaPmpOvaiNzZWGUuCEupxp1c",
-            authDomain: "studendtrackerpanel.firebaseapp.com",
-            projectId: "studendtrackerpanel",
-            storageBucket: "studendtrackerpanel.firebasestorage.app",
-            messagingSenderId: "1004678184015",
-            appId: "1:1004678184015:web:be965625c08d8ee73ffe3a"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        import { doc, setDoc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { db, getStudentKey, getRawStudentName, registerStudentActivity, initStudentBar } from './student-manager.js';
 
         const answerKeys = {
             task1: { q1: "abolishing pay schemes that are based on age", q2: "allows the expertise of older workers to be put to use", q3: "appeal to distinct groups of older workers", q4: "older people are good at running their own business" },
@@ -739,11 +718,14 @@
             }
         };
 
-        window.switchTask = function(taskId) {
+        let currentActiveTask = 'task1';
+
+        window.switchTask = function(taskId, btn) {
             document.querySelectorAll('.container').forEach(el => el.classList.remove('active-section'));
             document.querySelectorAll('.sub-tab-btn').forEach(el => el.classList.remove('active'));
             document.getElementById(taskId).classList.add('active-section');
-            event.currentTarget.classList.add('active');
+            if(btn) btn.classList.add('active');
+            currentActiveTask = taskId;
             loadSavedData(taskId);
         };
 
@@ -791,12 +773,31 @@
         }
 
         async function loadSavedData(taskId) {
+            const container = document.getElementById(taskId);
+            const form = container.querySelector('.quiz-form');
+            const statusMsg = container.querySelector('.status-msg');
+
+            form.reset();
+            container.querySelectorAll('.feedback-box').forEach(fb => {
+                fb.className = "feedback-box";
+                fb.innerHTML = "";
+            });
+
+            const studentKey = getStudentKey();
+            const rawName = getRawStudentName();
+
+            if (!studentKey) {
+                statusMsg.textContent = "Digite seu nome ou e-mail no topo para carregar/salvar suas respostas.";
+                return;
+            }
+
+            statusMsg.textContent = `Carregando dados de ${rawName}...`;
+
             try {
-                const docRef = doc(db, "ielts_practice", `reading_${taskId}`);
+                const docRef = doc(db, "ielts_students", studentKey, "reading", taskId);
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists()) {
                     const data = docSnap.data();
-                    const container = document.getElementById(taskId);
                     if (data.answers) {
                         if (taskId === 'task10') {
                             for (const qKey of ['q1_2', 'q3_4']) {
@@ -822,9 +823,13 @@
                             showResults(taskId, data.answers);
                         }
                     }
+                    statusMsg.textContent = `Sincronizado (${rawName})`;
+                } else {
+                    statusMsg.textContent = `Nenhuma resposta salva ainda para ${rawName}.`;
                 }
             } catch (e) {
                 console.error("Erro ao carregar dados", e);
+                statusMsg.textContent = "Erro ao conectar na nuvem.";
             }
         }
 
@@ -836,6 +841,14 @@
             const statusMsg = container.querySelector('.status-msg');
 
             submitBtn.addEventListener('click', async () => {
+                const studentKey = getStudentKey();
+                const rawName = getRawStudentName();
+                if (!studentKey) {
+                    alert("Por favor, digite seu nome ou e-mail no topo da página antes de enviar!");
+                    document.getElementById('global-student-input').focus();
+                    return;
+                }
+
                 let answers = {};
                 if (taskId === 'task10') {
                     answers.q1_2 = Array.from(container.querySelectorAll('input[name="opt1_2"]:checked')).map(cb => cb.value);
@@ -850,10 +863,11 @@
 
                 statusMsg.textContent = "Salvando na nuvem...";
                 try {
-                    const docRef = doc(db, "ielts_practice", `reading_${taskId}`);
+                    await registerStudentActivity();
+                    const docRef = doc(db, "ielts_students", studentKey, "reading", taskId);
                     await setDoc(docRef, { answers: answers, submitted: true, updatedAt: new Date().toISOString() });
                     showResults(taskId, answers);
-                    statusMsg.textContent = "Respostas salvas com sucesso!";
+                    statusMsg.textContent = `Respostas salvas para ${rawName}!`;
                 } catch (error) {
                     console.error("Erro ao salvar:", error);
                     statusMsg.textContent = "Erro ao salvar na nuvem.";
@@ -861,6 +875,10 @@
             });
 
             clearBtn.addEventListener('click', async () => {
+                const studentKey = getStudentKey();
+                if (!studentKey) return alert("Identifique a aluna no topo antes de limpar.");
+                if (!confirm("Deseja realmente apagar suas respostas desta atividade?")) return;
+
                 form.reset();
                 container.querySelectorAll('.feedback-box').forEach(fb => {
                     fb.className = "feedback-box";
@@ -868,7 +886,7 @@
                 });
                 statusMsg.textContent = "Limpando dados...";
                 try {
-                    const docRef = doc(db, "ielts_practice", `reading_${taskId}`);
+                    const docRef = doc(db, "ielts_students", studentKey, "reading", taskId);
                     await deleteDoc(docRef);
                     statusMsg.textContent = "Dados limpos com sucesso!";
                 } catch (error) {
@@ -877,6 +895,7 @@
             });
         });
 
+        initStudentBar(() => loadSavedData(currentActiveTask));
         loadSavedData('task1');
     </script>
 </body>
