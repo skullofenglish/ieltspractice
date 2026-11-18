@@ -219,7 +219,7 @@
 
         <div class="container">
             <h1>IELTS Scores Dashboard</h1>
-            <div class="subtitle">Pontuação acumulada e calculada automaticamente</div>
+            <div class="subtitle" id="dashboard-subtitle">Pontuação acumulada e calculada automaticamente</div>
 
             <div class="overall-box">
                 <div class="overall-title">Overall Band Score Estimado</div>
@@ -269,20 +269,8 @@
     </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyC2pSWdBIREaPmpOvaiNzZWGUuCEupxp1c",
-            authDomain: "studendtrackerpanel.firebaseapp.com",
-            projectId: "studendtrackerpanel",
-            storageBucket: "studendtrackerpanel.firebasestorage.app",
-            messagingSenderId: "1004678184015",
-            appId: "1:1004678184015:web:be965625c08d8ee73ffe3a"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { db, getStudentKey, getRawStudentName, registerStudentActivity, initStudentBar } from './student-manager.js';
 
         // Gabarito do Reading
         const readingKeys = {
@@ -316,7 +304,6 @@
             return (txt || "").trim().toLowerCase().replace(/[\s\-_]+/g, '');
         }
 
-        // Tabela Band Score Reading
         function rawToBandReading(raw) {
             if (raw >= 39) return 9.0;
             if (raw >= 37) return 8.5;
@@ -333,7 +320,6 @@
             return 0.0;
         }
 
-        // Tabela Band Score Listening
         function rawToBandListening(raw) {
             if (raw >= 22) return 9.0;
             if (raw >= 20) return 8.5;
@@ -356,7 +342,6 @@
             const sum = scores.reduce((a, b) => a + b, 0);
             const avg = sum / scores.length;
             
-            // Regra oficial de arredondamento IELTS
             const decimal = avg % 1;
             let rounded = Math.floor(avg);
             if (decimal >= 0.25 && decimal < 0.75) {
@@ -368,12 +353,30 @@
         }
 
         async function loadAllScores() {
-            // 1. Calcular Reading
+            const studentKey = getStudentKey();
+            const rawName = getRawStudentName();
+            const subtitleEl = document.getElementById('dashboard-subtitle');
+
+            if (!studentKey) {
+                subtitleEl.textContent = "Digite seu nome ou e-mail no topo para visualizar seu painel de notas.";
+                document.getElementById('overall-score').textContent = "-";
+                document.getElementById('reading-band').textContent = "-";
+                document.getElementById('listening-band').textContent = "-";
+                document.getElementById('writing-band').textContent = "-";
+                document.getElementById('speaking-band').textContent = "-";
+                document.getElementById('reading-raw').textContent = "0 / 47 acertos";
+                document.getElementById('listening-raw').textContent = "0 / 23 acertos";
+                return;
+            }
+
+            subtitleEl.textContent = `Boletim de notas de: ${rawName}`;
+
+            // 1. Calcular Reading da aluna
             let readingScore = 0;
             for (let i = 1; i <= 10; i++) {
                 const taskId = `task${i}`;
                 try {
-                    const docSnap = await getDoc(doc(db, "ielts_practice", `reading_${taskId}`));
+                    const docSnap = await getDoc(doc(db, "ielts_students", studentKey, "reading", taskId));
                     if (docSnap.exists() && docSnap.data().submitted) {
                         const userAns = docSnap.data().answers || {};
                         const keys = readingKeys[taskId];
@@ -396,7 +399,7 @@
                         }
                     }
                 } catch (e) {
-                    console.error("Erro ao ler doc reading:", e);
+                    console.error("Erro ao ler reading da aluna:", e);
                 }
             }
 
@@ -404,12 +407,12 @@
             document.getElementById('reading-raw').textContent = `${readingScore} / 47 acertos`;
             document.getElementById('reading-band').textContent = readingScore > 0 ? rBand.toFixed(1) : "-";
 
-            // 2. Calcular Listening
+            // 2. Calcular Listening da aluna
             let listeningScore = 0;
             for (let i = 1; i <= 7; i++) {
                 const taskId = `task${i}`;
                 try {
-                    const docSnap = await getDoc(doc(db, "ielts_practice", `listening_${taskId}`));
+                    const docSnap = await getDoc(doc(db, "ielts_students", studentKey, "listening", taskId));
                     if (docSnap.exists() && docSnap.data().submitted) {
                         const userAns = docSnap.data().answers || {};
                         const keys = listeningKeys[taskId];
@@ -429,7 +432,7 @@
                         }
                     }
                 } catch (e) {
-                    console.error("Erro ao ler doc listening:", e);
+                    console.error("Erro ao ler listening da aluna:", e);
                 }
             }
 
@@ -437,22 +440,33 @@
             document.getElementById('listening-raw').textContent = `${listeningScore} / 23 acertos`;
             document.getElementById('listening-band').textContent = listeningScore > 0 ? lBand.toFixed(1) : "-";
 
-            // 3. Ler Notas Manuais
+            // 3. Ler Notas Manuais (Salvas na subcoleção de notas da aluna)
             let wBand = 0, sBand = 0;
             try {
-                const manualSnap = await getDoc(doc(db, "ielts_practice", "manual_scores"));
+                const manualSnap = await getDoc(doc(db, "ielts_students", studentKey, "manual_scores", "scores"));
                 if (manualSnap.exists()) {
                     const data = manualSnap.data();
-                    if (data.writing) {
+                    if (data.writing !== undefined && data.writing !== null) {
                         wBand = parseFloat(data.writing);
                         document.getElementById('writing-band').textContent = wBand.toFixed(1);
                         document.getElementById('writing-input').value = wBand;
+                    } else {
+                        document.getElementById('writing-band').textContent = "-";
+                        document.getElementById('writing-input').value = "";
                     }
-                    if (data.speaking) {
+                    if (data.speaking !== undefined && data.speaking !== null) {
                         sBand = parseFloat(data.speaking);
                         document.getElementById('speaking-band').textContent = sBand.toFixed(1);
                         document.getElementById('speaking-input').value = sBand;
+                    } else {
+                        document.getElementById('speaking-band').textContent = "-";
+                        document.getElementById('speaking-input').value = "";
                     }
+                } else {
+                    document.getElementById('writing-band').textContent = "-";
+                    document.getElementById('speaking-band').textContent = "-";
+                    document.getElementById('writing-input').value = "";
+                    document.getElementById('speaking-input').value = "";
                 }
             } catch (e) {
                 console.error("Erro notas manuais:", e);
@@ -463,15 +477,23 @@
             document.getElementById('overall-score').textContent = overall;
         }
 
-        // Salvar notas manuais
+        // Salvar notas manuais na pasta da aluna ativa
         document.getElementById('save-manual-btn').addEventListener('click', async () => {
-            const wVal = document.getElementById('writing-input').value;
-            const sVal = document.getElementById('speaking-input').value;
+            const studentKey = getStudentKey();
             const statusMsg = document.getElementById('manual-status');
 
-            statusMsg.textContent = "Salvando...";
+            if (!studentKey) {
+                alert("Selecione ou identifique uma aluna antes de salvar as notas manuais!");
+                return;
+            }
+
+            const wVal = document.getElementById('writing-input').value;
+            const sVal = document.getElementById('speaking-input').value;
+
+            statusMsg.textContent = "Salvando notas manuais...";
             try {
-                await setDoc(doc(db, "ielts_practice", "manual_scores"), {
+                await registerStudentActivity();
+                await setDoc(doc(db, "ielts_students", studentKey, "manual_scores", "scores"), {
                     writing: wVal ? parseFloat(wVal) : null,
                     speaking: sVal ? parseFloat(sVal) : null,
                     updatedAt: new Date().toISOString()
@@ -479,10 +501,12 @@
                 statusMsg.textContent = "Notas manuais salvas com sucesso!";
                 loadAllScores();
             } catch (e) {
+                console.error(e);
                 statusMsg.textContent = "Erro ao salvar notas manuais.";
             }
         });
 
+        initStudentBar(loadAllScores);
         loadAllScores();
     </script>
 </body>
