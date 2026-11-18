@@ -14,7 +14,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 
-// Gera uma chave segura para o Firestore a partir do nome/e-mail
 export function getStudentKey() {
     const raw = (localStorage.getItem('ielts_student_identity') || '').trim().toLowerCase();
     if (!raw) return null;
@@ -25,7 +24,20 @@ export function getRawStudentName() {
     return (localStorage.getItem('ielts_student_identity') || '').trim();
 }
 
-// Injeta automaticamente a barra de identificação e o Modo Professor em qualquer página
+export async function registerStudentActivity() {
+    const key = getStudentKey();
+    const name = getRawStudentName();
+    if (!key || !name) return;
+    try {
+        await setDoc(doc(db, "ielts_students", key), {
+            displayName: name,
+            lastActive: new Date().toISOString()
+        }, { merge: true });
+    } catch (e) {
+        console.error("Erro ao registrar atividade da aluna:", e);
+    }
+}
+
 export function initStudentBar(onStudentChangeCallback) {
     const nav = document.querySelector('.top-nav');
     if (!nav) return;
@@ -57,26 +69,16 @@ export function initStudentBar(onStudentChangeCallback) {
     const teacherPanel = document.getElementById('global-teacher-panel');
     const refreshBtn = document.getElementById('global-refresh-btn');
 
-    // Preenche se já estiver salvo no navegador
     input.value = getRawStudentName();
 
     confirmBtn.addEventListener('click', async () => {
         const val = input.value.trim();
         if (!val) {
-            alert("Por favor, digite seu nome ou e-mail.");
+            alert("Por favor, digite seu nome ou e-mail antes de continuar.");
             return;
         }
         localStorage.setItem('ielts_student_identity', val);
-        const key = getStudentKey();
-        
-        // Registra a aluna na nuvem imediatamente
-        try {
-            await setDoc(doc(db, "ielts_students", key), {
-                displayName: val,
-                lastActive: new Date().toISOString()
-            }, { merge: true });
-        } catch (e) { console.error(e); }
-
+        await registerStudentActivity();
         if (onStudentChangeCallback) onStudentChangeCallback();
     });
 
@@ -109,6 +111,12 @@ export function initStudentBar(onStudentChangeCallback) {
                 chip.onclick = () => {
                     localStorage.setItem('ielts_student_identity', name);
                     input.value = name;
+                    document.querySelectorAll('#global-student-chips button').forEach(b => {
+                        b.style.background = 'white';
+                        b.style.color = '#502064';
+                    });
+                    chip.style.background = '#502064';
+                    chip.style.color = 'white';
                     if (onStudentChangeCallback) onStudentChangeCallback();
                 };
                 container.appendChild(chip);
