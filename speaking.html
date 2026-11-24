@@ -64,6 +64,199 @@
             border-color: var(--primary-purple);
         }
 
+        /* Timer & Stopwatch Widget */
+        .clock-widget {
+            background-color: var(--card-bg);
+            border: 1px solid var(--light-lavender);
+            border-radius: 12px;
+            padding: 16px 22px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(80, 32, 100, 0.06);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .clock-widget.alarm-ringing {
+            border-color: var(--accent-wine);
+            box-shadow: 0 0 0 3px rgba(107, 15, 26, 0.2);
+            background-color: #FFF7F8;
+        }
+
+        .clock-mode-switch {
+            display: flex;
+            gap: 6px;
+            background-color: #F3ECF5;
+            padding: 4px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .mode-btn {
+            background: transparent;
+            border: none;
+            padding: 7px 14px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--primary-purple);
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Century Gothic', CenturyGothic, sans-serif;
+            transition: all 0.2s;
+        }
+
+        .mode-btn.active {
+            background-color: var(--primary-purple);
+            color: #FFFFFF;
+        }
+
+        .timer-setup-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .time-input-field {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .time-input-field input {
+            width: 56px;
+            padding: 6px 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-family: 'Century Gothic', CenturyGothic, sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--primary-purple);
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .time-input-field input:focus {
+            outline: none;
+            border-color: var(--primary-purple);
+        }
+
+        .preset-pills {
+            display: flex;
+            gap: 5px;
+        }
+
+        .preset-btn {
+            background-color: #FBF8FC;
+            color: var(--primary-purple);
+            border: 1px solid var(--light-lavender);
+            padding: 5px 9px;
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Century Gothic', CenturyGothic, sans-serif;
+            transition: all 0.2s;
+        }
+
+        .preset-btn:hover {
+            background-color: var(--primary-purple);
+            color: #FFFFFF;
+        }
+
+        .clock-display-area {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .clock-readout {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary-purple);
+            letter-spacing: 1px;
+            min-width: 105px;
+            text-align: center;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .clock-widget.alarm-ringing .clock-readout {
+            color: var(--accent-wine);
+            animation: pulseText 0.8s infinite alternate;
+        }
+
+        @keyframes pulseText {
+            from { opacity: 1; }
+            to { opacity: 0.45; }
+        }
+
+        .clock-controls {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .clock-btn {
+            padding: 8px 14px;
+            font-size: 12px;
+            font-weight: 700;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Century Gothic', CenturyGothic, sans-serif;
+            transition: background 0.2s, opacity 0.2s;
+        }
+
+        .clock-btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        .btn-start {
+            background-color: var(--primary-purple);
+            color: #FFFFFF;
+        }
+
+        .btn-start:hover:not(:disabled) {
+            background-color: #3b164a;
+        }
+
+        .btn-pause {
+            background-color: #F3ECF5;
+            color: var(--primary-purple);
+            border: 1px solid var(--light-lavender);
+        }
+
+        .btn-pause:hover:not(:disabled) {
+            background-color: #e4d4ea;
+        }
+
+        .btn-reset {
+            background-color: var(--border-color);
+            color: var(--primary-purple);
+        }
+
+        .btn-reset:hover:not(:disabled) {
+            background-color: #d1c2d4;
+        }
+
+        .btn-stop-alarm {
+            background-color: var(--accent-wine);
+            color: #FFFFFF;
+            display: none;
+        }
+
+        .btn-stop-alarm.visible {
+            display: inline-block;
+        }
+
         /* Speaking Sub-tabs Navigation */
         .speaking-selector {
             display: flex;
@@ -326,6 +519,42 @@
             <a href="scores.html">Scores</a>
         </nav>
 
+        <!-- Timer & Stopwatch Widget -->
+        <div class="clock-widget" id="clock-widget">
+            <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+                <div class="clock-mode-switch">
+                    <button type="button" class="mode-btn active" id="mode-timer-btn">Timer</button>
+                    <button type="button" class="mode-btn" id="mode-stopwatch-btn">Stopwatch</button>
+                </div>
+
+                <div class="timer-setup-group" id="timer-setup-group">
+                    <div class="time-input-field">
+                        <input type="number" id="timer-min-input" min="0" max="99" value="2">
+                        <span>min</span>
+                    </div>
+                    <div class="time-input-field">
+                        <input type="number" id="timer-sec-input" min="0" max="59" value="0">
+                        <span>seg</span>
+                    </div>
+                    <div class="preset-pills">
+                        <button type="button" class="preset-btn" data-min="1" data-sec="0" title="1 min prep">1m</button>
+                        <button type="button" class="preset-btn" data-min="2" data-sec="0" title="2 min Part 2">2m</button>
+                        <button type="button" class="preset-btn" data-min="4" data-sec="0" title="4 min Part 1/3">4m</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clock-display-area">
+                <div class="clock-readout" id="clock-readout">02:00</div>
+                <div class="clock-controls">
+                    <button type="button" class="clock-btn btn-start" id="clock-start-btn">Iniciar</button>
+                    <button type="button" class="clock-btn btn-pause" id="clock-pause-btn" disabled>Pausar</button>
+                    <button type="button" class="clock-btn btn-reset" id="clock-reset-btn">Resetar</button>
+                    <button type="button" class="clock-btn btn-stop-alarm" id="clock-stop-alarm-btn">Parar Alarme</button>
+                </div>
+            </div>
+        </div>
+
         <!-- Sub-navegação por Partes do Speaking -->
         <div class="speaking-selector">
             <button class="sub-tab-btn active" onclick="switchTask('spk_part1', this)">Speaking Part 1</button>
@@ -484,7 +713,7 @@
         <!-- BAND DESCRIPTORS TAB -->
         <div id="spk_band_descriptors" class="container">
             <h1>IELTS Speaking Assessment Criteria (Band Descriptors)</h1>
-            <div class="subtitle">Official Assessment Table - Speaking (Academic and General Training)[cite: 26]</div>
+            <div class="subtitle">Official Assessment Table - Speaking (Academic and General Training)</div>
             
             <div class="descriptor-section-title">Speaking Band Descriptors (Bands 9 to 1)</div>
             <div class="descriptors-table-wrapper">
@@ -501,72 +730,303 @@
                     <tbody>
                         <tr>
                             <td class="band-badge">9</td>
-                            <td>Fluent with only very occasional repetition or self-correction; hesitation is content-related. Topic fully coherent and appropriately extended[cite: 26].</td>
-                            <td>Total flexibility and precise use in all contexts. Sustained use of accurate and idiomatic language[cite: 26].</td>
-                            <td>Structures precise and accurate at all times, apart from native-like mistakes[cite: 26].</td>
-                            <td>Full range of phonological features used with precision. Effortlessly understood throughout; accent has no effect on intelligibility[cite: 26].</td>
+                            <td>Fluent with only very occasional repetition or self-correction; hesitation is content-related. Topic fully coherent and appropriately extended.</td>
+                            <td>Total flexibility and precise use in all contexts. Sustained use of accurate and idiomatic language.</td>
+                            <td>Structures precise and accurate at all times, apart from native-like mistakes.</td>
+                            <td>Full range of phonological features used with precision. Effortlessly understood throughout; accent has no effect on intelligibility.</td>
                         </tr>
                         <tr>
                             <td class="band-badge">8</td>
-                            <td>Fluent with occasional repetition/self-correction. Topic development coherent and relevant; effective paraphrase[cite: 26].</td>
-                            <td>Wide resource readily and flexibly used. Skilful use of less common/idiomatic items despite minor inaccuracies[cite: 26].</td>
-                            <td>Wide range of structures flexibly used. Majority of sentences error-free with minor occasional inappropriacies[cite: 26].</td>
-                            <td>Wide range of phonological features. Sustained appropriate rhythm, stress, and intonation. Easily understood[cite: 26].</td>
+                            <td>Fluent with occasional repetition/self-correction. Topic development coherent and relevant; effective paraphrase.</td>
+                            <td>Wide resource readily and flexibly used. Skilful use of less common/idiomatic items despite minor inaccuracies.</td>
+                            <td>Wide range of structures flexibly used. Majority of sentences error-free with minor occasional inappropriacies.</td>
+                            <td>Wide range of phonological features. Sustained appropriate rhythm, stress, and intonation. Easily understood.</td>
                         </tr>
                         <tr>
                             <td class="band-badge">7</td>
-                            <td>Able to keep going without noticeable effort. Flexible use of discourse markers and cohesive features[cite: 26].</td>
-                            <td>Resource flexibly used to discuss a variety of topics. Ability to use less common/idiomatic items with awareness of style[cite: 26].</td>
-                            <td>Range of structures flexibly used; error-free sentences frequent. Both simple and complex sentences effective[cite: 26].</td>
-                            <td>Shows positive features of band 6 and some of band 8. Flexible intonation and stress control[cite: 26].</td>
+                            <td>Able to keep going without noticeable effort. Flexible use of discourse markers and cohesive features.</td>
+                            <td>Resource flexibly used to discuss a variety of topics. Ability to use less common/idiomatic items with awareness of style.</td>
+                            <td>Range of structures flexibly used; error-free sentences frequent. Both simple and complex sentences effective.</td>
+                            <td>Shows positive features of band 6 and some of band 8. Flexible intonation and stress control.</td>
                         </tr>
                         <tr>
                             <td class="band-badge">6</td>
-                            <td>Willingness to produce long turns, though coherence may be lost at times due to hesitation/repetition. Uses discourse markers[cite: 27].</td>
-                            <td>Resource sufficient to discuss topics at length. Vocabulary may be inappropriate but meaning clear; successful paraphrase[cite: 27].</td>
-                            <td>Mix of short and complex sentence forms with limited flexibility. Errors in complex structures rarely impede communication[cite: 27].</td>
-                            <td>Range of phonological features used with variable control. Chunking generally appropriate; individual mispronunciations cause occasional lack of clarity[cite: 27].</td>
+                            <td>Willingness to produce long turns, though coherence may be lost at times due to hesitation/repetition. Uses discourse markers.</td>
+                            <td>Resource sufficient to discuss topics at length. Vocabulary may be inappropriate but meaning clear; successful paraphrase.</td>
+                            <td>Mix of short and complex sentence forms with limited flexibility. Errors in complex structures rarely impede communication.</td>
+                            <td>Range of phonological features used with variable control. Chunking generally appropriate; individual mispronunciations cause occasional lack of clarity.</td>
                         </tr>
                         <tr>
                             <td class="band-badge">5</td>
-                            <td>Usually able to keep going but relies on repetition/slow speech. Hesitations for basic lexis/grammar. Overuse of certain markers[cite: 27].</td>
-                            <td>Resource sufficient for familiar/unfamiliar topics with limited flexibility. Attempts paraphrase. Frequent inappropriacies[cite: 27].</td>
-                            <td>Basic sentence forms fairly well controlled. Complex structures limited, nearly always contain errors[cite: 27].</td>
-                            <td>Acceptable features limited. Frequent lapses in rhythm; intonation control limited. Mispronunciations cause lack of clarity, requiring some effort to understand[cite: 27].</td>
+                            <td>Usually able to keep going but relies on repetition/slow speech. Hesitations for basic lexis/grammar. Overuse of certain markers.</td>
+                            <td>Resource sufficient for familiar/unfamiliar topics with limited flexibility. Attempts paraphrase. Frequent inappropriacies.</td>
+                            <td>Basic sentence forms fairly well controlled. Complex structures limited, nearly always contain errors.</td>
+                            <td>Acceptable features limited. Frequent lapses in rhythm; intonation control limited. Mispronunciations cause lack of clarity, requiring some effort to understand.</td>
                         </tr>
                         <tr>
                             <td class="band-badge">4</td>
-                            <td>Unable to keep going without noticeable pauses; slow with frequent repetition. Links simple sentences repetitiously[cite: 27].</td>
-                            <td>Resource for familiar topics only. Basic meaning conveyed on unfamiliar topics. Rarely attempts paraphrase[cite: 27].</td>
-                            <td>Basic sentence forms and short error-free utterances. Subordinate clauses rare; repetitive structures and frequent errors[cite: 27].</td>
-                            <td>Limited acceptable phonological features. Frequent mispronunciations causing lack of clarity and difficulty for listener[cite: 27].</td>
+                            <td>Unable to keep going without noticeable pauses; slow with frequent repetition. Links simple sentences repetitiously.</td>
+                            <td>Resource for familiar topics only. Basic meaning conveyed on unfamiliar topics. Rarely attempts paraphrase.</td>
+                            <td>Basic sentence forms and short error-free utterances. Subordinate clauses rare; repetitive structures and frequent errors.</td>
+                            <td>Limited acceptable phonological features. Frequent mispronunciations causing lack of clarity and difficulty for listener.</td>
                         </tr>
                         <tr>
                             <td class="band-badge">3</td>
-                            <td>Frequent long pauses while searching for words. Limited ability to link simple sentences[cite: 28].</td>
-                            <td>Resource limited to simple vocabulary for personal information. Inadequate for unfamiliar topics[cite: 28].</td>
-                            <td>Basic sentence forms attempted; errors numerous except in memorised utterances[cite: 28].</td>
-                            <td>Shows some features of band 2 and 4[cite: 28].</td>
+                            <td>Frequent long pauses while searching for words. Limited ability to link simple sentences.</td>
+                            <td>Resource limited to simple vocabulary for personal information. Inadequate for unfamiliar topics.</td>
+                            <td>Basic sentence forms attempted; errors numerous except in memorised utterances.</td>
+                            <td>Shows some features of band 2 and 4.</td>
                         </tr>
                         <tr>
                             <td class="band-badge">2</td>
-                            <td>Lengthy pauses before nearly every word. Frequently unable to convey basic message[cite: 28].</td>
-                            <td>Very limited resource. Isolated words or memorised utterances[cite: 28].</td>
-                            <td>No evidence of basic sentence forms[cite: 28].</td>
-                            <td>Overall problems with delivery impair connected speech. Mainly mispronounced[cite: 28].</td>
+                            <td>Lengthy pauses before nearly every word. Frequently unable to convey basic message.</td>
+                            <td>Very limited resource. Isolated words or memorised utterances.</td>
+                            <td>No evidence of basic sentence forms.</td>
+                            <td>Overall problems with delivery impair connected speech. Mainly mispronounced.</td>
                         </tr>
                         <tr>
                             <td class="band-badge">1</td>
-                            <td>Essentially none. Speech totally incoherent[cite: 28].</td>
-                            <td>No resource bar a few isolated words[cite: 28].</td>
-                            <td>No rateable language unless memorised[cite: 28].</td>
-                            <td>Unintelligible[cite: 28].</td>
+                            <td>Essentially none. Speech totally incoherent.</td>
+                            <td>No resource bar a few isolated words.</td>
+                            <td>No rateable language unless memorised.</td>
+                            <td>Unintelligible.</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+
+    <!-- Timer & Stopwatch Script -->
+    <script>
+        (function initClockWidget() {
+            const widgetEl = document.getElementById('clock-widget');
+            const modeTimerBtn = document.getElementById('mode-timer-btn');
+            const modeStopwatchBtn = document.getElementById('mode-stopwatch-btn');
+            const timerSetupGroup = document.getElementById('timer-setup-group');
+            const minInput = document.getElementById('timer-min-input');
+            const secInput = document.getElementById('timer-sec-input');
+            const presetBtns = document.querySelectorAll('.preset-btn');
+
+            const readoutEl = document.getElementById('clock-readout');
+            const startBtn = document.getElementById('clock-start-btn');
+            const pauseBtn = document.getElementById('clock-pause-btn');
+            const resetBtn = document.getElementById('clock-reset-btn');
+            const stopAlarmBtn = document.getElementById('clock-stop-alarm-btn');
+
+            let mode = 'timer'; // 'timer' ou 'stopwatch'
+            let intervalId = null;
+            let isRunning = false;
+            let remainingSeconds = 120;
+            let elapsedSeconds = 0;
+
+            let audioCtx = null;
+            let alarmIntervalId = null;
+
+            function formatTime(totalSecs) {
+                const safeSecs = Math.max(0, Math.floor(totalSecs));
+                const mins = Math.floor(safeSecs / 60);
+                const secs = safeSecs % 60;
+                return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            }
+
+            function getConfiguredTimerSeconds() {
+                const m = Math.max(0, Math.min(99, parseInt(minInput.value, 10) || 0));
+                const s = Math.max(0, Math.min(59, parseInt(secInput.value, 10) || 0));
+                return m * 60 + s;
+            }
+
+            function playAlarmBeep() {
+                try {
+                    if (!audioCtx) {
+                        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                        audioCtx = new AudioContextClass();
+                    }
+                    if (audioCtx.state === 'suspended') {
+                        audioCtx.resume();
+                    }
+
+                    const now = audioCtx.currentTime;
+                    const frequencies = [880, 1100, 880];
+                    frequencies.forEach((freq, idx) => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(freq, now + idx * 0.18);
+
+                        gain.gain.setValueAtTime(0.001, now + idx * 0.18);
+                        gain.gain.exponentialRampToValueAtTime(0.25, now + idx * 0.18 + 0.03);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.18 + 0.16);
+
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+
+                        osc.start(now + idx * 0.18);
+                        osc.stop(now + idx * 0.18 + 0.17);
+                    });
+                } catch (e) {
+                    console.warn("Web Audio não disponível:", e);
+                }
+            }
+
+            function triggerAlarm() {
+                stopAlarm();
+                widgetEl.classList.add('alarm-ringing');
+                stopAlarmBtn.classList.add('visible');
+                playAlarmBeep();
+                alarmIntervalId = setInterval(playAlarmBeep, 1500);
+            }
+
+            function stopAlarm() {
+                if (alarmIntervalId) {
+                    clearInterval(alarmIntervalId);
+                    alarmIntervalId = null;
+                }
+                widgetEl.classList.remove('alarm-ringing');
+                stopAlarmBtn.classList.remove('visible');
+            }
+
+            function stopTicking() {
+                if (intervalId) {
+                    clearInterval(intervalId);
+                    intervalId = null;
+                }
+                isRunning = false;
+                startBtn.disabled = false;
+                pauseBtn.disabled = true;
+            }
+
+            function updateDisplay() {
+                if (mode === 'timer') {
+                    readoutEl.textContent = formatTime(remainingSeconds);
+                } else {
+                    readoutEl.textContent = formatTime(elapsedSeconds);
+                }
+            }
+
+            function resetClock() {
+                stopTicking();
+                stopAlarm();
+                startBtn.textContent = 'Iniciar';
+                if (mode === 'timer') {
+                    remainingSeconds = getConfiguredTimerSeconds();
+                } else {
+                    elapsedSeconds = 0;
+                }
+                updateDisplay();
+            }
+
+            function switchMode(newMode) {
+                if (mode === newMode) return;
+                mode = newMode;
+                stopTicking();
+                stopAlarm();
+                startBtn.textContent = 'Iniciar';
+
+                if (mode === 'timer') {
+                    modeTimerBtn.classList.add('active');
+                    modeStopwatchBtn.classList.remove('active');
+                    timerSetupGroup.style.display = 'flex';
+                    remainingSeconds = getConfiguredTimerSeconds();
+                } else {
+                    modeStopwatchBtn.classList.add('active');
+                    modeTimerBtn.classList.remove('active');
+                    timerSetupGroup.style.display = 'none';
+                    elapsedSeconds = 0;
+                }
+                updateDisplay();
+            }
+
+            modeTimerBtn.addEventListener('click', () => switchMode('timer'));
+            modeStopwatchBtn.addEventListener('click', () => switchMode('stopwatch'));
+
+            [minInput, secInput].forEach(inp => {
+                inp.addEventListener('change', () => {
+                    const m = Math.max(0, Math.min(99, parseInt(minInput.value, 10) || 0));
+                    const s = Math.max(0, Math.min(59, parseInt(secInput.value, 10) || 0));
+                    minInput.value = m;
+                    secInput.value = s;
+                    if (mode === 'timer' && !isRunning) {
+                        stopAlarm();
+                        remainingSeconds = m * 60 + s;
+                        startBtn.textContent = 'Iniciar';
+                        updateDisplay();
+                    }
+                });
+            });
+
+            presetBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const m = parseInt(btn.getAttribute('data-min'), 10) || 0;
+                    const s = parseInt(btn.getAttribute('data-sec'), 10) || 0;
+                    minInput.value = m;
+                    secInput.value = s;
+                    stopTicking();
+                    stopAlarm();
+                    remainingSeconds = m * 60 + s;
+                    startBtn.textContent = 'Iniciar';
+                    updateDisplay();
+                });
+            });
+
+            startBtn.addEventListener('click', () => {
+                if (isRunning) return;
+                stopAlarm();
+
+                // Desbloqueia AudioContext na interação do usuário
+                try {
+                    if (!audioCtx) {
+                        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                        audioCtx = new AudioContextClass();
+                    }
+                    if (audioCtx.state === 'suspended') {
+                        audioCtx.resume();
+                    }
+                } catch (e) {}
+
+                if (mode === 'timer') {
+                    if (remainingSeconds <= 0) {
+                        remainingSeconds = getConfiguredTimerSeconds();
+                        if (remainingSeconds <= 0) return;
+                    }
+                    isRunning = true;
+                    startBtn.disabled = true;
+                    pauseBtn.disabled = false;
+                    updateDisplay();
+
+                    intervalId = setInterval(() => {
+                        remainingSeconds -= 1;
+                        updateDisplay();
+                        if (remainingSeconds <= 0) {
+                            stopTicking();
+                            startBtn.textContent = 'Iniciar';
+                            triggerAlarm();
+                        }
+                    }, 1000);
+                } else {
+                    isRunning = true;
+                    startBtn.disabled = true;
+                    pauseBtn.disabled = false;
+
+                    intervalId = setInterval(() => {
+                        elapsedSeconds += 1;
+                        updateDisplay();
+                    }, 1000);
+                }
+            });
+
+            pauseBtn.addEventListener('click', () => {
+                if (!isRunning) return;
+                stopTicking();
+                startBtn.textContent = 'Continuar';
+            });
+
+            resetBtn.addEventListener('click', resetClock);
+            stopAlarmBtn.addEventListener('click', stopAlarm);
+
+            updateDisplay();
+        })();
+    </script>
 
     <!-- Firebase Script for Multi-Student & Multi-Device Sync -->
     <script type="module">
