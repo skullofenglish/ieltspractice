@@ -247,15 +247,54 @@
         }
 
         .descriptor-feedback-group {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
-        .descriptor-feedback-group label {
-            display: block;
+        .descriptor-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 4px;
+        }
+
+        .descriptor-header-row label {
             font-size: 11px;
             font-weight: bold;
             color: var(--text-muted);
-            margin-bottom: 3px;
+            margin: 0;
+        }
+
+        .score-input-inline {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .score-input-inline span {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--primary-purple);
+        }
+
+        .score-input-inline input[type="number"] {
+            width: 68px;
+            padding: 4px 6px;
+            border: 1px solid var(--light-lavender);
+            border-radius: 5px;
+            font-family: 'Century Gothic', CenturyGothic, sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--accent-wine);
+            background-color: #FFFFFF;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .score-input-inline input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary-purple);
+            box-shadow: 0 0 0 2px rgba(80, 32, 100, 0.1);
         }
 
         .descriptor-feedback-group textarea {
@@ -359,23 +398,46 @@
                     <textarea class="essay-textarea" placeholder="Digite a sua redação aqui..."></textarea>
                     <div class="word-counter">Palavras: <span class="count">0</span></div>
                     
-                    <!-- Painel de Correção por Descritor -->
                     <div class="correction-panel">
-                        <h3>Feedback do Professor / Examinador</h3>
+                        <h3>Feedback e Notas por Critério (0 a 9)</h3>
                         <div class="descriptor-feedback-group">
-                            <label class="desc-label-1">Task Achievement / Response:</label>
-                            <textarea class="feedback-ta" placeholder="Comentários sobre o cumprimento da tarefa e clareza da posição..."></textarea>
+                            <div class="descriptor-header-row">
+                                <label class="desc-label-1">Task Achievement:</label>
+                                <div class="score-input-inline">
+                                    <span>Band:</span>
+                                    <input type="number" class="score-ta" min="0" max="9" step="0.5" placeholder="-">
+                                </div>
+                            </div>
+                            <textarea class="feedback-ta" placeholder="Comentários sobre o cumprimento da tarefa e visão geral (overview)..."></textarea>
                         </div>
                         <div class="descriptor-feedback-group">
-                            <label>Coherence & Cohesion:</label>
+                            <div class="descriptor-header-row">
+                                <label>Coherence & Cohesion:</label>
+                                <div class="score-input-inline">
+                                    <span>Band:</span>
+                                    <input type="number" class="score-cc" min="0" max="9" step="0.5" placeholder="-">
+                                </div>
+                            </div>
                             <textarea class="feedback-cc" placeholder="Comentários sobre a organização, progressão lógica e conectivos..."></textarea>
                         </div>
                         <div class="descriptor-feedback-group">
-                            <label>Lexical Resource:</label>
+                            <div class="descriptor-header-row">
+                                <label>Lexical Resource:</label>
+                                <div class="score-input-inline">
+                                    <span>Band:</span>
+                                    <input type="number" class="score-lr" min="0" max="9" step="0.5" placeholder="-">
+                                </div>
+                            </div>
                             <textarea class="feedback-lr" placeholder="Comentários sobre vocabulário, precisão e uso de termos acadêmicos..."></textarea>
                         </div>
                         <div class="descriptor-feedback-group">
-                            <label>Grammatical Range & Accuracy:</label>
+                            <div class="descriptor-header-row">
+                                <label>Grammatical Range & Accuracy:</label>
+                                <div class="score-input-inline">
+                                    <span>Band:</span>
+                                    <input type="number" class="score-gra" min="0" max="9" step="0.5" placeholder="-">
+                                </div>
+                            </div>
                             <textarea class="feedback-gra" placeholder="Comentários sobre estruturas gramaticais, pontuação e precisão..."></textarea>
                         </div>
                     </div>
@@ -404,21 +466,45 @@
                     <div class="word-counter">Palavras: <span class="count">0</span></div>
                     
                     <div class="correction-panel">
-                        <h3>Feedback do Professor / Examinador</h3>
+                        <h3>Feedback e Notas por Critério (0 a 9)</h3>
                         <div class="descriptor-feedback-group">
-                            <label class="desc-label-1">Task Achievement / Response:</label>
-                            <textarea class="feedback-ta" placeholder="Comentários sobre o cumprimento da tarefa e clareza da posição..."></textarea>
+                            <div class="descriptor-header-row">
+                                <label class="desc-label-1">Task Achievement:</label>
+                                <div class="score-input-inline">
+                                    <span>Band:</span>
+                                    <input type="number" class="score-ta" min="0" max="9" step="0.5" placeholder="-">
+                                </div>
+                            </div>
+                            <textarea class="feedback-ta" placeholder="Comentários sobre o cumprimento da tarefa e visão geral (overview)..."></textarea>
                         </div>
                         <div class="descriptor-feedback-group">
-                            <label>Coherence & Cohesion:</label>
+                            <div class="descriptor-header-row">
+                                <label>Coherence & Cohesion:</label>
+                                <div class="score-input-inline">
+                                    <span>Band:</span>
+                                    <input type="number" class="score-cc" min="0" max="9" step="0.5" placeholder="-">
+                                </div>
+                            </div>
                             <textarea class="feedback-cc" placeholder="Comentários sobre a organização, progressão lógica e conectivos..."></textarea>
                         </div>
                         <div class="descriptor-feedback-group">
-                            <label>Lexical Resource:</label>
+                            <div class="descriptor-header-row">
+                                <label>Lexical Resource:</label>
+                                <div class="score-input-inline">
+                                    <span>Band:</span>
+                                    <input type="number" class="score-lr" min="0" max="9" step="0.5" placeholder="-">
+                                </div>
+                            </div>
                             <textarea class="feedback-lr" placeholder="Comentários sobre vocabulário, precisão e uso de termos acadêmicos..."></textarea>
                         </div>
                         <div class="descriptor-feedback-group">
-                            <label>Grammatical Range & Accuracy:</label>
+                            <div class="descriptor-header-row">
+                                <label>Grammatical Range & Accuracy:</label>
+                                <div class="score-input-inline">
+                                    <span>Band:</span>
+                                    <input type="number" class="score-gra" min="0" max="9" step="0.5" placeholder="-">
+                                </div>
+                            </div>
                             <textarea class="feedback-gra" placeholder="Comentários sobre estruturas gramaticais, pontuação e precisão..."></textarea>
                         </div>
                     </div>
@@ -447,21 +533,45 @@
                     <div class="word-counter">Palavras: <span class="count">0</span></div>
                     
                     <div class="correction-panel">
-                        <h3>Feedback do Professor / Examinador</h3>
+                        <h3>Feedback e Notas por Critério (0 a 9)</h3>
                         <div class="descriptor-feedback-group">
-                            <label class="desc-label-1">Task Achievement / Response:</label>
-                            <textarea class="feedback-ta" placeholder="Comentários sobre o cumprimento da tarefa e clareza da posição..."></textarea>
+                            <div class="descriptor-header-row">
+                                <label class="desc-label-1">Task Achievement:</label>
+                                <div class="score-input-inline">
+                                    <span>Band:</span>
+                                    <input type="number" class="score-ta" min="0" max="9" step="0.5" placeholder="-">
+                                </div>
+                            </div>
+                            <textarea class="feedback-ta" placeholder="Comentários sobre o cumprimento da tarefa e visão geral (overview)..."></textarea>
                         </div>
                         <div class="descriptor-feedback-group">
-                            <label>Coherence & Cohesion:</label>
+                            <div class="descriptor-header-row">
+                                <label>Coherence & Cohesion:</label>
+                                <div class="score-input-inline">
+                                    <span>Band:</span>
+                                    <input type="number" class="score-cc" min="0" max="9" step="0.5" placeholder="-">
+                                </div>
+                            </div>
                             <textarea class="feedback-cc" placeholder="Comentários sobre a organização, progressão lógica e conectivos..."></textarea>
                         </div>
                         <div class="descriptor-feedback-group">
-                            <label>Lexical Resource:</label>
+                            <div class="descriptor-header-row">
+                                <label>Lexical Resource:</label>
+                                <div class="score-input-inline">
+                                    <span>Band:</span>
+                                    <input type="number" class="score-lr" min="0" max="9" step="0.5" placeholder="-">
+                                </div>
+                            </div>
                             <textarea class="feedback-lr" placeholder="Comentários sobre vocabulário, precisão e uso de termos acadêmicos..."></textarea>
                         </div>
                         <div class="descriptor-feedback-group">
-                            <label>Grammatical Range & Accuracy:</label>
+                            <div class="descriptor-header-row">
+                                <label>Grammatical Range & Accuracy:</label>
+                                <div class="score-input-inline">
+                                    <span>Band:</span>
+                                    <input type="number" class="score-gra" min="0" max="9" step="0.5" placeholder="-">
+                                </div>
+                            </div>
                             <textarea class="feedback-gra" placeholder="Comentários sobre estruturas gramaticais, pontuação e precisão..."></textarea>
                         </div>
                     </div>
@@ -490,21 +600,45 @@
                     <div class="word-counter">Palavras: <span class="count">0</span></div>
                     
                     <div class="correction-panel">
-                        <h3>Feedback do Professor / Examinador</h3>
+                        <h3>Feedback e Notas por Critério (0 a 9)</h3>
                         <div class="descriptor-feedback-group">
-                            <label class="desc-label-1">Task Achievement / Response:</label>
-                            <textarea class="feedback-ta" placeholder="Comentários sobre o cumprimento da tarefa e clareza da posição..."></textarea>
+                            <div class="descriptor-header-row">
+                                <label class="desc-label-1">Task Achievement:</label>
+                                <div class="score-input-inline">
+                                    <span>Band:</span>
+                                    <input type="number" class="score-ta" min="0" max="9" step="0.5" placeholder="-">
+                                </div>
+                            </div>
+                            <textarea class="feedback-ta" placeholder="Comentários sobre o cumprimento da tarefa e visão geral (overview)..."></textarea>
                         </div>
                         <div class="descriptor-feedback-group">
-                            <label>Coherence & Cohesion:</label>
+                            <div class="descriptor-header-row">
+                                <label>Coherence & Cohesion:</label>
+                                <div class="score-input-inline">
+                                    <span>Band:</span>
+                                    <input type="number" class="score-cc" min="0" max="9" step="0.5" placeholder="-">
+                                </div>
+                            </div>
                             <textarea class="feedback-cc" placeholder="Comentários sobre a organização, progressão lógica e conectivos..."></textarea>
                         </div>
                         <div class="descriptor-feedback-group">
-                            <label>Lexical Resource:</label>
+                            <div class="descriptor-header-row">
+                                <label>Lexical Resource:</label>
+                                <div class="score-input-inline">
+                                    <span>Band:</span>
+                                    <input type="number" class="score-lr" min="0" max="9" step="0.5" placeholder="-">
+                                </div>
+                            </div>
                             <textarea class="feedback-lr" placeholder="Comentários sobre vocabulário, precisão e uso de termos acadêmicos..."></textarea>
                         </div>
                         <div class="descriptor-feedback-group">
-                            <label>Grammatical Range & Accuracy:</label>
+                            <div class="descriptor-header-row">
+                                <label>Grammatical Range & Accuracy:</label>
+                                <div class="score-input-inline">
+                                    <span>Band:</span>
+                                    <input type="number" class="score-gra" min="0" max="9" step="0.5" placeholder="-">
+                                </div>
+                            </div>
                             <textarea class="feedback-gra" placeholder="Comentários sobre estruturas gramaticais, pontuação e precisão..."></textarea>
                         </div>
                     </div>
@@ -534,21 +668,45 @@
                     <div class="word-counter">Palavras: <span class="count">0</span></div>
                     
                     <div class="correction-panel">
-                        <h3>Feedback do Professor / Examinador</h3>
+                        <h3>Feedback e Notas por Critério (0 a 9)</h3>
                         <div class="descriptor-feedback-group">
-                            <label class="desc-label-2">Task Achievement / Response:</label>
+                            <div class="descriptor-header-row">
+                                <label class="desc-label-2">Task Response:</label>
+                                <div class="score-input-inline">
+                                    <span>Band:</span>
+                                    <input type="number" class="score-ta" min="0" max="9" step="0.5" placeholder="-">
+                                </div>
+                            </div>
                             <textarea class="feedback-ta" placeholder="Comentários sobre o cumprimento da tarefa e clareza da posição..."></textarea>
                         </div>
                         <div class="descriptor-feedback-group">
-                            <label>Coherence & Cohesion:</label>
+                            <div class="descriptor-header-row">
+                                <label>Coherence & Cohesion:</label>
+                                <div class="score-input-inline">
+                                    <span>Band:</span>
+                                    <input type="number" class="score-cc" min="0" max="9" step="0.5" placeholder="-">
+                                </div>
+                            </div>
                             <textarea class="feedback-cc" placeholder="Comentários sobre a organização, progressão lógica e conectivos..."></textarea>
                         </div>
                         <div class="descriptor-feedback-group">
-                            <label>Lexical Resource:</label>
+                            <div class="descriptor-header-row">
+                                <label>Lexical Resource:</label>
+                                <div class="score-input-inline">
+                                    <span>Band:</span>
+                                    <input type="number" class="score-lr" min="0" max="9" step="0.5" placeholder="-">
+                                </div>
+                            </div>
                             <textarea class="feedback-lr" placeholder="Comentários sobre vocabulário, precisão e uso de termos acadêmicos..."></textarea>
                         </div>
                         <div class="descriptor-feedback-group">
-                            <label>Grammatical Range & Accuracy:</label>
+                            <div class="descriptor-header-row">
+                                <label>Grammatical Range & Accuracy:</label>
+                                <div class="score-input-inline">
+                                    <span>Band:</span>
+                                    <input type="number" class="score-gra" min="0" max="9" step="0.5" placeholder="-">
+                                </div>
+                            </div>
                             <textarea class="feedback-gra" placeholder="Comentários sobre estruturas gramaticais, pontuação e precisão..."></textarea>
                         </div>
                     </div>
@@ -578,21 +736,45 @@
                     <div class="word-counter">Palavras: <span class="count">0</span></div>
                     
                     <div class="correction-panel">
-                        <h3>Feedback do Professor / Examinador</h3>
+                        <h3>Feedback e Notas por Critério (0 a 9)</h3>
                         <div class="descriptor-feedback-group">
-                            <label class="desc-label-2">Task Achievement / Response:</label>
+                            <div class="descriptor-header-row">
+                                <label class="desc-label-2">Task Response:</label>
+                                <div class="score-input-inline">
+                                    <span>Band:</span>
+                                    <input type="number" class="score-ta" min="0" max="9" step="0.5" placeholder="-">
+                                </div>
+                            </div>
                             <textarea class="feedback-ta" placeholder="Comentários sobre o cumprimento da tarefa e clareza da posição..."></textarea>
                         </div>
                         <div class="descriptor-feedback-group">
-                            <label>Coherence & Cohesion:</label>
+                            <div class="descriptor-header-row">
+                                <label>Coherence & Cohesion:</label>
+                                <div class="score-input-inline">
+                                    <span>Band:</span>
+                                    <input type="number" class="score-cc" min="0" max="9" step="0.5" placeholder="-">
+                                </div>
+                            </div>
                             <textarea class="feedback-cc" placeholder="Comentários sobre a organização, progressão lógica e conectivos..."></textarea>
                         </div>
                         <div class="descriptor-feedback-group">
-                            <label>Lexical Resource:</label>
+                            <div class="descriptor-header-row">
+                                <label>Lexical Resource:</label>
+                                <div class="score-input-inline">
+                                    <span>Band:</span>
+                                    <input type="number" class="score-lr" min="0" max="9" step="0.5" placeholder="-">
+                                </div>
+                            </div>
                             <textarea class="feedback-lr" placeholder="Comentários sobre vocabulário, precisão e uso de termos acadêmicos..."></textarea>
                         </div>
                         <div class="descriptor-feedback-group">
-                            <label>Grammatical Range & Accuracy:</label>
+                            <div class="descriptor-header-row">
+                                <label>Grammatical Range & Accuracy:</label>
+                                <div class="score-input-inline">
+                                    <span>Band:</span>
+                                    <input type="number" class="score-gra" min="0" max="9" step="0.5" placeholder="-">
+                                </div>
+                            </div>
                             <textarea class="feedback-gra" placeholder="Comentários sobre estruturas gramaticais, pontuação e precisão..."></textarea>
                         </div>
                     </div>
@@ -762,8 +944,16 @@
             return trimmed.split(/\s+/).length;
         }
 
+        function parseBandInput(inputEl) {
+            if (!inputEl || inputEl.value === '') return null;
+            const val = parseFloat(inputEl.value);
+            if (isNaN(val)) return null;
+            return Math.min(9, Math.max(0, val));
+        }
+
         document.querySelectorAll('.container[data-task-id]').forEach(container => {
             const taskId = container.getAttribute('data-task-id');
+            const taskType = container.getAttribute('data-task-type');
             const textarea = container.querySelector('.essay-textarea');
             const counterSpan = container.querySelector('.word-counter .count');
             
@@ -771,6 +961,11 @@
             const fbCc = container.querySelector('.feedback-cc');
             const fbLr = container.querySelector('.feedback-lr');
             const fbGra = container.querySelector('.feedback-gra');
+
+            const scTa = container.querySelector('.score-ta');
+            const scCc = container.querySelector('.score-cc');
+            const scLr = container.querySelector('.score-lr');
+            const scGra = container.querySelector('.score-gra');
 
             const submitBtn = container.querySelector('.submit-btn');
             const clearBtn = container.querySelector('.clear-btn');
@@ -792,12 +987,19 @@
 
                 const payload = {
                     studentName: rawName,
+                    taskType: taskType,
                     essay: textarea.value,
                     feedback: {
                         taskAchievement: fbTa ? fbTa.value : '',
                         coherenceCohesion: fbCc ? fbCc.value : '',
                         lexicalResource: fbLr ? fbLr.value : '',
                         grammarRangeAccuracy: fbGra ? fbGra.value : ''
+                    },
+                    scores: {
+                        taskAchievement: parseBandInput(scTa),
+                        coherenceCohesion: parseBandInput(scCc),
+                        lexicalResource: parseBandInput(scLr),
+                        grammarRangeAccuracy: parseBandInput(scGra)
                     },
                     updatedAt: new Date().toISOString()
                 };
@@ -826,7 +1028,7 @@
                     return;
                 }
 
-                if (!confirm("Tem certeza que deseja apagar o texto desta tarefa?")) return;
+                if (!confirm("Tem certeza que deseja apagar o texto e as notas desta tarefa?")) return;
 
                 textarea.value = "";
                 counterSpan.textContent = "0";
@@ -834,6 +1036,10 @@
                 if(fbCc) fbCc.value = "";
                 if(fbLr) fbLr.value = "";
                 if(fbGra) fbGra.value = "";
+                if(scTa) scTa.value = "";
+                if(scCc) scCc.value = "";
+                if(scLr) scLr.value = "";
+                if(scGra) scGra.value = "";
 
                 statusMsg.textContent = "Limpando...";
 
@@ -861,6 +1067,11 @@
             const fbCc = container.querySelector('.feedback-cc');
             const fbLr = container.querySelector('.feedback-lr');
             const fbGra = container.querySelector('.feedback-gra');
+
+            const scTa = container.querySelector('.score-ta');
+            const scCc = container.querySelector('.score-cc');
+            const scLr = container.querySelector('.score-lr');
+            const scGra = container.querySelector('.score-gra');
             const statusMsg = container.querySelector('.status-msg');
 
             // Limpa visualmente antes de carregar
@@ -870,6 +1081,10 @@
             if(fbCc) fbCc.value = '';
             if(fbLr) fbLr.value = '';
             if(fbGra) fbGra.value = '';
+            if(scTa) scTa.value = '';
+            if(scCc) scCc.value = '';
+            if(scLr) scLr.value = '';
+            if(scGra) scGra.value = '';
 
             const studentKey = getStudentKey();
             const rawName = getRawStudentName();
@@ -891,6 +1106,12 @@
                     if(fbCc) fbCc.value = data.feedback.coherenceCohesion || '';
                     if(fbLr) fbLr.value = data.feedback.lexicalResource || '';
                     if(fbGra) fbGra.value = data.feedback.grammarRangeAccuracy || '';
+                }
+                if (data.scores) {
+                    if(scTa && data.scores.taskAchievement !== null && data.scores.taskAchievement !== undefined) scTa.value = data.scores.taskAchievement;
+                    if(scCc && data.scores.coherenceCohesion !== null && data.scores.coherenceCohesion !== undefined) scCc.value = data.scores.coherenceCohesion;
+                    if(scLr && data.scores.lexicalResource !== null && data.scores.lexicalResource !== undefined) scLr.value = data.scores.lexicalResource;
+                    if(scGra && data.scores.grammarRangeAccuracy !== null && data.scores.grammarRangeAccuracy !== undefined) scGra.value = data.scores.grammarRangeAccuracy;
                 }
             }
 
