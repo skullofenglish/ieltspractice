@@ -386,7 +386,7 @@
                 <div class="score-card">
                     <h3>Speaking</h3>
                     <div class="card-band" id="speaking-band">-</div>
-                    <div class="card-details">Nota Manual</div>
+                    <div class="card-details">Parts 1–3 (Nota Global)</div>
                 </div>
             </div>
 
@@ -456,14 +456,14 @@
             </div>
 
             <div class="manual-input-section">
-                <h4>Lançamento de Notas Manuais & Preferências (Writing / Speaking)</h4>
+                <h4>Lançamento de Notas & Seleção de Tarefas de Writing</h4>
                 <div class="input-group">
                     <div class="input-field">
                         <label for="writing-input">Writing Manual (opcional / sobrescrever 0-9):</label>
                         <input type="number" id="writing-input" min="0" max="9" step="0.5" placeholder="Automático pelas tarefas">
                     </div>
                     <div class="input-field">
-                        <label for="speaking-input">Speaking (Band 0-9):</label>
+                        <label for="speaking-input">Speaking — Nota Global Parts 1–3 (0-9):</label>
                         <input type="number" id="speaking-input" min="0" max="9" step="0.5" placeholder="Ex: 7.0">
                     </div>
                 </div>
@@ -615,21 +615,18 @@
             const t1Res = computeSingleTaskBand(cachedWritingTasks[t1Id]);
             const t2Res = computeSingleTaskBand(cachedWritingTasks[t2Id]);
 
-            // Atualiza Task 1
             document.getElementById('w-t1-ta').textContent = formatVal(t1Res.ta);
             document.getElementById('w-t1-cc').textContent = formatVal(t1Res.cc);
             document.getElementById('w-t1-lr').textContent = formatVal(t1Res.lr);
             document.getElementById('w-t1-gra').textContent = formatVal(t1Res.gra);
             document.getElementById('w-t1-band').textContent = t1Res.band !== null ? t1Res.band.toFixed(1) : "-";
 
-            // Atualiza Task 2
             document.getElementById('w-t2-ta').textContent = formatVal(t2Res.ta);
             document.getElementById('w-t2-cc').textContent = formatVal(t2Res.cc);
             document.getElementById('w-t2-lr').textContent = formatVal(t2Res.lr);
             document.getElementById('w-t2-gra').textContent = formatVal(t2Res.gra);
             document.getElementById('w-t2-band').textContent = t2Res.band !== null ? t2Res.band.toFixed(1) : "-";
 
-            // Calcula Writing Combinado (Task 1 + 2 * Task 2) / 3
             let calculatedWBand = null;
             const formulaEl = document.getElementById('w-combined-formula');
             const combinedBandEl = document.getElementById('w-combined-band');
@@ -650,7 +647,6 @@
                 formulaEl.textContent = "Preencha os 4 critérios das tarefas selecionadas na aba Writing para calcular.";
             }
 
-            // Decide nota final de Writing (Manual tem prioridade se preenchida; caso contrário usa calculada)
             let effectiveWBand = 0;
             const writingCardBand = document.getElementById('writing-band');
             const writingCardDetails = document.getElementById('writing-details');
@@ -770,7 +766,7 @@
             document.getElementById('listening-raw').textContent = `${listeningScore} / 23 acertos`;
             document.getElementById('listening-band').textContent = listeningScore > 0 ? currentLBand.toFixed(1) : "-";
 
-            // 3. Carregar todas as tarefas de Writing da aluna
+            // 3. Carregar tarefas de Writing da aluna
             for (const wId of WRITING_TASK_IDS) {
                 try {
                     const wSnap = await getDoc(doc(db, "ielts_students", studentKey, "writing", wId));
@@ -782,7 +778,7 @@
                 }
             }
 
-            // 4. Ler Notas Manuais e Tarefas Selecionadas
+            // 4. Ler Notas Manuais e Tarefas de Writing Selecionadas
             try {
                 const manualSnap = await getDoc(doc(db, "ielts_students", studentKey, "manual_scores", "scores"));
                 if (manualSnap.exists()) {
@@ -822,11 +818,9 @@
             updateWritingAndOverallUI();
         }
 
-        // Recalcular imediatamente ao trocar a tarefa nos seletores
         document.getElementById('select-writing-t1').addEventListener('change', updateWritingAndOverallUI);
         document.getElementById('select-writing-t2').addEventListener('change', updateWritingAndOverallUI);
 
-        // Salvar notas manuais e tarefas escolhidas
         document.getElementById('save-manual-btn').addEventListener('click', async () => {
             const studentKey = getStudentKey();
             const statusMsg = document.getElementById('manual-status');
