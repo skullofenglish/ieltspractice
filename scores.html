@@ -142,7 +142,7 @@
             color: var(--text-muted);
         }
 
-        /* Breakdown Sections (Listening, Reading & Writing) */
+        /* Breakdown Sections (Listening, Reading, Writing & Speaking) */
         .breakdown-section {
             background: #FBF8FC;
             border-radius: 10px;
@@ -251,6 +251,43 @@
         .criteria-val {
             font-weight: 700;
             color: var(--primary-purple);
+        }
+
+        .speaking-criteria-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .speaking-crit-field {
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .speaking-crit-field label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--primary-purple);
+            margin-bottom: 6px;
+        }
+
+        .speaking-crit-field input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-family: 'Century Gothic', sans-serif;
+            font-size: 13px;
+            box-sizing: border-box;
+        }
+
+        .speaking-crit-field input:focus {
+            outline: none;
+            border-color: var(--primary-purple);
         }
 
         .combined-banner {
@@ -386,7 +423,7 @@
                 <div class="score-card">
                     <h3>Speaking</h3>
                     <div class="card-band" id="speaking-band">-</div>
-                    <div class="card-details">Parts 1–3 (Nota Global)</div>
+                    <div class="card-details" id="speaking-details">Parts 1–3 (4 critérios)</div>
                 </div>
             </div>
 
@@ -547,16 +584,51 @@
                 </div>
             </div>
 
+            <!-- Cálculo por Critérios do Speaking (Parts 1–3 avaliados em conjunto) -->
+            <div class="breakdown-section">
+                <h4>Critérios e Cálculo — Speaking (Parts 1–3)</h4>
+                <div class="breakdown-desc">
+                    Informe as notas de cada critério (0 a 9, passo 0.5) considerando o desempenho conjunto nas Parts 1, 2 e 3. O Band Score do Speaking é calculado pela <strong>média aritmética dos 4 critérios</strong> com a regra oficial de arredondamento IELTS.
+                </div>
+
+                <div class="speaking-criteria-grid">
+                    <div class="speaking-crit-field">
+                        <label for="sp-crit-fc">Fluency & Coherence (0–9)</label>
+                        <input type="number" id="sp-crit-fc" min="0" max="9" step="0.5" placeholder="Ex: 7.0">
+                    </div>
+                    <div class="speaking-crit-field">
+                        <label for="sp-crit-lr">Lexical Resource (0–9)</label>
+                        <input type="number" id="sp-crit-lr" min="0" max="9" step="0.5" placeholder="Ex: 6.5">
+                    </div>
+                    <div class="speaking-crit-field">
+                        <label for="sp-crit-gra">Grammatical Range & Accuracy (0–9)</label>
+                        <input type="number" id="sp-crit-gra" min="0" max="9" step="0.5" placeholder="Ex: 6.5">
+                    </div>
+                    <div class="speaking-crit-field">
+                        <label for="sp-crit-pr">Pronunciation (0–9)</label>
+                        <input type="number" id="sp-crit-pr" min="0" max="9" step="0.5" placeholder="Ex: 7.0">
+                    </div>
+                </div>
+
+                <div class="combined-banner">
+                    <div class="combined-info">
+                        <strong>Speaking Calculado (4 critérios):</strong>
+                        <span id="s-combined-formula">Preencha os 4 critérios acima para calcular automaticamente</span>
+                    </div>
+                    <div class="combined-score" id="s-combined-band">-</div>
+                </div>
+            </div>
+
             <div class="manual-input-section">
-                <h4>Lançamento de Notas & Preferências Salvas</h4>
+                <h4>Lançamento Manual de Sobrescrita & Preferências Salvas</h4>
                 <div class="input-group">
                     <div class="input-field">
                         <label for="writing-input">Writing Manual (opcional / sobrescrever 0-9):</label>
                         <input type="number" id="writing-input" min="0" max="9" step="0.5" placeholder="Automático pelas tarefas">
                     </div>
                     <div class="input-field">
-                        <label for="speaking-input">Speaking — Nota Global Parts 1–3 (0-9):</label>
-                        <input type="number" id="speaking-input" min="0" max="9" step="0.5" placeholder="Ex: 7.0">
+                        <label for="speaking-input">Speaking Manual (opcional / sobrescrever 0-9):</label>
+                        <input type="number" id="speaking-input" min="0" max="9" step="0.5" placeholder="Automático pelos 4 critérios">
                     </div>
                 </div>
                 <button type="button" class="save-btn" id="save-manual-btn">Salvar Notas e Tarefas Selecionadas</button>
@@ -629,13 +701,13 @@
             'w_task2b_tourism'
         ];
 
-        let cachedListeningScores = {}; // { task1: { correct: 2, total: 3, submitted: true }, ... }
-        let cachedReadingScores = {};   // { task1: { correct: 3, total: 4, submitted: true }, ... }
+        let cachedListeningScores = {};
+        let cachedReadingScores = {};
         let cachedWritingTasks = {};
         let currentLBand = 0;
         let currentRBand = 0;
         let currentManualWBand = null;
-        let currentSBand = 0;
+        let currentManualSBand = null;
 
         function normalizeText(txt) {
             return (txt || "").trim().toLowerCase().replace(/[\s\-_]+/g, '');
@@ -723,6 +795,14 @@
                 lr: vals[2],
                 gra: vals[3]
             };
+        }
+
+        function parseCriterionInput(id) {
+            const raw = document.getElementById(id).value;
+            if (raw === '' || raw === null || raw === undefined) return null;
+            const num = parseFloat(raw);
+            if (isNaN(num)) return null;
+            return Math.min(9, Math.max(0, num));
         }
 
         function formatVal(val) {
@@ -857,8 +937,52 @@
                 writingCardDetails.textContent = "Task 1 + Task 2";
             }
 
-            // --- 4. Atualizar Overall Band Score ---
-            const overall = calculateOverall(currentLBand, currentRBand, effectiveWBand, currentSBand);
+            // --- 4. Atualizar Speaking com base nos 4 critérios (ou sobrescrita manual) ---
+            const fc = parseCriterionInput('sp-crit-fc');
+            const lr = parseCriterionInput('sp-crit-lr');
+            const gra = parseCriterionInput('sp-crit-gra');
+            const pr = parseCriterionInput('sp-crit-pr');
+
+            const spCriteria = [fc, lr, gra, pr].filter(v => v !== null);
+            let calculatedSBand = null;
+            const sFormulaEl = document.getElementById('s-combined-formula');
+            const sCombinedBandEl = document.getElementById('s-combined-band');
+
+            if (spCriteria.length === 4) {
+                const rawAvgS = spCriteria.reduce((a, b) => a + b, 0) / 4;
+                calculatedSBand = roundIeltsBand(rawAvgS);
+                sCombinedBandEl.textContent = calculatedSBand.toFixed(1);
+                sFormulaEl.textContent = `FC ${fc.toFixed(1)} + LR ${lr.toFixed(1)} + GRA ${gra.toFixed(1)} + PR ${pr.toFixed(1)} → Média: ${rawAvgS.toFixed(2)}`;
+            } else if (spCriteria.length > 0) {
+                sCombinedBandEl.textContent = "-";
+                sFormulaEl.textContent = `Preenchidos ${spCriteria.length} de 4 critérios — informe todos os 4 para calcular automaticamente.`;
+            } else {
+                sCombinedBandEl.textContent = "-";
+                sFormulaEl.textContent = "Preencha os 4 critérios acima para calcular automaticamente.";
+            }
+
+            let effectiveSBand = 0;
+            const speakingCardBand = document.getElementById('speaking-band');
+            const speakingCardDetails = document.getElementById('speaking-details');
+
+            if (currentManualSBand !== null && !isNaN(currentManualSBand) && currentManualSBand > 0) {
+                effectiveSBand = currentManualSBand;
+                speakingCardBand.textContent = effectiveSBand.toFixed(1);
+                speakingCardDetails.textContent = calculatedSBand !== null
+                    ? `Manual (Calc: ${calculatedSBand.toFixed(1)})`
+                    : "Parts 1–3 (Manual)";
+            } else if (calculatedSBand !== null) {
+                effectiveSBand = calculatedSBand;
+                speakingCardBand.textContent = effectiveSBand.toFixed(1);
+                speakingCardDetails.textContent = `FC ${fc.toFixed(1)} · LR ${lr.toFixed(1)} · GRA ${gra.toFixed(1)} · PR ${pr.toFixed(1)}`;
+            } else {
+                effectiveSBand = 0;
+                speakingCardBand.textContent = "-";
+                speakingCardDetails.textContent = "Parts 1–3 (4 critérios)";
+            }
+
+            // --- 5. Atualizar Overall Band Score ---
+            const overall = calculateOverall(currentLBand, currentRBand, effectiveWBand, effectiveSBand);
             document.getElementById('overall-score').textContent = overall;
         }
 
@@ -873,7 +997,12 @@
             currentLBand = 0;
             currentRBand = 0;
             currentManualWBand = null;
-            currentSBand = 0;
+            currentManualSBand = null;
+
+            document.getElementById('sp-crit-fc').value = "";
+            document.getElementById('sp-crit-lr').value = "";
+            document.getElementById('sp-crit-gra').value = "";
+            document.getElementById('sp-crit-pr').value = "";
 
             if (!studentKey) {
                 subtitleEl.textContent = "Digite seu nome ou e-mail no topo para visualizar seu painel de notas.";
@@ -981,7 +1110,7 @@
                 }
             }
 
-            // 4. Ler Notas Manuais e Tarefas Selecionadas (Listening, Reading e Writing)
+            // 4. Ler Notas Manuais, Critérios de Speaking e Tarefas Selecionadas
             try {
                 const manualSnap = await getDoc(doc(db, "ielts_students", studentKey, "manual_scores", "scores"));
                 if (manualSnap.exists()) {
@@ -1004,6 +1133,21 @@
                     if (data.selectedWritingT2) {
                         document.getElementById('select-writing-t2').value = data.selectedWritingT2;
                     }
+
+                    const spCrit = data.speakingCriteria || {};
+                    if (spCrit.fluencyCoherence !== undefined && spCrit.fluencyCoherence !== null) {
+                        document.getElementById('sp-crit-fc').value = spCrit.fluencyCoherence;
+                    }
+                    if (spCrit.lexicalResource !== undefined && spCrit.lexicalResource !== null) {
+                        document.getElementById('sp-crit-lr').value = spCrit.lexicalResource;
+                    }
+                    if (spCrit.grammaticalRangeAccuracy !== undefined && spCrit.grammaticalRangeAccuracy !== null) {
+                        document.getElementById('sp-crit-gra').value = spCrit.grammaticalRangeAccuracy;
+                    }
+                    if (spCrit.pronunciation !== undefined && spCrit.pronunciation !== null) {
+                        document.getElementById('sp-crit-pr').value = spCrit.pronunciation;
+                    }
+
                     if (data.writing !== undefined && data.writing !== null) {
                         currentManualWBand = parseFloat(data.writing);
                         document.getElementById('writing-input').value = currentManualWBand;
@@ -1012,16 +1156,13 @@
                         document.getElementById('writing-input').value = "";
                     }
                     if (data.speaking !== undefined && data.speaking !== null) {
-                        currentSBand = parseFloat(data.speaking);
-                        document.getElementById('speaking-band').textContent = currentSBand.toFixed(1);
-                        document.getElementById('speaking-input').value = currentSBand;
+                        currentManualSBand = parseFloat(data.speaking);
+                        document.getElementById('speaking-input').value = currentManualSBand;
                     } else {
-                        currentSBand = 0;
-                        document.getElementById('speaking-band').textContent = "-";
+                        currentManualSBand = null;
                         document.getElementById('speaking-input').value = "";
                     }
                 } else {
-                    document.getElementById('speaking-band').textContent = "-";
                     document.getElementById('writing-input').value = "";
                     document.getElementById('speaking-input').value = "";
                 }
@@ -1033,15 +1174,15 @@
             updateAllCalculationsUI();
         }
 
-        // Recalcular imediatamente ao trocar qualquer seletor (Listening, Reading ou Writing)
-        document.getElementById('select-listening-1').addEventListener('change', updateAllCalculationsUI);
-        document.getElementById('select-listening-2').addEventListener('change', updateAllCalculationsUI);
-        document.getElementById('select-reading-1').addEventListener('change', updateAllCalculationsUI);
-        document.getElementById('select-reading-2').addEventListener('change', updateAllCalculationsUI);
-        document.getElementById('select-writing-t1').addEventListener('change', updateAllCalculationsUI);
-        document.getElementById('select-writing-t2').addEventListener('change', updateAllCalculationsUI);
+        // Recalcular imediatamente ao alterar seletores ou critérios do Speaking
+        ['select-listening-1', 'select-listening-2', 'select-reading-1', 'select-reading-2',
+         'select-writing-t1', 'select-writing-t2', 'sp-crit-fc', 'sp-crit-lr', 'sp-crit-gra', 'sp-crit-pr']
+            .forEach(id => {
+                document.getElementById(id).addEventListener('input', updateAllCalculationsUI);
+                document.getElementById(id).addEventListener('change', updateAllCalculationsUI);
+            });
 
-        // Salvar notas manuais e preferências das tarefas escolhidas
+        // Salvar notas manuais, critérios do Speaking e preferências das tarefas escolhidas
         document.getElementById('save-manual-btn').addEventListener('click', async () => {
             const studentKey = getStudentKey();
             const statusMsg = document.getElementById('manual-status');
@@ -1053,6 +1194,11 @@
 
             const wVal = document.getElementById('writing-input').value;
             const sVal = document.getElementById('speaking-input').value;
+            const fc = parseCriterionInput('sp-crit-fc');
+            const lr = parseCriterionInput('sp-crit-lr');
+            const gra = parseCriterionInput('sp-crit-gra');
+            const pr = parseCriterionInput('sp-crit-pr');
+
             const selectedL1 = document.getElementById('select-listening-1').value;
             const selectedL2 = document.getElementById('select-listening-2').value;
             const selectedR1 = document.getElementById('select-reading-1').value;
@@ -1066,6 +1212,12 @@
                 await setDoc(doc(db, "ielts_students", studentKey, "manual_scores", "scores"), {
                     writing: wVal !== '' ? parseFloat(wVal) : null,
                     speaking: sVal !== '' ? parseFloat(sVal) : null,
+                    speakingCriteria: {
+                        fluencyCoherence: fc,
+                        lexicalResource: lr,
+                        grammaticalRangeAccuracy: gra,
+                        pronunciation: pr
+                    },
                     selectedListening1: selectedL1,
                     selectedListening2: selectedL2,
                     selectedReading1: selectedR1,
