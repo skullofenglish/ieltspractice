@@ -142,8 +142,8 @@
             color: var(--text-muted);
         }
 
-        /* Writing Breakdown Section */
-        .writing-breakdown-section {
+        /* Breakdown Sections (Listening, Reading & Writing) */
+        .breakdown-section {
             background: #FBF8FC;
             border-radius: 10px;
             padding: 22px;
@@ -151,23 +151,23 @@
             margin-bottom: 24px;
         }
 
-        .writing-breakdown-section h4 {
+        .breakdown-section h4 {
             margin: 0 0 6px 0;
             color: var(--primary-purple);
             font-size: 16px;
         }
 
-        .writing-breakdown-desc {
+        .breakdown-desc {
             font-size: 12px;
             color: var(--text-muted);
             margin-bottom: 16px;
         }
 
-        .writing-task-selectors {
+        .task-selectors-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 16px;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
         }
 
         .selector-box label {
@@ -195,21 +195,21 @@
             border-color: var(--primary-purple);
         }
 
-        .writing-tasks-cards {
+        .subcards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 16px;
             margin-bottom: 16px;
         }
 
-        .w-subcard {
+        .subcard {
             background: #FFFFFF;
             border: 1px solid var(--border-color);
             border-radius: 8px;
             padding: 16px;
         }
 
-        .w-subcard-header {
+        .subcard-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -218,14 +218,14 @@
             margin-bottom: 10px;
         }
 
-        .w-subcard-title {
+        .subcard-title {
             font-size: 14px;
             font-weight: 700;
             color: var(--primary-purple);
         }
 
-        .w-subcard-band {
-            font-size: 22px;
+        .subcard-band {
+            font-size: 20px;
             font-weight: 700;
             color: var(--accent-wine);
         }
@@ -253,7 +253,7 @@
             color: var(--primary-purple);
         }
 
-        .w-combined-banner {
+        .combined-banner {
             background: #F3ECF5;
             border: 1px solid var(--light-lavender);
             border-radius: 8px;
@@ -265,17 +265,17 @@
             gap: 10px;
         }
 
-        .w-combined-info {
+        .combined-info {
             font-size: 12px;
             color: var(--text-muted);
         }
 
-        .w-combined-info strong {
+        .combined-info strong {
             color: var(--primary-purple);
             font-size: 13px;
         }
 
-        .w-combined-score {
+        .combined-score {
             font-size: 24px;
             font-weight: 700;
             color: var(--accent-wine);
@@ -371,12 +371,12 @@
                 <div class="score-card">
                     <h3>Listening</h3>
                     <div class="card-band" id="listening-band">-</div>
-                    <div class="card-details" id="listening-raw">0 / 23 acertos</div>
+                    <div class="card-details" id="listening-raw">0 / 6 acertos</div>
                 </div>
                 <div class="score-card">
                     <h3>Reading</h3>
                     <div class="card-band" id="reading-band">-</div>
-                    <div class="card-details" id="reading-raw">0 / 47 acertos</div>
+                    <div class="card-details" id="reading-raw">0 / 7 acertos</div>
                 </div>
                 <div class="score-card">
                     <h3>Writing</h3>
@@ -390,14 +390,106 @@
                 </div>
             </div>
 
+            <!-- Seleção de 2 Tarefas do Listening -->
+            <div class="breakdown-section">
+                <h4>Seleção de Tarefas — Listening</h4>
+                <div class="breakdown-desc">
+                    Selecione abaixo <strong>quais duas tarefas de Listening</strong> devem contar para a nota. O cálculo soma os acertos das duas tarefas escolhidas e converte proporcionalmente para o Band Score (0 a 9).
+                </div>
+
+                <div class="task-selectors-grid">
+                    <div class="selector-box">
+                        <label for="select-listening-1">Tarefa 1 de Listening:</label>
+                        <select id="select-listening-1">
+                            <option value="task1">1. Multiple Choice (1) — 3 questões</option>
+                            <option value="task2">2. Short Answer — 3 questões</option>
+                            <option value="task3">3. Sentence Completion — 4 questões</option>
+                            <option value="task4">4. Table Completion — 5 questões</option>
+                            <option value="task5">5. Note Completion — 7 questões</option>
+                            <option value="task6">6. Plan/Map/Diagram — 3 questões</option>
+                            <option value="task7">7. Multiple Choice (Multi) — 3 questões</option>
+                        </select>
+                    </div>
+                    <div class="selector-box">
+                        <label for="select-listening-2">Tarefa 2 de Listening:</label>
+                        <select id="select-listening-2">
+                            <option value="task1">1. Multiple Choice (1) — 3 questões</option>
+                            <option value="task2" selected>2. Short Answer — 3 questões</option>
+                            <option value="task3">3. Sentence Completion — 4 questões</option>
+                            <option value="task4">4. Table Completion — 5 questões</option>
+                            <option value="task5">5. Note Completion — 7 questões</option>
+                            <option value="task6">6. Plan/Map/Diagram — 3 questões</option>
+                            <option value="task7">7. Multiple Choice (Multi) — 3 questões</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="combined-banner">
+                    <div class="combined-info">
+                        <strong>Listening (2 tarefas selecionadas):</strong>
+                        <span id="l-combined-formula">0 / 6 acertos nas tarefas selecionadas</span>
+                    </div>
+                    <div class="combined-score" id="l-combined-band">-</div>
+                </div>
+            </div>
+
+            <!-- Seleção de 2 Tarefas do Reading -->
+            <div class="breakdown-section">
+                <h4>Seleção de Tarefas — Reading</h4>
+                <div class="breakdown-desc">
+                    Selecione abaixo <strong>quais duas tarefas de Reading</strong> devem contar para a nota. O cálculo soma os acertos das duas tarefas escolhidas e converte proporcionalmente para o Band Score (0 a 9).
+                </div>
+
+                <div class="task-selectors-grid">
+                    <div class="selector-box">
+                        <label for="select-reading-1">Tarefa 1 de Reading:</label>
+                        <select id="select-reading-1">
+                            <option value="task1">1. Multiple Choice (1) — 4 questões</option>
+                            <option value="task2">2. Sentence Endings — 3 questões</option>
+                            <option value="task3">3. Sentence Completion — 5 questões</option>
+                            <option value="task4">4. Summary (List) — 4 questões</option>
+                            <option value="task5">5. Summary (Text) — 5 questões</option>
+                            <option value="task6">6. Matching Features — 4 questões</option>
+                            <option value="task7">7. Table Completion — 5 questões</option>
+                            <option value="task8">8. Note Completion — 6 questões</option>
+                            <option value="task9">9. True/False/NG — 3 questões</option>
+                            <option value="task10">10. Multiple Choice (Multi) — 4 questões</option>
+                        </select>
+                    </div>
+                    <div class="selector-box">
+                        <label for="select-reading-2">Tarefa 2 de Reading:</label>
+                        <select id="select-reading-2">
+                            <option value="task1">1. Multiple Choice (1) — 4 questões</option>
+                            <option value="task2" selected>2. Sentence Endings — 3 questões</option>
+                            <option value="task3">3. Sentence Completion — 5 questões</option>
+                            <option value="task4">4. Summary (List) — 4 questões</option>
+                            <option value="task5">5. Summary (Text) — 5 questões</option>
+                            <option value="task6">6. Matching Features — 4 questões</option>
+                            <option value="task7">7. Table Completion — 5 questões</option>
+                            <option value="task8">8. Note Completion — 6 questões</option>
+                            <option value="task9">9. True/False/NG — 3 questões</option>
+                            <option value="task10">10. Multiple Choice (Multi) — 4 questões</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="combined-banner">
+                    <div class="combined-info">
+                        <strong>Reading (2 tarefas selecionadas):</strong>
+                        <span id="r-combined-formula">0 / 7 acertos nas tarefas selecionadas</span>
+                    </div>
+                    <div class="combined-score" id="r-combined-band">-</div>
+                </div>
+            </div>
+
             <!-- Detalhamento e Cálculo Oficial do Writing -->
-            <div class="writing-breakdown-section">
+            <div class="breakdown-section">
                 <h4>Detalhamento Writing (IELTS Academic)</h4>
-                <div class="writing-breakdown-desc">
+                <div class="breakdown-desc">
                     Selecione abaixo quais tarefas deseja considerar. A nota de cada tarefa é a média dos 4 critérios; a nota final do Writing segue o peso oficial: <strong>(Task 1 + 2 × Task 2) ÷ 3</strong>.
                 </div>
 
-                <div class="writing-task-selectors">
+                <div class="task-selectors-grid">
                     <div class="selector-box">
                         <label for="select-writing-t1">Tarefa selecionada — Writing Task 1:</label>
                         <select id="select-writing-t1">
@@ -416,12 +508,12 @@
                     </div>
                 </div>
 
-                <div class="writing-tasks-cards">
+                <div class="subcards-grid">
                     <!-- Card Task 1 -->
-                    <div class="w-subcard">
-                        <div class="w-subcard-header">
-                            <span class="w-subcard-title">Writing Task 1 (Peso 1/3)</span>
-                            <span class="w-subcard-band" id="w-t1-band">-</span>
+                    <div class="subcard">
+                        <div class="subcard-header">
+                            <span class="subcard-title">Writing Task 1 (Peso 1/3)</span>
+                            <span class="subcard-band" id="w-t1-band">-</span>
                         </div>
                         <ul class="criteria-list">
                             <li><span>Task Achievement</span><span class="criteria-val" id="w-t1-ta">-</span></li>
@@ -432,10 +524,10 @@
                     </div>
 
                     <!-- Card Task 2 -->
-                    <div class="w-subcard">
-                        <div class="w-subcard-header">
-                            <span class="w-subcard-title">Writing Task 2 (Peso 2/3)</span>
-                            <span class="w-subcard-band" id="w-t2-band">-</span>
+                    <div class="subcard">
+                        <div class="subcard-header">
+                            <span class="subcard-title">Writing Task 2 (Peso 2/3)</span>
+                            <span class="subcard-band" id="w-t2-band">-</span>
                         </div>
                         <ul class="criteria-list">
                             <li><span>Task Response</span><span class="criteria-val" id="w-t2-ta">-</span></li>
@@ -446,17 +538,17 @@
                     </div>
                 </div>
 
-                <div class="w-combined-banner">
-                    <div class="w-combined-info">
+                <div class="combined-banner">
+                    <div class="combined-info">
                         <strong>Writing Total (Task 1 + Task 2):</strong>
                         <span id="w-combined-formula">Preencha as notas dos critérios na aba Writing para calcular</span>
                     </div>
-                    <div class="w-combined-score" id="w-combined-band">-</div>
+                    <div class="combined-score" id="w-combined-band">-</div>
                 </div>
             </div>
 
             <div class="manual-input-section">
-                <h4>Lançamento de Notas & Seleção de Tarefas de Writing</h4>
+                <h4>Lançamento de Notas & Preferências Salvas</h4>
                 <div class="input-group">
                     <div class="input-field">
                         <label for="writing-input">Writing Manual (opcional / sobrescrever 0-9):</label>
@@ -477,7 +569,7 @@
         import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { db, getStudentKey, getRawStudentName, registerStudentActivity, initStudentBar } from './student-manager.js';
 
-        // Gabarito do Reading
+        // Gabarito e metadados do Reading
         const readingKeys = {
             task1: { q1: "abolishing pay schemes that are based on age", q2: "allows the expertise of older workers to be put to use", q3: "appeal to distinct groups of older workers", q4: "older people are good at running their own business" },
             task2: { q1: "she started by seeking to understand how basic terms were used in the past", q2: "she examined how their methods evolved and changed", q3: "they used old ways of analysing written information for new purposes" },
@@ -494,7 +586,20 @@
             }
         };
 
-        // Gabarito do Listening
+        const READING_META = {
+            task1: { label: "1. Multiple Choice (1)", total: 4 },
+            task2: { label: "2. Sentence Endings", total: 3 },
+            task3: { label: "3. Sentence Completion", total: 5 },
+            task4: { label: "4. Summary (List)", total: 4 },
+            task5: { label: "5. Summary (Text)", total: 5 },
+            task6: { label: "6. Matching Features", total: 4 },
+            task7: { label: "7. Table Completion", total: 5 },
+            task8: { label: "8. Note Completion", total: 6 },
+            task9: { label: "9. True/False/NG", total: 3 },
+            task10: { label: "10. Multiple Choice (Multi)", total: 4 }
+        };
+
+        // Gabarito e metadados do Listening
         const listeningKeys = {
             task1: { q1: "She wanted to understand her own background.", q2: "interviews", q3: "organising what she had collected" },
             task2: { q1: "designers", q2: "managers", q3: "electricians" },
@@ -503,6 +608,16 @@
             task5: { q1: "round", q2: "12 years", q3: "4", q4: "green", q5: "reasonable", q6: "1.20 metres", q7: "lock" },
             task6: { q1: "H", q2: "A", q3: "C" },
             task7: { multi: ["book reservations", "location of rooms", "café"] }
+        };
+
+        const LISTENING_META = {
+            task1: { label: "1. Multiple Choice (1)", total: 3 },
+            task2: { label: "2. Short Answer", total: 3 },
+            task3: { label: "3. Sentence Completion", total: 4 },
+            task4: { label: "4. Table Completion", total: 5 },
+            task5: { label: "5. Note Completion", total: 7 },
+            task6: { label: "6. Plan/Map/Diagram", total: 3 },
+            task7: { label: "7. Multiple Choice (Multi)", total: 3 }
         };
 
         const WRITING_TASK_IDS = [
@@ -514,6 +629,8 @@
             'w_task2b_tourism'
         ];
 
+        let cachedListeningScores = {}; // { task1: { correct: 2, total: 3, submitted: true }, ... }
+        let cachedReadingScores = {};   // { task1: { correct: 3, total: 4, submitted: true }, ... }
         let cachedWritingTasks = {};
         let currentLBand = 0;
         let currentRBand = 0;
@@ -533,36 +650,40 @@
             return whole;
         }
 
-        function rawToBandReading(raw) {
-            if (raw >= 39) return 9.0;
-            if (raw >= 37) return 8.5;
-            if (raw >= 35) return 8.0;
-            if (raw >= 33) return 7.5;
-            if (raw >= 30) return 7.0;
-            if (raw >= 27) return 6.5;
-            if (raw >= 23) return 6.0;
-            if (raw >= 19) return 5.5;
-            if (raw >= 15) return 5.0;
-            if (raw >= 13) return 4.5;
-            if (raw >= 10) return 4.0;
-            if (raw > 0) return 3.5;
-            return 0.0;
+        // Conversão proporcional do Reading (IELTS Academic) conforme total de questões das 2 tarefas selecionadas
+        function rawToBandReadingDynamic(correct, totalQuestions) {
+            if (correct <= 0 || totalQuestions <= 0) return 0.0;
+            const eq40 = (correct / totalQuestions) * 40;
+            if (eq40 >= 39) return 9.0;
+            if (eq40 >= 37) return 8.5;
+            if (eq40 >= 35) return 8.0;
+            if (eq40 >= 33) return 7.5;
+            if (eq40 >= 30) return 7.0;
+            if (eq40 >= 27) return 6.5;
+            if (eq40 >= 23) return 6.0;
+            if (eq40 >= 19) return 5.5;
+            if (eq40 >= 15) return 5.0;
+            if (eq40 >= 13) return 4.5;
+            if (eq40 >= 10) return 4.0;
+            return 3.5;
         }
 
-        function rawToBandListening(raw) {
-            if (raw >= 22) return 9.0;
-            if (raw >= 20) return 8.5;
-            if (raw >= 18) return 8.0;
-            if (raw >= 16) return 7.5;
-            if (raw >= 14) return 7.0;
-            if (raw >= 12) return 6.5;
-            if (raw >= 10) return 6.0;
-            if (raw >= 8)  return 5.5;
-            if (raw >= 6)  return 5.0;
-            if (raw >= 4)  return 4.5;
-            if (raw >= 2)  return 4.0;
-            if (raw > 0)  return 3.5;
-            return 0.0;
+        // Conversão proporcional do Listening conforme total de questões das 2 tarefas selecionadas
+        function rawToBandListeningDynamic(correct, totalQuestions) {
+            if (correct <= 0 || totalQuestions <= 0) return 0.0;
+            const eq40 = (correct / totalQuestions) * 40;
+            if (eq40 >= 39) return 9.0;
+            if (eq40 >= 37) return 8.5;
+            if (eq40 >= 35) return 8.0;
+            if (eq40 >= 32) return 7.5;
+            if (eq40 >= 30) return 7.0;
+            if (eq40 >= 26) return 6.5;
+            if (eq40 >= 23) return 6.0;
+            if (eq40 >= 18) return 5.5;
+            if (eq40 >= 16) return 5.0;
+            if (eq40 >= 13) return 4.5;
+            if (eq40 >= 10) return 4.0;
+            return 3.5;
         }
 
         function calculateOverall(l, r, w, s) {
@@ -608,7 +729,76 @@
             return (val !== null && val !== undefined && !isNaN(val)) ? val.toFixed(1) : "-";
         }
 
-        function updateWritingAndOverallUI() {
+        function updateAllCalculationsUI() {
+            // --- 1. Atualizar Listening com base nas 2 tarefas selecionadas ---
+            const l1Id = document.getElementById('select-listening-1').value;
+            const l2Id = document.getElementById('select-listening-2').value;
+
+            const l1Data = cachedListeningScores[l1Id] || { correct: 0, total: LISTENING_META[l1Id].total, submitted: false };
+            const l2Data = cachedListeningScores[l2Id] || { correct: 0, total: LISTENING_META[l2Id].total, submitted: false };
+
+            const selectedLIds = (l1Id === l2Id) ? [l1Id] : [l1Id, l2Id];
+            let totalCorrectL = 0;
+            let totalQuestionsL = 0;
+            let anySubmittedL = false;
+
+            selectedLIds.forEach(id => {
+                const info = cachedListeningScores[id] || { correct: 0, total: LISTENING_META[id].total, submitted: false };
+                totalCorrectL += info.correct;
+                totalQuestionsL += info.total;
+                if (info.submitted) anySubmittedL = true;
+            });
+
+            currentLBand = rawToBandListeningDynamic(totalCorrectL, totalQuestionsL);
+            const lBandFormatted = (anySubmittedL || totalCorrectL > 0) ? currentLBand.toFixed(1) : "-";
+
+            document.getElementById('listening-raw').textContent = `${totalCorrectL} / ${totalQuestionsL} acertos`;
+            document.getElementById('listening-band').textContent = lBandFormatted;
+            document.getElementById('l-combined-band').textContent = lBandFormatted;
+
+            if (l1Id === l2Id) {
+                document.getElementById('l-combined-formula').textContent =
+                    `Atenção: você selecionou a mesma tarefa duas vezes (${totalCorrectL} / ${totalQuestionsL} acertos).`;
+            } else {
+                document.getElementById('l-combined-formula').textContent =
+                    `${LISTENING_META[l1Id].label} (${l1Data.correct}/${l1Data.total}) + ${LISTENING_META[l2Id].label} (${l2Data.correct}/${l2Data.total}) = ${totalCorrectL} / ${totalQuestionsL} acertos`;
+            }
+
+            // --- 2. Atualizar Reading com base nas 2 tarefas selecionadas ---
+            const r1Id = document.getElementById('select-reading-1').value;
+            const r2Id = document.getElementById('select-reading-2').value;
+
+            const r1Data = cachedReadingScores[r1Id] || { correct: 0, total: READING_META[r1Id].total, submitted: false };
+            const r2Data = cachedReadingScores[r2Id] || { correct: 0, total: READING_META[r2Id].total, submitted: false };
+
+            const selectedRIds = (r1Id === r2Id) ? [r1Id] : [r1Id, r2Id];
+            let totalCorrectR = 0;
+            let totalQuestionsR = 0;
+            let anySubmittedR = false;
+
+            selectedRIds.forEach(id => {
+                const info = cachedReadingScores[id] || { correct: 0, total: READING_META[id].total, submitted: false };
+                totalCorrectR += info.correct;
+                totalQuestionsR += info.total;
+                if (info.submitted) anySubmittedR = true;
+            });
+
+            currentRBand = rawToBandReadingDynamic(totalCorrectR, totalQuestionsR);
+            const rBandFormatted = (anySubmittedR || totalCorrectR > 0) ? currentRBand.toFixed(1) : "-";
+
+            document.getElementById('reading-raw').textContent = `${totalCorrectR} / ${totalQuestionsR} acertos`;
+            document.getElementById('reading-band').textContent = rBandFormatted;
+            document.getElementById('r-combined-band').textContent = rBandFormatted;
+
+            if (r1Id === r2Id) {
+                document.getElementById('r-combined-formula').textContent =
+                    `Atenção: você selecionou a mesma tarefa duas vezes (${totalCorrectR} / ${totalQuestionsR} acertos).`;
+            } else {
+                document.getElementById('r-combined-formula').textContent =
+                    `${READING_META[r1Id].label} (${r1Data.correct}/${r1Data.total}) + ${READING_META[r2Id].label} (${r2Data.correct}/${r2Data.total}) = ${totalCorrectR} / ${totalQuestionsR} acertos`;
+            }
+
+            // --- 3. Atualizar Writing com base nas 2 tarefas selecionadas ---
             const t1Id = document.getElementById('select-writing-t1').value;
             const t2Id = document.getElementById('select-writing-t2').value;
 
@@ -667,6 +857,7 @@
                 writingCardDetails.textContent = "Task 1 + Task 2";
             }
 
+            // --- 4. Atualizar Overall Band Score ---
             const overall = calculateOverall(currentLBand, currentRBand, effectiveWBand, currentSBand);
             document.getElementById('overall-score').textContent = overall;
         }
@@ -676,6 +867,8 @@
             const rawName = getRawStudentName();
             const subtitleEl = document.getElementById('dashboard-subtitle');
 
+            cachedListeningScores = {};
+            cachedReadingScores = {};
             cachedWritingTasks = {};
             currentLBand = 0;
             currentRBand = 0;
@@ -689,21 +882,23 @@
                 document.getElementById('listening-band').textContent = "-";
                 document.getElementById('writing-band').textContent = "-";
                 document.getElementById('speaking-band').textContent = "-";
-                document.getElementById('reading-raw').textContent = "0 / 47 acertos";
-                document.getElementById('listening-raw').textContent = "0 / 23 acertos";
-                updateWritingAndOverallUI();
+                updateAllCalculationsUI();
                 return;
             }
 
             subtitleEl.textContent = `Boletim de notas de: ${rawName}`;
 
-            // 1. Calcular Reading
-            let readingScore = 0;
+            // 1. Carregar acertos individuais de cada tarefa de Reading (task1 a task10)
             for (let i = 1; i <= 10; i++) {
                 const taskId = `task${i}`;
+                const totalQ = READING_META[taskId].total;
+                let taskCorrect = 0;
+                let submitted = false;
+
                 try {
                     const docSnap = await getDoc(doc(db, "ielts_students", studentKey, "reading", taskId));
                     if (docSnap.exists() && docSnap.data().submitted) {
+                        submitted = true;
                         const userAns = docSnap.data().answers || {};
                         const keys = readingKeys[taskId];
 
@@ -712,59 +907,67 @@
                                 const sel = userAns[qKey] || [];
                                 const correctSet = keys[qKey];
                                 sel.forEach(val => {
-                                    if (correctSet.includes(val)) readingScore++;
+                                    if (correctSet.includes(val)) taskCorrect++;
                                 });
                             }
                         } else {
                             for (const [qKey, correctVal] of Object.entries(keys)) {
                                 const uVal = userAns[qKey] || "";
                                 if (normalizeText(uVal) === normalizeText(correctVal) || normalizeText(uVal).includes(normalizeText(correctVal))) {
-                                    readingScore++;
+                                    taskCorrect++;
                                 }
                             }
                         }
                     }
                 } catch (e) {
-                    console.error("Erro ao ler reading da aluna:", e);
+                    console.error(`Erro ao ler reading (${taskId}):`, e);
                 }
+
+                cachedReadingScores[taskId] = {
+                    correct: taskCorrect,
+                    total: totalQ,
+                    submitted
+                };
             }
 
-            currentRBand = rawToBandReading(readingScore);
-            document.getElementById('reading-raw').textContent = `${readingScore} / 47 acertos`;
-            document.getElementById('reading-band').textContent = readingScore > 0 ? currentRBand.toFixed(1) : "-";
-
-            // 2. Calcular Listening
-            let listeningScore = 0;
+            // 2. Carregar acertos individuais de cada tarefa de Listening (task1 a task7)
             for (let i = 1; i <= 7; i++) {
                 const taskId = `task${i}`;
+                const totalQ = LISTENING_META[taskId].total;
+                let taskCorrect = 0;
+                let submitted = false;
+
                 try {
                     const docSnap = await getDoc(doc(db, "ielts_students", studentKey, "listening", taskId));
                     if (docSnap.exists() && docSnap.data().submitted) {
+                        submitted = true;
                         const userAns = docSnap.data().answers || {};
                         const keys = listeningKeys[taskId];
 
                         if (taskId === 'task7') {
                             const sel = userAns.multi || [];
                             sel.forEach(val => {
-                                if (keys.multi.includes(val)) listeningScore++;
+                                if (keys.multi.includes(val)) taskCorrect++;
                             });
                         } else {
                             for (const [qKey, correctVal] of Object.entries(keys)) {
                                 const uVal = userAns[qKey] || "";
                                 if (normalizeText(uVal) === normalizeText(correctVal) || normalizeText(uVal).includes(normalizeText(correctVal))) {
-                                    listeningScore++;
+                                    taskCorrect++;
                                 }
                             }
                         }
                     }
                 } catch (e) {
-                    console.error("Erro ao ler listening da aluna:", e);
+                    console.error(`Erro ao ler listening (${taskId}):`, e);
                 }
-            }
 
-            currentLBand = rawToBandListening(listeningScore);
-            document.getElementById('listening-raw').textContent = `${listeningScore} / 23 acertos`;
-            document.getElementById('listening-band').textContent = listeningScore > 0 ? currentLBand.toFixed(1) : "-";
+                cachedListeningScores[taskId] = {
+                    correct: taskCorrect,
+                    total: totalQ,
+                    submitted
+                };
+            }
 
             // 3. Carregar tarefas de Writing da aluna
             for (const wId of WRITING_TASK_IDS) {
@@ -778,11 +981,23 @@
                 }
             }
 
-            // 4. Ler Notas Manuais e Tarefas de Writing Selecionadas
+            // 4. Ler Notas Manuais e Tarefas Selecionadas (Listening, Reading e Writing)
             try {
                 const manualSnap = await getDoc(doc(db, "ielts_students", studentKey, "manual_scores", "scores"));
                 if (manualSnap.exists()) {
                     const data = manualSnap.data();
+                    if (data.selectedListening1) {
+                        document.getElementById('select-listening-1').value = data.selectedListening1;
+                    }
+                    if (data.selectedListening2) {
+                        document.getElementById('select-listening-2').value = data.selectedListening2;
+                    }
+                    if (data.selectedReading1) {
+                        document.getElementById('select-reading-1').value = data.selectedReading1;
+                    }
+                    if (data.selectedReading2) {
+                        document.getElementById('select-reading-2').value = data.selectedReading2;
+                    }
                     if (data.selectedWritingT1) {
                         document.getElementById('select-writing-t1').value = data.selectedWritingT1;
                     }
@@ -814,13 +1029,19 @@
                 console.error("Erro notas manuais:", e);
             }
 
-            // 5. Atualizar UI do Writing e Overall
-            updateWritingAndOverallUI();
+            // 5. Atualizar UI geral
+            updateAllCalculationsUI();
         }
 
-        document.getElementById('select-writing-t1').addEventListener('change', updateWritingAndOverallUI);
-        document.getElementById('select-writing-t2').addEventListener('change', updateWritingAndOverallUI);
+        // Recalcular imediatamente ao trocar qualquer seletor (Listening, Reading ou Writing)
+        document.getElementById('select-listening-1').addEventListener('change', updateAllCalculationsUI);
+        document.getElementById('select-listening-2').addEventListener('change', updateAllCalculationsUI);
+        document.getElementById('select-reading-1').addEventListener('change', updateAllCalculationsUI);
+        document.getElementById('select-reading-2').addEventListener('change', updateAllCalculationsUI);
+        document.getElementById('select-writing-t1').addEventListener('change', updateAllCalculationsUI);
+        document.getElementById('select-writing-t2').addEventListener('change', updateAllCalculationsUI);
 
+        // Salvar notas manuais e preferências das tarefas escolhidas
         document.getElementById('save-manual-btn').addEventListener('click', async () => {
             const studentKey = getStudentKey();
             const statusMsg = document.getElementById('manual-status');
@@ -832,6 +1053,10 @@
 
             const wVal = document.getElementById('writing-input').value;
             const sVal = document.getElementById('speaking-input').value;
+            const selectedL1 = document.getElementById('select-listening-1').value;
+            const selectedL2 = document.getElementById('select-listening-2').value;
+            const selectedR1 = document.getElementById('select-reading-1').value;
+            const selectedR2 = document.getElementById('select-reading-2').value;
             const selectedT1 = document.getElementById('select-writing-t1').value;
             const selectedT2 = document.getElementById('select-writing-t2').value;
 
@@ -841,6 +1066,10 @@
                 await setDoc(doc(db, "ielts_students", studentKey, "manual_scores", "scores"), {
                     writing: wVal !== '' ? parseFloat(wVal) : null,
                     speaking: sVal !== '' ? parseFloat(sVal) : null,
+                    selectedListening1: selectedL1,
+                    selectedListening2: selectedL2,
+                    selectedReading1: selectedR1,
+                    selectedReading2: selectedR2,
                     selectedWritingT1: selectedT1,
                     selectedWritingT2: selectedT2,
                     updatedAt: new Date().toISOString()
